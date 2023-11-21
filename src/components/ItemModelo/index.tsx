@@ -2,7 +2,7 @@ import React from "react"
 import styles from "./itemModelo.module.css"
 import Label from "@/components/Label"
 import Box from "@/components/Box"
-import config from "@/config"
+import config from "@/utils/config"
 
 interface ItemModeloProps {
     nomeModelo: string
