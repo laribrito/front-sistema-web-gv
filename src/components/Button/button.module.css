@@ -1,0 +1,8 @@
+.botao{
+    padding: 10px 20px;
+    border-radius: var(--border-radius-itens);
+    background-color: var(--background-color-botao);
+    box-shadow: var(--box-shadow-itens);
+    color: #FFF;
+    font-size: var(--font-size-title3);
+}

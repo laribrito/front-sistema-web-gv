@@ -6,6 +6,7 @@ import Label from '@/components/Label'
 import Box from '@/components/Box'
 import ItemCombinacao from '@/components/ItemCombinacao'
 import ItemCombinacaoIndicators from '@/components/ItemCombinacao/ItemCombinacaoIndicators'
+import Button from '@/components/Button'
 
 export default function Home() {
   return (
@@ -32,6 +33,8 @@ export default function Home() {
         <ItemCombinacao cor='Azul' malha='Algodão' qtdCamisas={3}>
           <ItemCombinacaoIndicators tipo='anexo'/>
         </ItemCombinacao>
+
+        <Button label='Próximo'/>
       </div>
     </main>
   )
