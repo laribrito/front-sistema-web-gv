@@ -1,5 +1,6 @@
 import React from "react"
 import styles from "./itemModelo.module.css"
+import Label from "@/components/Label"
 
 interface ItemModeloProps {
     nomeModelo: string
@@ -9,12 +10,14 @@ interface ItemModeloProps {
 } 
 
 export default function ItemModelo({nomeModelo, tipoCamisa, qtdCamisas, vertical = false}: ItemModeloProps){
+    const qtdExtenso = `${qtdCamisas} ${qtdCamisas === 1 ? "Unidade" : "Unidades"}`;
+
     return (
         <div className={vertical? styles.itemModeloVertical:styles.itemModeloPadrao}>
-            <p className={styles.titulo}>{nomeModelo}</p>
+            <Label tipo="titulo3" valor={nomeModelo}/>
             <div className={vertical? styles.itemModeloInternoVertical:styles.itemModeloInterno}>
-                <p>{tipoCamisa}</p>
-                <p>{qtdCamisas} {qtdCamisas==1? "Unidade": "Unidades"}</p>
+                <Label tipo="texto" valor={tipoCamisa} />
+                <Label tipo="texto" valor={qtdExtenso}/>
             </div>
         </div>
     )

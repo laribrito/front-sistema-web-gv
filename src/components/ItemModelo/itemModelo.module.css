@@ -39,8 +39,3 @@
     align-items: flex-start;
     gap: var(--gap-itens-box);
 }
-
-.titulo{
-    font-size: var(--font-size-title-box);
-    font-weight: 700;
-}

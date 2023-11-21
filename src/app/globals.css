@@ -5,6 +5,7 @@
   --foreground-color: #f3f3f3;
   --background-color-itens-box: #fff;
   --background-color-botao-lateral: #313131;
+  --color-label-discreto: #5D5D5D;
 
   --box-shadow-itens: 0px 2px 5px 0px rgba(0, 0, 0, 0.15);
 
@@ -19,8 +20,16 @@
   --gap-itens-box: 20px;
   --gap-itens-list: 10px;
 
-  --font-size-p: 0.9em;
-  --font-size-title-box: 1em;
+  --font-size-label-disc: 0.8em;
+  --font-size-p: 0.92em;
+  --font-size-label: 0.97em;
+  --font-size-title3: 1.01em;
+  --font-size-title2: 1.15em;
+  --font-size-title1: 1.3em;
+
+  --font-weight-title3: 600;
+  --font-weight-title2: 300;
+  --font-weight-title1: 700;
 
 }
 
