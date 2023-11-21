@@ -1,25 +1,4 @@
-.itemModeloPadrao{
-    width: 300px;
-    background-color: var(--background-color-itens-box);
-    border: var(--border-itens-box);
-    border-radius: var(--border-radius-itens);
-    box-shadow: var(--box-shadow-itens);
-    padding: var(--padding-itens-box);
-    margin-bottom: var(--gap-itens-list);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--gap-itens-box);
-}
-
-.itemModeloVertical{
-    width: 150px;
-    background-color: var(--background-color-itens-box);
-    border: var(--border-itens-box);
-    border-radius: var(--border-radius-itens);
-    box-shadow: var(--box-shadow-itens);
-    padding: var(--padding-itens-box);
-    margin-bottom: var(--gap-itens-list);
+.itemModelo{
     display: flex;
     flex-direction: column;
     align-items: flex-start;

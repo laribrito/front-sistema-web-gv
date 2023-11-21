@@ -1,0 +1,8 @@
+.boxPadrao{
+    background-color: var(--background-color-itens-box);
+    border: var(--border-itens-box);
+    border-radius: var(--border-radius-itens);
+    box-shadow: var(--box-shadow-itens);
+    padding: var(--padding-itens-box);
+    margin-bottom: var(--gap-itens-list);
+}
