@@ -4,6 +4,8 @@ import ItemModelo from '@/components/ItemModelo'
 import BotaoLateral from '@/components/BotaoLateral'
 import Label from '@/components/Label'
 import Box from '@/components/Box'
+import ItemCombinacao from '@/components/ItemCombinacao'
+import ItemCombinacaoIndicators from '@/components/ItemCombinacao/ItemCombinacaoIndicators'
 
 export default function Home() {
   return (
@@ -22,9 +24,14 @@ export default function Home() {
         <Label tipo="label" valor="Olá mundo"/>
         <Label tipo="texto" valor="Olá mundo"/>
         <Label tipo="label discreto" valor="Olá mundo"/>
-        <Box width='300px'>
-          <p>Ola</p>
-        </Box>
+        <ItemCombinacao cor='Azul' malha='Algodão' qtdCamisas={3}>
+          <ItemCombinacaoIndicators tipo='obs'/>
+          <ItemCombinacaoIndicators tipo='anexo'/>
+        </ItemCombinacao>
+        <ItemCombinacao cor='Azul' malha='Algodão' qtdCamisas={3}/>
+        <ItemCombinacao cor='Azul' malha='Algodão' qtdCamisas={3}>
+          <ItemCombinacaoIndicators tipo='anexo'/>
+        </ItemCombinacao>
       </div>
     </main>
   )

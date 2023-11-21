@@ -1,0 +1,32 @@
+.itemCombinacao{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.itemCombinacaoEsquerda{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--gap-itens-box);
+}
+
+.itemCombinacaoDireita{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--gap-itens-box);
+}
+
+.textBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--gap-itens-box-details);
+}
+
+.indicators{
+    display: flex;
+    align-items: center;
+    gap: var(--gap-itens-box-details);
+}
