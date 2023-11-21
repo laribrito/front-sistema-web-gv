@@ -1,0 +1,46 @@
+.itemModeloPadrao{
+    width: 300px;
+    background-color: var(--background-color-itens-box);
+    border: var(--border-itens-box);
+    border-radius: var(--border-radius-itens);
+    box-shadow: var(--box-shadow-itens);
+    padding: var(--padding-itens-box);
+    margin-bottom: var(--gap-itens-list);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--gap-itens-box);
+}
+
+.itemModeloVertical{
+    width: 150px;
+    background-color: var(--background-color-itens-box);
+    border: var(--border-itens-box);
+    border-radius: var(--border-radius-itens);
+    box-shadow: var(--box-shadow-itens);
+    padding: var(--padding-itens-box);
+    margin-bottom: var(--gap-itens-list);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--gap-itens-box);
+}
+
+.itemModeloInterno{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-self: stretch;
+}
+
+.itemModeloInternoVertical{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--gap-itens-box);
+}
+
+.titulo{
+    font-size: var(--font-size-title-box);
+    font-weight: 700;
+}

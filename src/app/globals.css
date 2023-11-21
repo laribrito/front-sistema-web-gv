@@ -1,0 +1,46 @@
+:root {
+  --max-width: 100%;
+  --border-radius: 12px;
+  
+  --foreground-color: #f3f3f3;
+  --background-color-itens-box: #fff;
+  --background-color-botao-lateral: #313131;
+
+  --box-shadow-itens: 0px 2px 5px 0px rgba(0, 0, 0, 0.15);
+
+  --border-radius-itens: 10px;
+  --border-radius-botao-lateral: 10px 0px 0px 10px;
+
+  --border-itens-box: 1px solid var(--background-color-itens-box);
+  --border-itens-box-hover: 1px solid #d7d7d7;
+
+  --padding-itens-box: 15px;
+  
+  --gap-itens-box: 20px;
+  --gap-itens-list: 10px;
+
+  --font-size-p: 0.9em;
+  --font-size-title-box: 1em;
+
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  max-width: 100%;
+  font-size: var(--font-size-p);
+}
+
+button{
+  border: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

@@ -1,0 +1,12 @@
+.botalLateral{
+    width: 41px;
+    height: 45px;
+    border-radius: var(--border-radius-botao-lateral);
+    background-color: var(--background-color-botao-lateral);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+}
