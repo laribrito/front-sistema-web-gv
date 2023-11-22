@@ -3,7 +3,7 @@ import styles from "./itemModelo.module.css"
 import Label from "@/components/Label"
 import Box from "@/components/Box"
 import config from "@/utils/config"
-import QtdUnidadesPorExtenso from "@/utils/functions"
+import { QtdUnidadesPorExtenso } from "@/utils/functions"
 
 interface ItemModeloProps {
     nomeModelo: string
