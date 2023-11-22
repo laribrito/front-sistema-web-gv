@@ -1,14 +1,10 @@
 import React, {ButtonHTMLAttributes} from "react"
 import styles from "./button.module.css"
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    label: string;
-}
-
-export default function Button({label, ...rest}:ButtonProps){
+export default function Button({...rest}:ButtonHTMLAttributes<HTMLButtonElement>){
     return (
         <button className={styles.botao} {...rest}>
-            {label}
+            {rest.value}
         </button>
     )
 }

@@ -40,7 +40,7 @@ export default function Home() {
           <ItemNegociacaoStatus value='cancelado'/>
         </ItemNegociacao>
 
-        <Button label='Próximo'/>
+        <Button value='Próximo'/>
       </div>
     </main>
   )
