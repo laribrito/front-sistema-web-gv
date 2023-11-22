@@ -21,6 +21,9 @@
 
   --padding-itens-box: 15px;
   --padding-widget-status: 5px;
+
+  --margin-description-item-vertical: 10px;
+  --margin-gap-item-description-horizontal: 5px;
   
   --gap-itens-box: 20px;
   --gap-itens-box-details: 10px;

@@ -9,6 +9,7 @@ import ItemCombinacaoIndicators from '@/components/ItemCombinacao/ItemCombinacao
 import Button from '@/components/Button'
 import ItemNegociacao from '@/components/ItemNegociacao'
 import ItemNegociacaoStatus from '@/components/ItemNegociacao/itemNegociacaoStatus'
+import ItemAndDescription from '@/components/ItemAndDescription'
 
 export default function Home() {
   return (
@@ -39,6 +40,9 @@ export default function Home() {
         <ItemNegociacao nomeCliente='Larissa Brito' nomeNegociacao='Camisas CIC' qtdCamisas={40}>
           <ItemNegociacaoStatus value='cancelado'/>
         </ItemNegociacao>
+
+        <ItemAndDescription item='Cor' description='Azul'></ItemAndDescription>
+        <ItemAndDescription item='Cor' description='Azul' horizontal={true}></ItemAndDescription>
 
         <Button value='Próximo'/>
       </div>

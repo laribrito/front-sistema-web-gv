@@ -1,0 +1,15 @@
+.idGeral{
+    padding: var(--padding-widget-status);
+}
+
+.itemAndDescription > :nth-child(2){
+    margin-left: var(--margin-description-item-vertical);
+}
+
+.itemAndDescriptionH > :nth-child(2){
+    margin-left: var(--margin-gap-item-description-horizontal);
+}
+
+.itemAndDescriptionH > * {
+    display: inline;
+}
