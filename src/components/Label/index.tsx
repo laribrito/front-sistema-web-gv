@@ -6,20 +6,25 @@ interface labelProps extends HTMLProps<HTMLLabelElement> {
     valor: string
 } 
 
-export default function Label({tipo, valor, ...rest}: labelProps){
-    function labelConstr(styleClass: string){7
+export default function Label({tipo, valor, style, ...rest}: labelProps){
+    function labelConstr(styleClass: string){
         if (styleClass == styles.label){
-            return (
-                <label className={styleClass} {...rest}>
-                    {valor}
-                </label>
-            )
+            return (<label className={styleClass} {...rest}>{valor}</label>)
         }
-        return (
-            <p className={styleClass}>
-                {valor}
-            </p>
-        )
+
+        if (styleClass == styles.titulo1){
+            return (<h1 className={styleClass}>{valor}</h1>)
+        }
+
+        if (styleClass == styles.titulo2){
+            return (<h2 className={styleClass}>{valor}</h2>)
+        }
+
+        if (styleClass == styles.titulo3){
+            return (<h3 className={styleClass}>{valor}</h3>)
+        }
+
+        return (<p className={styleClass}>{valor}</p>)
     }
 
     return (
