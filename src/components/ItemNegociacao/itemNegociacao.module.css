@@ -1,0 +1,46 @@
+.itemNegociacao{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.itemNegociacaoEsquerda{
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--gap-itens-box);
+}
+
+.itemNegociacaoDireita{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-self: stretch;
+    gap: var(--gap-itens-box);
+}
+
+.status{
+    color: #000;
+    font-size: var(--font-size-label-disc);
+    font-weight: var(--font-weight-status);
+    border-radius: var(--border-radius-itens);
+    width: var(--width-widget-status);
+    padding: var(--padding-widget-status);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.emAndamento{
+    background: var(--background-color-status-em-andamento);
+}
+
+.aprovado{
+    background-color: var(--background-color-status-aprovado);
+}
+
+.cancelado{
+    background-color: var(--background-color-status-cancelado);
+}

@@ -1,15 +1,18 @@
 :root {
   --max-width: 100%;
-  --border-radius: 12px;
+  --width-widget-status: 90px;
   
   --foreground-color: #f3f3f3;
   --background-color-itens-box: #fff;
   --background-color-botao-lateral: #313131;
   --background-color-botao: #000;
+  --background-color-status-em-andamento: #FFF7CC;; 
+  --background-color-status-aprovado: #D6FFCC;
+  --background-color-status-cancelado: #FFCCCC;
   --color-label-discreto: #5D5D5D;
-
+  
   --box-shadow-itens: 0px 2px 5px 0px rgba(0, 0, 0, 0.15);
-
+  
   --border-radius-itens: 10px;
   --border-radius-botao-lateral: 10px 0px 0px 10px;
 
@@ -17,6 +20,7 @@
   --border-itens-box-hover: 1px solid #d7d7d7;
 
   --padding-itens-box: 15px;
+  --padding-widget-status: 5px;
   
   --gap-itens-box: 20px;
   --gap-itens-box-details: 10px;
@@ -32,6 +36,7 @@
   --font-weight-title3: 600;
   --font-weight-title2: 300;
   --font-weight-title1: 700;
+  --font-weight-status: 300;
 
 }
 

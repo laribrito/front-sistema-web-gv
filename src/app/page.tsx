@@ -7,6 +7,8 @@ import Box from '@/components/Box'
 import ItemCombinacao from '@/components/ItemCombinacao'
 import ItemCombinacaoIndicators from '@/components/ItemCombinacao/ItemCombinacaoIndicators'
 import Button from '@/components/Button'
+import ItemNegociacao from '@/components/ItemNegociacao'
+import ItemNegociacaoStatus from '@/components/ItemNegociacao/itemNegociacaoStatus'
 
 export default function Home() {
   return (
@@ -33,6 +35,10 @@ export default function Home() {
         <ItemCombinacao cor='Azul' malha='Algodão' qtdCamisas={3}>
           <ItemCombinacaoIndicators tipo='anexo'/>
         </ItemCombinacao>
+
+        <ItemNegociacao nomeCliente='Larissa Brito' nomeNegociacao='Camisas CIC' qtdCamisas={40}>
+          <ItemNegociacaoStatus value='cancelado'/>
+        </ItemNegociacao>
 
         <Button label='Próximo'/>
       </div>
