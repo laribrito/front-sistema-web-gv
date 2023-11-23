@@ -1,6 +1,5 @@
 import React from "react"
 import styles from "./itemModelo.module.css"
-import Label from "@/components/Label"
 import Box from "@/components/Box"
 import config from "@/utils/config"
 import { QtdUnidadesPorExtenso } from "@/utils/functions"
@@ -18,10 +17,10 @@ export default function ItemModelo({nomeModelo, tipoCamisa, qtdCamisas, vertical
     return (
         <Box width={vertical ? config.WIDTH_HALF_WIDGETS : config.WIDTH_WIDGETS}>
             <div className={styles.itemModelo}>
-                <Label tipo="titulo3" valor={nomeModelo} />
+                <h3>{nomeModelo}</h3>
                 <div className={vertical ? styles.itemModeloInternoVertical : styles.itemModeloInterno}>
-                <Label tipo="texto" valor={tipoCamisa} />
-                <Label tipo="texto" valor={qtdExtenso} />
+                <p>{tipoCamisa} </p>
+                <p>{qtdExtenso} </p>
                 </div>
             </div>
         </Box>

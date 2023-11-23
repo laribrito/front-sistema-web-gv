@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react"
 import styles from "./itemCombinacao.module.css"
-import Label from "@/components/Label"
 import Box from "@/components/Box"
 import config from "@/utils/config"
 import { QtdUnidadesPorExtenso } from "@/utils/functions"
@@ -20,18 +19,18 @@ export default function ItemCombinacao({cor, malha, qtdCamisas, children}: itemC
             <div className={styles.itemCombinacao}>
                 <div className={styles.itemCombinacaoEsquerda}>
                     <div className={styles.textBox}>
-                        <Label tipo="titulo3" valor="Cor:"/>
-                        <Label tipo="texto" valor={cor}/>
+                        <h3>Cor:</h3>
+                        <p>{cor}</p>
                     </div>
 
                     <div className={styles.textBox}>
-                        <Label tipo="titulo3" valor="Malha:"/>
-                        <Label tipo="texto" valor={malha}/>
+                        <h3>Malha:</h3>
+                        <p>{malha}</p>
                     </div>
                 </div>
 
                 <div className={styles.itemCombinacaoDireita}>
-                    <Label tipo="texto" valor={qtdExtenso}/>
+                    <p>{qtdExtenso}</p>
 
                     <div className={styles.indicators}>
                         {children}

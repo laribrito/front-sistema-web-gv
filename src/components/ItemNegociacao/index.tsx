@@ -2,7 +2,6 @@ import React from "react"
 import styles from "./itemNegociacao.module.css"
 import Box from "@/components/Box"
 import config from "@/utils/config"
-import Label from "@/components/Label"
 import { QtdUnidadesPorExtenso } from "@/utils/functions"
 
 
@@ -20,15 +19,15 @@ export default function ItemNegociacao({nomeNegociacao, nomeCliente, qtdCamisas,
         <Box width={config.WIDTH_WIDGETS}>
             <div className={styles.itemNegociacao}>
                 <div className={styles.itemNegociacaoEsquerda}>
-                    <Label tipo="titulo3" valor={nomeNegociacao}/>
+                    <h3>{nomeNegociacao}</h3>
                 
-                    <Label tipo="texto" valor={nomeCliente}/>
+                    <p>{nomeCliente}</p>
                 </div>
 
                 <div className={styles.itemNegociacaoDireita}>
                     {children}
                     
-                    <Label tipo="texto" valor={qtdExtenso}/>
+                    <p>{qtdExtenso}</p>
                 </div>
             </div>
         </Box>

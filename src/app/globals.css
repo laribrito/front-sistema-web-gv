@@ -1,6 +1,7 @@
 :root {
   --max-width: 100%;
   --width-widget-status: 90px;
+  --width-widgets: 300px;
   
   --foreground-color: #f3f3f3;
   --background-color-itens-box: #fff;
@@ -65,14 +66,32 @@ a {
   text-decoration: none;
 }
 
-label{
-  display: block;
+/* tipografia */
+h1{
+  font-size: var(--font-size-title1);
+  font-weight: var(--font-weight-title1);
 }
 
-input::file-selector-button {
-  font-weight: bold;
-  color: dodgerblue;
-  padding: 0.5em;
-  border: thin solid grey;
-  border-radius: 3px;
+h2{
+  font-size: var(--font-size-title2);
+  font-weight: var(--font-weight-title2);
+}
+
+h3 {
+  font-size: var(--font-size-title3);
+  font-weight: var(--font-weight-title3);
+}
+
+label{
+  font-size: var(--font-size-label);
+  padding-left: 10px;
+}
+
+p{
+  font-size: var(--font-size-p);
+}
+
+p .labelDiscreto{
+  font-size: var(--font-size-label-disc);
+  color: var(--color-label-discreto);
 }

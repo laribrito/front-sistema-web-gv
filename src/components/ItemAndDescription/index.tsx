@@ -1,6 +1,5 @@
 import React from "react"
 import styles from "./itemAndDescription.module.css"
-import Label from "@/components/Label"
 
 interface ItemAndDescriptionProps {
     item: string
@@ -11,8 +10,8 @@ interface ItemAndDescriptionProps {
 export default function ItemAndDescription({item, description, horizontal=false}: ItemAndDescriptionProps){
     return (
         <div className={`${styles.idGeral} ${horizontal ? styles.itemAndDescriptionH : styles.itemAndDescription}`}>
-            <Label tipo="titulo3" valor={`${item}:`}/>
-            <Label tipo="texto" valor={description}/>
+            <h3>{`${item}:`}</h3>
+            <p>{description}</p>
         </div>
     )
 }
