@@ -1,0 +1,5 @@
+.boxFile {
+    border-radius: var(--border-radius-inputs);
+    border: 0.5px solid #000;
+    background: #FFF;
+}

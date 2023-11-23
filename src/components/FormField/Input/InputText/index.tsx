@@ -2,7 +2,7 @@ import React from "react";
 import stylesInput from "../input.module.css"
 import { InputGeneric } from "../interfaceInput";
 
-interface InputTextProps extends InputGeneric{
+interface InputTextProps extends InputGeneric {
   type: "text"
 }
 

@@ -51,14 +51,19 @@ export default function Home() {
         <ItemAndDescription item='Cor' description='Azul'></ItemAndDescription>
         <ItemAndDescription item='Cor' description='Azul' horizontal={true}></ItemAndDescription>
 
-        <FormField.Root required>
+        <FormField.Root id="nomeEstampa" required>
             <FormField.Label valor='Nome da estampa' />
             <FormField.InputText type='text'/>
         </FormField.Root>
 
-        <FormField.Root>
-            <FormField.Label valor='Nome da estampa' />
+        <FormField.Root id="tipoModelagem">
+            <FormField.Label valor='Modelagem' />
             <FormField.InputSelect options={opcoes}/>
+        </FormField.Root>
+
+        <FormField.Root id="arquivo">
+            <FormField.Label valor='Imagem do modelo' />
+            <FormField.InputFile/>
         </FormField.Root>
 
         <Button value='Próximo'/>
