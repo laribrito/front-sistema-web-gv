@@ -7,3 +7,11 @@
     background: #FFF;
     color: #000;
 }
+
+.box:focus{
+    outline-color: var(--color-label-discreto);
+}
+
+.formField{
+    margin-bottom: var(--gap-itens-box);
+}

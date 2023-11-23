@@ -1,4 +1,4 @@
-.select{
-    font-size: var(--font-size-label-disc);
-    display: grid;
+.select option{
+    background-color: white;
+    color: #000;
 }

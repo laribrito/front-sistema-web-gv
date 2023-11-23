@@ -9,6 +9,8 @@ import ItemNegociacao from '@/components/ItemNegociacao'
 import ItemNegociacaoStatus from '@/components/ItemNegociacao/itemNegociacaoStatus'
 import ItemAndDescription from '@/components/ItemAndDescription'
 import InputText from '@/components/Input/InputText'
+import InputSelect from '@/components/Input/InputSelect'
+import InputFile from '@/components/Input/InputFile'
 
 export default function Home() {
   const opcoes: Array<[number, string]> = [
@@ -49,7 +51,11 @@ export default function Home() {
         <ItemAndDescription item='Cor' description='Azul'></ItemAndDescription>
         <ItemAndDescription item='Cor' description='Azul' horizontal={true}></ItemAndDescription>
 
-        <InputText type='text' label='Nome do modelo' />
+        <InputText type='text' label='Nome do modelo' id='nomeModelo' />
+
+        <InputSelect label='Nome do modelo' id='nomeModelo' options={opcoes} />
+
+        <InputFile label='Nome do modelo' id='nomeModelo' />
 
         <Button value='Próximo'/>
       </div>

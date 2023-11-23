@@ -85,6 +85,7 @@ h3 {
 label{
   font-size: var(--font-size-label);
   padding-left: 10px;
+  display: block;
 }
 
 p{

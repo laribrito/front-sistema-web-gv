@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, InputHTMLAttributes } from 'react';
+import stylesInput from "../input.module.css"
 import { MuiFileInput } from 'mui-file-input';
 import styles from "./inputFile.module.css"
 import { InputGeneric } from "../interfaceInput";
 
-interface FileInputProps extends InputGeneric {
-  type: "file";
-}
+interface FileInputProps extends InputGeneric, InputHTMLAttributes<HTMLInputElement>{}
 
-export default function FileInput({ type, ...rest }:FileInputProps){
+export default function FileInput({ label, id, type, ...rest }:FileInputProps){
   const [file, setFile] = useState<File | null>(null);
 
   const handleChange = (newFile: File | null) => {
@@ -15,13 +14,16 @@ export default function FileInput({ type, ...rest }:FileInputProps){
   };
 
   return (
-    <MuiFileInput
-      value={file}
-      placeholder='Escolha um Arquivo'
-      size='small'
-      onChange={handleChange}
-      className={styles.boxFile}
-      required={rest.required}
-    />
+    <div className={stylesInput.formField}>
+      <label htmlFor={id}>{`${label}:`}</label>
+      <MuiFileInput
+        value={file}
+        placeholder='Escolha um Arquivo'
+        size='small'
+        onChange={handleChange}
+        className={styles.boxFile}
+        required={rest.required}
+      />
+    </div>
   );
 };
