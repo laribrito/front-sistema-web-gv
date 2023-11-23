@@ -1,0 +1,4 @@
+.select{
+    font-size: var(--font-size-label-disc);
+    display: grid;
+}

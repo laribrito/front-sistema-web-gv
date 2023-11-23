@@ -1,7 +1,7 @@
 import React, { HTMLProps } from "react"
 import styles from "./label.module.css"
 
-interface labelProps extends HTMLProps<HTMLLabelElement> {
+export interface labelProps extends HTMLProps<HTMLLabelElement> {
     tipo: "titulo1" | "titulo2" | "titulo3" | "label" | "texto" | "label discreto"
     valor: string
 } 

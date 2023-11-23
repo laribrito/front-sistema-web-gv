@@ -14,6 +14,7 @@
   --box-shadow-itens: 0px 2px 5px 0px rgba(0, 0, 0, 0.15);
   
   --border-radius-itens: 10px;
+  --border-radius-inputs: 5px;
   --border-radius-botao-lateral: 10px 0px 0px 10px;
 
   --border-itens-box: 1px solid var(--background-color-itens-box);
@@ -62,4 +63,8 @@ button{
 a {
   color: inherit;
   text-decoration: none;
+}
+
+label{
+  display: block;
 }

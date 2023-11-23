@@ -10,8 +10,15 @@ import Button from '@/components/Button'
 import ItemNegociacao from '@/components/ItemNegociacao'
 import ItemNegociacaoStatus from '@/components/ItemNegociacao/itemNegociacaoStatus'
 import ItemAndDescription from '@/components/ItemAndDescription'
+import FormField from "@/components/FormField/index"
 
 export default function Home() {
+  const opcoes: Array<[number, string]> = [
+    [1, "Opção 1"],
+    [2, "Opção 2"],
+    [3, "Opção 3"],
+  ];
+
   return (
     <main className={styles.main}>
       <div className={styles.description}>
@@ -43,6 +50,16 @@ export default function Home() {
 
         <ItemAndDescription item='Cor' description='Azul'></ItemAndDescription>
         <ItemAndDescription item='Cor' description='Azul' horizontal={true}></ItemAndDescription>
+
+        <FormField.Root required>
+            <FormField.Label valor='Nome da estampa' />
+            <FormField.InputText type='text'/>
+        </FormField.Root>
+
+        <FormField.Root>
+            <FormField.Label valor='Nome da estampa' />
+            <FormField.InputSelect options={opcoes}/>
+        </FormField.Root>
 
         <Button value='Próximo'/>
       </div>

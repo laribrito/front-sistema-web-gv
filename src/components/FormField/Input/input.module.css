@@ -1,0 +1,9 @@
+.box{
+    height: 25px;
+    width: 100%;
+    border-radius: var(--border-radius-inputs);
+    padding: 5px;
+    border-radius: 5px;
+    border: 0.5px solid #000;
+    background: #FFF;
+}
