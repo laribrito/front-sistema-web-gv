@@ -11,12 +11,19 @@ import ItemAndDescription from '@/components/ItemAndDescription'
 import InputText from '@/components/Input/InputText'
 import InputSelect from '@/components/Input/InputSelect'
 import InputFile from '@/components/Input/InputFile'
+import InputRadioGroup from '@/components/Input/RadioGroup'
+import { Option } from '@/components/Input/interfaceInput'
 
 export default function Home() {
-  const opcoes: Array<[number, string]> = [
-    [1, "Opção 1"],
-    [2, "Opção 2"],
-    [3, "Opção 3"],
+  const opcoesSelect: Option[] = [
+    { id: 1, valor: 'Option 1' },
+    { id: 2, valor: 'Option 2' },
+    { id: 3, valor: 'Option 3' },
+  ];
+
+  const opcoesRadio: Option[] = [
+    { id: 1, valor: 'University Shop' },
+    { id: 2, valor: 'Green Factory' },
   ];
 
   return (
@@ -53,9 +60,11 @@ export default function Home() {
 
         <InputText type='text' label='Nome do modelo' id='nomeModelo' />
 
-        <InputSelect label='Nome do modelo' id='nomeModelo' options={opcoes} />
+        <InputSelect label='Nome do modelo' id='nomeModelo' options={opcoesSelect} />
 
         <InputFile label='Nome do modelo' id='nomeModelo' />
+
+        <InputRadioGroup label='Empresa' options={opcoesRadio}/>
 
         <Button value='Próximo'/>
       </div>

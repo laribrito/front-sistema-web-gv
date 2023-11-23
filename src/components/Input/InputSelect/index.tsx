@@ -1,10 +1,10 @@
 import React, {SelectHTMLAttributes} from "react";
 import stylesInput from "../input.module.css"
 import styles from "./inputsSelect.module.css"
-import { InputGeneric } from "../interfaceInput";
+import { InputGeneric, Option } from "../interfaceInput";
 
 interface InputSelectProps extends InputGeneric, SelectHTMLAttributes<HTMLSelectElement>{
-  options: Array<[number, string]>
+  options: Option[]
 }
 
 export default function InputSelect({options, id, label, ...rest}:InputSelectProps) {
@@ -12,9 +12,9 @@ export default function InputSelect({options, id, label, ...rest}:InputSelectPro
     <div className={stylesInput.formField}>
       <label htmlFor={id}>{`${label}:`}</label>
       <select {...rest} className={`${stylesInput.box} ${styles.select}`}>
-      {options.map(([id, valor]) => (
-        <option key={id} value={id} className={styles.selectItens}>
-          {valor}
+      {options.map((op) => (
+        <option key={op.id} value={op.id} className={styles.selectItens}>
+          {op.valor}
         </option>
       ))}
     </select>
