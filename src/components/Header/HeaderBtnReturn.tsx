@@ -5,7 +5,7 @@ import styles from "./header.module.css"
 export default function HeaderBtnReturn({...rest}: HtmlHTMLAttributes<HTMLButtonElement>){
     return (
         <button className={styles.btnReturn} {...rest}>
-            <IoIosArrowBack fontSize="2.2em" />
+            <IoIosArrowBack fontSize="1.8em" />
         </button>
     )
 }
