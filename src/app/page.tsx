@@ -14,7 +14,8 @@ import InputFile from '@/components/Input/InputFile'
 import InputRadioGroup from '@/components/Input/RadioGroup'
 import { Option } from '@/components/Input/interfaceInput'
 import Header from '@/components/Header'
-import { BtnEdicaoHeader } from "@/utils/elements"
+import { BtnEdicaoHeader, IconBusca, IconHome, IconNovoPedido, IconRelatorios } from "@/utils/elements"
+import Navbar from '@/components/Navbar'
 
 export default function Home() {
   const opcoesSelect: Option[] = [
@@ -76,6 +77,13 @@ export default function Home() {
         <InputRadioGroup label='Empresa' options={opcoesRadio}/>
 
         <Button value='Próximo'/>
+
+        <Navbar.Root>
+          <Navbar.Item icon={IconRelatorios}>Análises</Navbar.Item>
+          <Navbar.Item icon={IconHome}>Home</Navbar.Item>
+          <Navbar.Item icon={IconBusca}>Busca</Navbar.Item>
+          <Navbar.Item icon={IconNovoPedido}>Novo<br/>Pedido</Navbar.Item>
+        </Navbar.Root>
       </div>
     </main>
   )
