@@ -16,7 +16,7 @@ export default function InputSelect({options, id, label, ...rest}:InputSelectPro
       <ThemeProvider theme={themeMUI}>
         <Select id="outlined-basic" variant="outlined" size="small" defaultValue={options[0].id}>
           {options.map((op) => (
-            <MenuItem value={op.id}>
+            <MenuItem key={op.id} value={op.id}>
               {op.valor}
             </MenuItem>
           ))}

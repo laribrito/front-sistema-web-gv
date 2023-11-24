@@ -21,7 +21,7 @@ export default function InputRadioGroup({ label, id, type, options, name, vertic
         >
             {options.map(
                 (op)=>(
-                    <FormControlLabel value={op.id} control={radioConfig} label={op.valor} />
+                    <FormControlLabel key={op.id} value={op.id} control={radioConfig} label={op.valor} />
                 )
             )}
         </RadioGroup>
