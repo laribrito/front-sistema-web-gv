@@ -13,6 +13,8 @@ import InputSelect from '@/components/Input/InputSelect'
 import InputFile from '@/components/Input/InputFile'
 import InputRadioGroup from '@/components/Input/RadioGroup'
 import { Option } from '@/components/Input/interfaceInput'
+import Header from '@/components/Header'
+import { BtnEdicaoHeader } from "@/utils/elements"
 
 export default function Home() {
   const opcoesSelect: Option[] = [
@@ -29,6 +31,13 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <div className={styles.description}>
+        <Header.Root>
+          <Header.BtnReturn/>
+          <Header.Title>Olá mundo</Header.Title>  
+          <Header.Subtitle>Larissa</Header.Subtitle>  
+          <Header.BtnExtra icon={BtnEdicaoHeader}/>
+        </Header.Root>
+
         <ItemModelo nomeModelo='UESC Original' tipoCamisa='Tradicional' qtdCamisas={3}/>
         <ItemModelo nomeModelo='UESC Original' tipoCamisa='Polo' qtdCamisas={1}/>
         <BotaoLateral tipo="EXCLUIR" onClick={()=> {console.log("Clicou")}}/>

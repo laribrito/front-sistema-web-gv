@@ -1,0 +1,32 @@
+.root{
+    background-color: var(--background-color-header);
+    color: var(--background-color-itens-box);
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    padding: 15px 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    z-index: 2;
+    box-shadow: var(--box-shadow-header);
+}
+
+.btnReturn{
+    background: none;
+    color: white;
+    position: absolute;
+    left: 0;
+    margin-left: 30px;
+}
+
+.btnExtra{
+    background: none;
+    color: white;
+    position: absolute;
+    right: 0;
+    margin-right: 30px;
+}

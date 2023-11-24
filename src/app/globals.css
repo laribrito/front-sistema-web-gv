@@ -4,15 +4,17 @@
   --width-widgets: 300px;
   
   --foreground-color: #f3f3f3;
+  --background-color-header: #111111;
   --background-color-itens-box: #fff;
   --background-color-botao-lateral: #313131;
-  --background-color-botao: #000;
+  --background-color-botao: var(--background-color-header);
   --background-color-status-em-andamento: #FFF7CC;; 
   --background-color-status-aprovado: #D6FFCC;
   --background-color-status-cancelado: #FFCCCC;
   --color-label-discreto: #5D5D5D;
   
   --box-shadow-itens: 0px 2px 5px 0px rgba(0, 0, 0, 0.15);
+  --box-shadow-header: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
   
   --border-radius-itens: 10px;
   --border-radius-inputs: 5px;
