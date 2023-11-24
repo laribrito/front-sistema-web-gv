@@ -1,33 +1,17 @@
 import React, {InputHTMLAttributes} from "react";
 import stylesInput from "../input.module.css"
-import { InputGeneric } from "../interfaceInput";
-import { TextField, ThemeProvider, createTheme } from "@mui/material";
+import { InputGeneric, themeMUI } from "../interfaceInput";
+import { TextField, ThemeProvider } from "@mui/material";
 
 interface InputTextProps extends InputGeneric, InputHTMLAttributes<HTMLInputElement> {
   type: "text" | "email"
 }
 
-export default function InputText({type, id, label, ...rest}:InputTextProps) {
-  const theme = createTheme({
-    components: {
-      // Name of the component
-      MuiTextField: {
-        styleOverrides: {
-          // Name of the slot
-          root: {
-            // Some CSS
-            width: '100%',
-            background: 'white'
-          },
-        },
-      },
-    },
-  });
-  
+export default function InputText({type, id, label, ...rest}:InputTextProps) { 
   return (
     <div className={stylesInput.formField}>
       <label htmlFor={id}>{`${label}:`}</label>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={themeMUI}>
         <TextField id="outlined-basic" variant="outlined" size="small"/>
       </ThemeProvider>
     </div>
