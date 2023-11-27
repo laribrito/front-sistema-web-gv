@@ -1,0 +1,21 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6rem;
+    min-height: 100vh;
+  }
+
+.mainLogin{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Adicione esta linha para centralizar na vertical */
+    height: 100vh; 
+}
+
+.formRoot{
+    background-color: white;
+    padding: 2em 4em;
+    width: 400px;
+}

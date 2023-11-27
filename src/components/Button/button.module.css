@@ -5,4 +5,5 @@
     box-shadow: var(--box-shadow-itens);
     color: #FFF;
     font-size: var(--font-size-title3);
+    cursor: pointer;
 }

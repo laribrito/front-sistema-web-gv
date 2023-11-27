@@ -4,7 +4,7 @@ import { InputGeneric, themeMUI } from "../interfaceInput";
 import { TextField, ThemeProvider } from "@mui/material";
 
 interface InputTextProps extends InputGeneric, InputHTMLAttributes<HTMLInputElement> {
-  type: "text" | "email"
+  type: "text" | "email" | "password"
 }
 
 export default function InputText({type, id, label, ...rest}:InputTextProps) { 
@@ -12,7 +12,7 @@ export default function InputText({type, id, label, ...rest}:InputTextProps) {
     <div className={stylesInput.formField}>
       <label htmlFor={id}>{`${label}:`}</label>
       <ThemeProvider theme={themeMUI}>
-        <TextField id="outlined-basic" variant="outlined" size="small"/>
+        <TextField id="outlined-basic" variant="outlined" size="small" type={type} />
       </ThemeProvider>
     </div>
   );

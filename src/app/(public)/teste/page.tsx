@@ -1,5 +1,5 @@
 'use client'
-import styles from './page.module.css'
+import styles from '../page.module.css'
 import ItemModelo from '@/components/ItemModelo'
 import BotaoLateral from '@/components/BotaoLateral'
 import ItemCombinacao from '@/components/ItemCombinacao'
@@ -17,7 +17,7 @@ import Header from '@/components/Header'
 import { BtnEdicaoHeader, IconBusca, IconHome, IconNovoPedido, IconRelatorios } from "@/utils/elements"
 import Navbar from '@/components/Navbar'
 
-export default function Home() {
+export default function Teste() {
   const opcoesSelect: Option[] = [
     { id: 1, valor: 'Option 1' },
     { id: 2, valor: 'Option 2' },
