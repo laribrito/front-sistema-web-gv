@@ -1,0 +1,26 @@
+.bgLoading{
+    background-color: rgba(0, 0, 0, 0.356);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.gifLoading{
+    border: 6px solid #e5e5e5;
+    border-top-color: var(--color-loading);
+    height: 50px;
+    width: 50px;
+    animation: is-rotating 1s infinite;
+    border-radius: 50%;
+}
+
+@keyframes is-rotating {
+    to {
+      transform: rotate(1turn);
+    }
+  }

@@ -6,4 +6,5 @@
     color: #FFF;
     font-size: var(--font-size-title3);
     cursor: pointer;
+    width: 100%;
 }

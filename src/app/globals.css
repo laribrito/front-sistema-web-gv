@@ -12,6 +12,7 @@
   --background-color-status-aprovado: #D6FFCC;
   --background-color-status-cancelado: #FFCCCC;
   --color-label-discreto: #5D5D5D;
+  --color-loading: #149e08;
   
   --box-shadow-itens: 0px 2px 5px 0px rgba(0, 0, 0, 0.15);
   --box-shadow-header: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
