@@ -1,6 +1,6 @@
 :root {
   --max-width: 100%;
-  --width-widget-status: 90px;
+  --width-widget-status: 100px;
   --width-widgets: 300px;
   
   --foreground-color: #f3f3f3;
@@ -24,7 +24,7 @@
   --border-itens-box-hover: 1px solid #d7d7d7;
 
   --padding-itens-box: 15px;
-  --padding-widget-status: 5px;
+  --padding-widget-status: 1px 5px;
 
   --margin-description-item-vertical: 10px;
   --margin-gap-item-description-horizontal: 5px;
@@ -63,6 +63,7 @@ body {
 
 button{
   border: none;
+  cursor: pointer;
 }
 
 a {

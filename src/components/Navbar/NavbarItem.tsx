@@ -1,13 +1,13 @@
 import React, { HtmlHTMLAttributes, ElementType } from "react"
 import styles from "./navbar.module.css"
 
-interface HeaderBtnExtraProps extends HtmlHTMLAttributes<HTMLButtonElement>{
+interface HeaderItemProps extends HtmlHTMLAttributes<HTMLButtonElement>{
     icon: ElementType
     fontSize?: string
     children: React.ReactNode
 }
 
-export default function HeaderBtnExtra({icon: Icon, fontSize, children, ...rest}: HeaderBtnExtraProps){
+export default function HeaderItem({icon: Icon, fontSize, children, ...rest}: HeaderItemProps){
     return (
         <button className={styles.item} {...rest}>
             <Icon fontSize={fontSize? fontSize : "1.7em"}/>

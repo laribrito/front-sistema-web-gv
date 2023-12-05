@@ -8,7 +8,7 @@ interface HeaderBtnExtraProps extends HtmlHTMLAttributes<HTMLButtonElement>{
 
 export default function HeaderBtnExtra({icon: Icon, fontSize, ...rest}: HeaderBtnExtraProps){
     return (
-        <button className={styles.btnExtra} {...rest}>
+        <button className={styles.btnExtra} onClick={rest['onClick']} {...rest}>
             <Icon fontSize={fontSize? fontSize : "1.7em"}/>
         </button>
     )

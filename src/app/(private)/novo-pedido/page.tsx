@@ -2,7 +2,7 @@
 import styles from './page.module.css'
 import ItemModelo from '@/components/ItemModelo'
 import Header from '@/components/Header'
-import { BtnLogoutHeader, IconBusca, IconHomeActive, IconNovoPedido, IconRelatorios } from "@/utils/elements"
+import { BtnLogoutHeader, IconBusca, IconHome, IconNovoPedido, IconRelatorios } from "@/utils/elements"
 import Navbar from '@/components/Navbar'
 import { useAuth } from '@/context/authContext'
 import { useEffect, useState } from 'react'
@@ -10,10 +10,8 @@ import axios from 'axios'
 import router from '@/api/rotas'
 import toast from 'react-hot-toast'
 import LoadingScreen from '@/components/LoadingScreen'
-import ItemNegociacao from '@/components/ItemNegociacao'
-import ItemNegociacaoStatus from '@/components/ItemNegociacao/itemNegociacaoStatus'
 
-export default function Home() {
+export default function NovoPedido() {
   const { accessToken, username, logout, getToken } = useAuth();
   const [isLoading, setLoading] = useState(false)
   const [usernameLabel, setUsernameLabel] = useState("-----");
@@ -63,29 +61,15 @@ export default function Home() {
         <h1 className={styles.titulo}>Negociações recentes</h1>
 
         {/* futuramente aqui será um get com useeffect */}
-        <ItemNegociacao nomeCliente='Larissa Brito' nomeNegociacao='Camisas CIC' qtdCamisas={40}>
-          <ItemNegociacaoStatus value='cancelado'/>
-        </ItemNegociacao>
-
-        <ItemNegociacao nomeCliente='Larissa Brito' nomeNegociacao='Camisas CIC' qtdCamisas={40}>
-          <ItemNegociacaoStatus value='aprovado'/>
-        </ItemNegociacao>
-
-        <ItemNegociacao nomeCliente='Larissa Brito' nomeNegociacao='Camisas CIC' qtdCamisas={40}>
-          <ItemNegociacaoStatus value='emAndamento'/>
-        </ItemNegociacao>
-
-        <ItemNegociacao nomeCliente='Larissa Brito' nomeNegociacao='Camisas CIC' qtdCamisas={40}>
-          <ItemNegociacaoStatus value='aprovado'/>
-        </ItemNegociacao>
-
-        <ItemNegociacao nomeCliente='Larissa Brito' nomeNegociacao='Camisas CIC' qtdCamisas={40}>
-          <ItemNegociacaoStatus value='cancelado'/>
-        </ItemNegociacao>
+        <ItemModelo nomeModelo='UESC Original' tipoCamisa='Tradicional' qtdCamisas={3}/>
+        <ItemModelo nomeModelo='UESC Original' tipoCamisa='Polo' qtdCamisas={1}/>
+        <ItemModelo nomeModelo='UESC Original' tipoCamisa='Polo' qtdCamisas={1}/>
+        <ItemModelo nomeModelo='UESC Original' tipoCamisa='Tradicional' qtdCamisas={3} vertical={true} />
+        <ItemModelo nomeModelo='UESC Original' tipoCamisa='Tradicional' qtdCamisas={3} vertical={true} />
 
         <Navbar.Root>
           <Navbar.Item icon={IconRelatorios}>Análises</Navbar.Item>
-          <Navbar.Item icon={IconHomeActive}><u>Home</u></Navbar.Item>
+          <Navbar.Item icon={IconHome}><u>Home</u></Navbar.Item>
           <Navbar.Item icon={IconBusca}>Busca</Navbar.Item>
           <Navbar.Item icon={IconNovoPedido}>Novo<br/>Pedido</Navbar.Item>
         </Navbar.Root>

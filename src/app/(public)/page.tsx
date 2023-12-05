@@ -22,8 +22,7 @@ export default function Login() {
   const { accessToken, login, logout } = useAuth();
   
   useEffect(() => {
-    console.log(accessToken)
-    if (accessToken) window.location.href = '/teste';
+    if (accessToken) window.location.href = '/home';
   }, [accessToken]);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -55,7 +54,7 @@ export default function Login() {
       } 
       else{
         //armazena o token de acesso
-        login(data.token)
+        login(data.token, data.username)
       }
     } catch (error) {
       toast.error('Ocorreu algum erro. Tente novamente')
