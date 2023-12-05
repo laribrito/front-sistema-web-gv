@@ -9,7 +9,7 @@ import axios from 'axios';
 import router from '@/api/rotas';
 import { useEffect, useState } from 'react';
 import LoadingScreen from '@/components/LoadingScreen';
-import { useAuth } from '@/app/context/authContext';
+import { useAuth } from '@/context/authContext';
 
 export default function Login() {
   const [isLoading, setLoading] = useState(false)

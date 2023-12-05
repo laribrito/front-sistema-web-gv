@@ -1,6 +1,6 @@
 import {Poppins} from "next/font/google"
 import "./globals.css"
-import { AuthProvider } from "@/app/context/authContext"
+import { AuthProvider } from "@/context/authContext"
 
 export const metadata = {
   title: 'Next.js',

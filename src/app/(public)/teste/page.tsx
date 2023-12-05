@@ -16,7 +16,7 @@ import { Option } from '@/components/Input/interfaceInput'
 import Header from '@/components/Header'
 import { BtnEdicaoHeader, IconBusca, IconHome, IconNovoPedido, IconRelatorios } from "@/utils/elements"
 import Navbar from '@/components/Navbar'
-import { useAuth } from '@/app/context/authContext'
+import { useAuth } from '@/context/authContext'
 import { useEffect } from 'react'
 
 export default function Teste() {
