@@ -12,7 +12,15 @@ export default function InputText({type, id, label, ...rest}:InputTextProps) {
     <div className={stylesInput.formField}>
       <label htmlFor={id}>{`${label}:`}</label>
       <ThemeProvider theme={themeMUI}>
-        <TextField id="outlined-basic" variant="outlined" size="small" type={type} />
+        <TextField 
+          id="outlined-basic" 
+          variant="outlined" 
+          size="small" 
+          type={type} 
+          aria-label={rest["aria-label"]} 
+          name={rest["name"]} 
+          autoFocus={rest["autoFocus"]}
+        />
       </ThemeProvider>
     </div>
   );

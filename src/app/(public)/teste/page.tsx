@@ -16,6 +16,8 @@ import { Option } from '@/components/Input/interfaceInput'
 import Header from '@/components/Header'
 import { BtnEdicaoHeader, IconBusca, IconHome, IconNovoPedido, IconRelatorios } from "@/utils/elements"
 import Navbar from '@/components/Navbar'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/redux/store'
 
 export default function Teste() {
   const opcoesSelect: Option[] = [
