@@ -7,11 +7,9 @@ import { validarDados } from '@/zod/parseValidation'
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import router from '@/api/rotas';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
 import { useEffect, useState } from 'react';
-import { loginUser } from '@/redux/userSlice';
 import LoadingScreen from '@/components/LoadingScreen';
+import { useAuth } from '@/app/context/authContext';
 
 export default function Login() {
   const [isLoading, setLoading] = useState(false)
@@ -21,11 +19,7 @@ export default function Login() {
     password: string
   }
 
-  const accessToken = useSelector(
-    (state: RootState) => state.user.accessToken
-  );
-
-  const dispatch = useDispatch();
+  const { accessToken, login, logout } = useAuth();
   
   useEffect(() => {
     console.log(accessToken)
@@ -61,12 +55,7 @@ export default function Login() {
       } 
       else{
         //armazena o token de acesso
-        dispatch(
-          loginUser({
-            username: data.username,
-            accessToken: data.token
-          })
-        )
+        login(data.token)
       }
     } catch (error) {
       toast.error('Ocorreu algum erro. Tente novamente')

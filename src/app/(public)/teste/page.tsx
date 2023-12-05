@@ -16,8 +16,8 @@ import { Option } from '@/components/Input/interfaceInput'
 import Header from '@/components/Header'
 import { BtnEdicaoHeader, IconBusca, IconHome, IconNovoPedido, IconRelatorios } from "@/utils/elements"
 import Navbar from '@/components/Navbar'
-import { useSelector } from 'react-redux'
-import { RootState } from '@/redux/store'
+import { useAuth } from '@/app/context/authContext'
+import { useEffect } from 'react'
 
 export default function Teste() {
   const opcoesSelect: Option[] = [
@@ -30,6 +30,12 @@ export default function Teste() {
     { id: 1, valor: 'University Shop' },
     { id: 2, valor: 'Green Factory' },
   ];
+
+  const { accessToken, login, logout } = useAuth();
+  
+  useEffect(() => {
+    console.log(accessToken)
+  }, [accessToken]);
 
   return (
     <main className={styles.main}>

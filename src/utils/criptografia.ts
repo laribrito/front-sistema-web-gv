@@ -1,7 +1,8 @@
 // utils/cryptoUtils.js
 import CryptoJS from 'crypto-js';
+import config from './config';
 
-const secretKey = 'ajdpe8fj@k5l@$%çad2983743%$¨$$çl7kfja#DFVZCvm4sdçfakmc,açjdkfaupeoijm,mzç65ldkfj6';
+const secretKey = config.SECRET_KEY_CRIPT;
 
 const encrypt = (token:string) => {
   return CryptoJS.AES.encrypt(token, secretKey).toString();
