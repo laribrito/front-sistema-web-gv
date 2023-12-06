@@ -4,11 +4,13 @@ import Box from "@/components/Box"
 import config from "@/utils/config"
 import { QtdUnidadesPorExtenso } from "@/utils/functions"
 
-
-interface ItemNegociacaoProps {
+export type DataItemNegotiation = {
     nomeNegociacao: string
     nomeCliente: string
     qtdCamisas: number
+}
+
+interface ItemNegociacaoProps extends DataItemNegotiation{
     children: React.ReactNode
 }
 

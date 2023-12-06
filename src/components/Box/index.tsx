@@ -2,7 +2,7 @@ import React from "react"
 import styles from "./box.module.css"
 
 interface BoxProps {
-    children: React.ReactNode
+    children?: React.ReactNode
     width: string
 }
 

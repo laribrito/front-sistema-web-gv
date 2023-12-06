@@ -99,7 +99,8 @@ p{
   font-size: var(--font-size-p);
 }
 
-p .labelDiscreto{
+span{
   font-size: var(--font-size-label-disc);
   color: var(--color-label-discreto);
+  text-align: center;
 }

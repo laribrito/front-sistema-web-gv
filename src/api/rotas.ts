@@ -4,7 +4,8 @@ const router = {
     auth: {
         login: '/auth/',
         logout: '/out/'
-    }
+    },
+    negotiations: '/negotiations/'
 }
 
 export default router
