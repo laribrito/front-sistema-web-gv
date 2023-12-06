@@ -10,11 +10,21 @@ import axios from 'axios'
 import router from '@/api/rotas'
 import toast from 'react-hot-toast'
 import LoadingScreen from '@/components/LoadingScreen'
+import Button from '@/components/Button'
+import InputText from '@/components/Input/InputText'
+import InputRadioGroup from '@/components/Input/RadioGroup'
+import { Option } from '@/components/Input/interfaceInput'
 
 export default function NovoPedido() {
   const { accessToken, username, logout, getToken } = useAuth();
   const [isLoading, setLoading] = useState(false)
   const [usernameLabel, setUsernameLabel] = useState("-----");
+
+//   isso aqui é uma requisição para api
+  const opcoesRadio: Option[] = [
+    { id: 1, valor: 'University Shop' },
+    { id: 2, valor: 'Green Factory' },
+  ];
 
 
   useEffect(() => {
@@ -53,26 +63,26 @@ export default function NovoPedido() {
     <main className={styles.main}>
       <div className={styles.description}>
         <Header.Root>
-          <Header.Title>Dashboard</Header.Title>  
-          <Header.Subtitle>Olá, {usernameLabel}</Header.Subtitle>  
-          <Header.BtnExtra icon={BtnLogoutHeader} onClick={handleLogout}/>
+            <Header.BtnReturn/>
+            <Header.Title>Novo pedido</Header.Title>  
         </Header.Root>
 
-        <h1 className={styles.titulo}>Negociações recentes</h1>
+        <form method='post'>
+      
+            <InputText type='text' label='Nome do pedido' name='nomePedido' autoFocus required/>
 
-        {/* futuramente aqui será um get com useeffect */}
-        <ItemModelo nomeModelo='UESC Original' tipoCamisa='Tradicional' qtdCamisas={3}/>
-        <ItemModelo nomeModelo='UESC Original' tipoCamisa='Polo' qtdCamisas={1}/>
-        <ItemModelo nomeModelo='UESC Original' tipoCamisa='Polo' qtdCamisas={1}/>
-        <ItemModelo nomeModelo='UESC Original' tipoCamisa='Tradicional' qtdCamisas={3} vertical={true} />
-        <ItemModelo nomeModelo='UESC Original' tipoCamisa='Tradicional' qtdCamisas={3} vertical={true} />
+            <InputText type='text' label='Cliente Mediador' name='nomeCliente' />
+            
+            <InputText type='text' label='Whatsapp/Telefone' name='telefoneCLiente' />
 
-        <Navbar.Root>
-          <Navbar.Item icon={IconRelatorios}>Análises</Navbar.Item>
-          <Navbar.Item icon={IconHome}><u>Home</u></Navbar.Item>
-          <Navbar.Item icon={IconBusca}>Busca</Navbar.Item>
-          <Navbar.Item icon={IconNovoPedido}>Novo<br/>Pedido</Navbar.Item>
-        </Navbar.Root>
+            <InputRadioGroup label='Empresa Responsável' options={opcoesRadio}/>
+
+            <div className={styles.rodape}>
+              <div>
+                <Button type='submit'>Próximo</Button>
+              </div>
+            </div>
+        </form>
       </div>
       {isLoading && <LoadingScreen/>}
     </main>

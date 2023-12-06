@@ -1,0 +1,35 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6rem;
+    min-height: 100vh;
+  }
+
+.mainLogin{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Adicione esta linha para centralizar na vertical */
+    height: 100vh; 
+}
+
+.formRoot{
+    background-color: white;
+    padding: 2em 4em;
+    width: 300px;
+}
+
+.titulo{
+    margin: 20px 0;
+}
+
+.rodape{
+    padding: 20px 0 40px 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
