@@ -18,6 +18,11 @@ export default function Home() {
   const [isLoading, setLoading] = useState(false)
   const [usernameLabel, setUsernameLabel] = useState("-----");
 
+  // coleta informações do 
+  useEffect(() => {
+    if (!accessToken) window.location.href = '/';
+    if(username) setUsernameLabel(username)
+  }, [accessToken]);
 
   useEffect(() => {
     if (!accessToken) window.location.href = '/';
