@@ -38,10 +38,10 @@
     background: var(--background-color-status-em-andamento);
 }
 
-.aprovado{
+.Aprovado{
     background-color: var(--background-color-status-aprovado);
 }
 
-.cancelado{
+.Cancelado{
     background-color: var(--background-color-status-cancelado);
 }

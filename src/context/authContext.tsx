@@ -33,10 +33,7 @@ export function AuthProvider({ children }:AuthProviderProps){
 
   const getToken = () : string | undefined => {
       if (accessToken) {
-        console.log("Aqui dentro")
-        console.log(accessToken)
         const decoded = decrypt(accessToken)
-        console.log(decoded)
         return decoded
       }
   }

@@ -34,7 +34,6 @@ export default function NovoPedido() {
 
   async function handleLogout(){
     try {
-        console.log(getToken())
         setLoading(true)
         const response = await axios.delete(router.API_ROOT+router.auth.logout, {
             headers: {

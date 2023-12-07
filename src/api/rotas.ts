@@ -5,6 +5,7 @@ const router = {
         login: '/auth/',
         logout: '/out/'
     },
+    status: "/status/",
     negotiations: '/negotiations/'
 }
 

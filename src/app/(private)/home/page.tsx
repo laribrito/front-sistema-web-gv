@@ -16,40 +16,69 @@ import Box from '@/components/Box'
 import config from '@/utils/config'
 
 export default function Home() {
+  type DataStatus = {
+    status_id: number
+    name: string
+  }
+
+  const processNegotiationsWithStatus = (statusData: DataStatus[], negotiationsData: DataItemNegotiation[]): DataItemNegotiation[] => {
+    const processedNegotiations = negotiationsData.map(negotiation => {
+      const matchingStatus = statusData.find(status => status.status_id === negotiation.status);
+      if (matchingStatus) {
+        return {
+          ...negotiation,
+          status: matchingStatus.name,
+        };
+      }
+      return negotiation;
+    });
+    return processedNegotiations;
+  };
+
   const { accessToken, username, logout, getToken } = useAuth();
   const [isLoading, setLoading] = useState(false)
   const [usernameLabel, setUsernameLabel] = useState("-----");
-  const [dataNegotiations, setData] = useState<DataItemNegotiation[] | null>(null)
+  const [dataPage, setDataPage] = useState<DataItemNegotiation[] | null>(null)
 
-  //pega todas as negociações
-  async function getNegotiations(){
+  // pega os status e as negociações
+  async function getStatusAndNegotiations() {
     try {
-      const response = await axios.get(router.API_ROOT+router.negotiations, {
+      const [statusResponse, negotiationsResponse] = await Promise.all([
+        axios.get(router.API_ROOT + router.status, {
           headers: {
-          'Content-Type': 'application/json',
-          'Authorization': router.PREFIX_TOKEN + getToken(),
-        },
-      });
+            'Content-Type': 'application/json',
+            'Authorization': router.PREFIX_TOKEN + getToken(),
+          },
+        }),
+        axios.get(router.API_ROOT + router.negotiations, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': router.PREFIX_TOKEN + getToken(),
+          },
+        }),
+      ]);
+  
+      const responseS = statusResponse.data;
+      const responseN = negotiationsResponse.data;
 
-      console.log("api")
-    
-      // Processar a resposta do servidor, se necessário
-      const data = response.data;
-      if(data.errors){
-        toast.error(data.errors)
+      // Processar as respostas do servidor
+      if (responseS.errors) {
+        toast.error(responseS.errors);
+      } else if (responseN.errors) {
+        toast.error(responseN.errors);
       } else {
-        setData(data.data)
+        // Faça o que você precisa fazer com negotiationsData
+        const newData = processNegotiationsWithStatus(responseS.data, responseN.data);
+        setDataPage(newData)
       }
     } catch (error) {
-      toast.error('Ocorreu algum erro. Tente novamente')
+      toast.error('Ocorreu algum erro. Atualize a página');
     }
   }
  
   useEffect(() => {
-    getNegotiations()
+    if(!dataPage) getStatusAndNegotiations();
   }, [])
-
-  console.log(dataNegotiations)
 
   //se não estiver logado, vai pra login
   useEffect(() => {
@@ -68,7 +97,7 @@ export default function Home() {
         },
       });
     
-      // Processar a resposta do servidor, se necessário
+      // Processar a resposta do servidor
       const data = response.data;
       if(data.errors){
         setLoading(false)
@@ -94,17 +123,23 @@ export default function Home() {
       <main className={styles.main}>
           <h1 className={styles.titulo}>Negociações recentes</h1>
 
-          {dataNegotiations === null ? (
-            <Box width={config.WIDTH_WIDGETS} />
-          ) : dataNegotiations.length === 0 ? (
+          { dataPage === null ? (
+            <>
+              <Box width={config.WIDTH_WIDGETS} />
+              <Box width={config.WIDTH_WIDGETS} />
+              <Box width={config.WIDTH_WIDGETS} />
+            </>
+            ) : dataPage.length === 0 ? (
             <span>Não há negociações ainda...</span>
-          ) : (
+            ) : (
             /* Render your data here, assuming dataNegotiations is an array */
-            dataNegotiations.map((negotiation, index) => (
-              // Render your negotiation items here
-              <div key={index}>{/* Your negotiation item JSX */}</div>
+            dataPage.map((negotiation, index) => (
+              <ItemNegociacao customer_name={negotiation.customer_name} name={negotiation.name} total_number_units={negotiation.total_number_units}>
+                <ItemNegociacaoStatus value={negotiation.status}/>
+              </ItemNegociacao>
             ))
-          )}
+          )
+          }
 
         {isLoading && <LoadingScreen/>}
       </main>

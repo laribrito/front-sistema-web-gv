@@ -4,13 +4,15 @@ import { toUpperCase } from "@/utils/functions"
 
 
 interface ItemNegociacaoStatusProps {
-    value: "emAndamento" | "aprovado" | "cancelado"
+    value: string | undefined | number
 }
 
 export default function ItemNegociacaoStatus({value}: ItemNegociacaoStatusProps){
+    const valor = String(value) ?? '';
+    const newValue = (valor=="Em Andamento")? "emAndamento" : valor
     return (
-        <div className={`${styles.status} ${styles[value]}`}>
-            {value=="emAndamento"? "Em Andamento" :toUpperCase(value)}
+        <div className={`${styles.status} ${styles[newValue]}`}>
+            {toUpperCase(valor)}
         </div>
     )
 }

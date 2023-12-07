@@ -32,10 +32,6 @@ export default function Teste() {
   ];
 
   const { accessToken, login, logout } = useAuth();
-  
-  useEffect(() => {
-    console.log(accessToken)
-  }, [accessToken]);
 
   return (
     <main className={styles.main}>
@@ -69,7 +65,7 @@ export default function Teste() {
           <ItemCombinacaoIndicators tipo='anexo'/>
         </ItemCombinacao>
 
-        <ItemNegociacao nomeCliente='Larissa Brito' nomeNegociacao='Camisas CIC' qtdCamisas={40}>
+        <ItemNegociacao customer_name='Larissa Brito' name='Camisas CIC' total_number_units={40}>
           <ItemNegociacaoStatus value='cancelado'/>
         </ItemNegociacao>
 
