@@ -122,29 +122,26 @@ export default function Home() {
         <Header.BtnExtra icon={BtnLogoutHeader} onClick={handleLogout}/>
       </Header.Root>
 
-      <main className={styles.main}>
-          <h1 className={styles.titulo}>Negociações recentes</h1>
+        <h1 className={styles.titulo}>Negociações recentes</h1>
 
-          { dataPage === null ? (
-            <>
-              <Box width={config.WIDTH_WIDGETS} />
-              <Box width={config.WIDTH_WIDGETS} />
-              <Box width={config.WIDTH_WIDGETS} />
-            </>
-            ) : dataPage.length === 0 ? (
-            <span>Não há negociações ainda...</span>
-            ) : (
-            /* Render your data here, assuming dataNegotiations is an array */
-            dataPage.map((negotiation, index) => (
-              <ItemNegociacao customer_name={negotiation.customer_name} name={negotiation.name} total_number_units={negotiation.total_number_units}>
-                <ItemNegociacaoStatus value={negotiation.status}/>
-              </ItemNegociacao>
-            ))
-          )
-          }
+        { dataPage === null ? (
+          <>
+            <Box width={config.WIDTH_WIDGETS} />
+            <Box width={config.WIDTH_WIDGETS} />
+            <Box width={config.WIDTH_WIDGETS} />
+          </>
+          ) : dataPage.length === 0 ? (
+          <span>Não há negociações ainda...</span>
+          ) : (
+          /* Render your data here, assuming dataNegotiations is an array */
+          dataPage.map((negotiation, index) => (
+            <ItemNegociacao customer_name={negotiation.customer_name} name={negotiation.name} total_number_units={negotiation.total_number_units}>
+              <ItemNegociacaoStatus value={negotiation.status}/>
+            </ItemNegociacao>
+          ))
+        )
+        }
 
-        {isLoading && <LoadingScreen/>}
-      </main>
       <Navbar.Root>
         <Navbar.Item icon={IconRelatorios}>Análises</Navbar.Item>
         <Navbar.Item icon={IconHomeActive}><u>Home</u></Navbar.Item>

@@ -1,7 +1,7 @@
 'use client'
 import { createContext, useContext, ReactNode, useState } from 'react';
 
-export type OrderDetails = {
+export type OrderInfos = {
   // Defina a estrutura dos detalhes do pedido
   nomePedido: string
   nomeCliente: string
@@ -12,9 +12,9 @@ export type OrderDetails = {
 };
 
 type OrderContextType = {
-  currentOrder: OrderDetails | null;
-  setOrder: (order: OrderDetails | null) => void;
-  getOrder: () => OrderDetails;
+  currentOrder: OrderInfos | null;
+  setOrderInfos: (order: OrderInfos | null) => void;
+  getOrderInfos: () => OrderInfos;
 };
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
@@ -24,14 +24,14 @@ type OrderProviderProps = {
 };
 
 export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
-  const [currentOrder, setCurrentOrder] = useState<OrderDetails | null>(null);
+  const [currentOrder, setCurrentOrder] = useState<OrderInfos | null>(null);
 
-  const setOrder = (order: OrderDetails | null) => {
+  const setOrderInfos = (order: OrderInfos | null) => {
     setCurrentOrder(order);
     localStorage.setItem('currentOrder', JSON.stringify(order));
   };
 
-  const getOrder = () => {
+  const getOrderInfos = () => {
     // Recupera o valor do localStorage
     const savedOrder = localStorage.getItem('currentOrder');
 
@@ -41,8 +41,8 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
 
   const contextValue: OrderContextType = {
     currentOrder,
-    setOrder,
-    getOrder
+    setOrderInfos,
+    getOrderInfos
   };
 
   return (

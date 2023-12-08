@@ -3,6 +3,7 @@ import "./globals.css"
 import { AuthProvider } from "@/context/authContext"
 import { Toaster } from "react-hot-toast"
 import { OrderProvider } from "@/context/orderContext"
+import { ServerDataProvider } from "@/context/serverDataContext"
 
 export const metadata = {
   title: 'Next.js',
@@ -17,7 +18,9 @@ export default function RootLayout({children}: { children: React.ReactNode}) {
         <body>
         <AuthProvider>
           <OrderProvider>
-            {children}
+            <ServerDataProvider>
+              {children}
+            </ServerDataProvider>
           </OrderProvider>
         </AuthProvider>
         <Toaster position="top-right" />
