@@ -13,7 +13,7 @@ export default function HeaderItem({icon: Icon, fontSize, children, ...rest}: He
         <button 
             className={styles.item}
             onClick={()=>{
-                if(Icon==IconNovoPedido) window.location.href="/novo-pedido/1"
+                if(Icon==IconNovoPedido) window.location.href="/novo-pedido/"
                 else if(Icon==IconHome) window.location.href="/home"
                 else if(Icon==IconBusca) console.log("Busca")
             }}
