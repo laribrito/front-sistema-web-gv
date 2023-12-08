@@ -15,6 +15,7 @@ import InputSelect from '@/components/Input/InputSelect'
 import { NewOrder1Validator } from '@/zod/validators'
 import { validarDados, ReturnValidator } from '@/zod/parseValidation'
 import { ZodIssue } from 'zod'
+import { useOrderContext, OrderDetails } from '@/context/orderContext'
 
 export default function NovoPedido() {
   type CompanyData = {
@@ -65,6 +66,7 @@ export default function NovoPedido() {
   }
 
   const { accessToken, getToken } = useAuth();
+  const {currentOrder, setOrder } = useOrderContext()
   const [dataPage, setDataPage] = useState<DataPage | null>(null);
   const [formErrors, setFormErrors] = useState<ZodIssue[]>({} as ZodIssue[]);
 
@@ -152,10 +154,18 @@ export default function NovoPedido() {
         setFormErrors({} as ZodIssue[]);
       }, 4000);
     } else {
+      const data = dados.data as OrderDetails
       setFormErrors({} as ZodIssue[])
       // próxima página
-      toast.error('proxima página')
-      console.log('passou')
+
+      setOrder({
+        nomePedido: data.nomePedido,
+        nomeCliente: data.nomeCliente,
+        telefoneCliente: data.telefoneCliente,
+        empresa: data.empresa,
+        classificacao: data.classificacao,
+        status: data.status
+      })
     }
   }
 

@@ -14,6 +14,7 @@ import ItemNegociacao, {DataItemNegotiation} from '@/components/ItemNegociacao'
 import ItemNegociacaoStatus from '@/components/ItemNegociacao/itemNegociacaoStatus'
 import Box from '@/components/Box'
 import config from '@/utils/config'
+import { useOrderContext } from '@/context/orderContext'
 
 export default function Home() {
   type DataStatus = {
@@ -36,6 +37,7 @@ export default function Home() {
   };
 
   const { accessToken, username, logout, getToken } = useAuth();
+  const { currentOrder } = useOrderContext();
   const [isLoading, setLoading] = useState(false)
   const [usernameLabel, setUsernameLabel] = useState("-----");
   const [dataPage, setDataPage] = useState<DataItemNegotiation[] | null>(null)

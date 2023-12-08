@@ -2,6 +2,7 @@ import {Poppins} from "next/font/google"
 import "./globals.css"
 import { AuthProvider } from "@/context/authContext"
 import { Toaster } from "react-hot-toast"
+import { OrderProvider } from "@/context/orderContext"
 
 export const metadata = {
   title: 'Next.js',
@@ -15,7 +16,9 @@ export default function RootLayout({children}: { children: React.ReactNode}) {
       <html lang="pt-br" className={fontPadrao.className}>
         <body>
         <AuthProvider>
-          {children}
+          <OrderProvider>
+            {children}
+          </OrderProvider>
         </AuthProvider>
         <Toaster position="top-right" />
         </body>
