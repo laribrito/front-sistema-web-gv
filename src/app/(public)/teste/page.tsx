@@ -80,7 +80,7 @@ export default function Teste() {
 
         <InputRadioGroup label='Empresa' options={opcoesRadio}/>
 
-        <Button value='Próximo'/>
+        <Button>Próximo</Button>
 
         <Navbar.Root>
           <Navbar.Item icon={IconRelatorios}>Análises</Navbar.Item>
