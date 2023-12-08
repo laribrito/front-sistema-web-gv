@@ -1,5 +1,5 @@
 'use client'
-import styles from './page.module.css'
+import styles from '@/app/(private)/main.module.css'
 import ItemModelo from '@/components/ItemModelo'
 import Header from '@/components/Header'
 import { BtnLogoutHeader, IconBusca, IconHomeActive, IconNovoPedido, IconRelatorios } from "@/utils/elements"

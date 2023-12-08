@@ -3,7 +3,7 @@ import styles from './page.module.css'
 import InputText from '@/components/Input/InputText'
 import Button from '@/components/Button'
 import { LoginValidator } from '@/zod/validators';
-import { validarDados } from '@/zod/parseValidation'
+import { validarDados, ReturnValidator } from '@/zod/parseValidation'
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import router from '@/api/rotas';
@@ -31,15 +31,16 @@ export default function Login() {
     const form = e.currentTarget as HTMLFormElement;
 
     //validação com zode
-    const dados = validarDados(LoginValidator, {username: form.username.value, password: form.password.value}) as LoginCredentials;
+    const dados = validarDados(LoginValidator, {username: form.username.value, password: form.password.value}) as ReturnValidator;
     
     //envio dos dados pra api com axios
-    if(dados)
+    if(dados.success)
     try {
       setLoading(true)
+      const d = dados.data as LoginCredentials
       const response = await axios.post(router.API_ROOT+router.auth.login, {
-        username: dados.username,
-        password: dados.password
+        username: d.username,
+        password: d.password
       }, {
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +66,6 @@ export default function Login() {
   return (
     <main className={styles.mainLogin}>
       <h1 style={{margin: "2em", textTransform: "uppercase"}}>Sistema Greenville</h1>
-      <Toaster position="top-right" />
       <form className={styles.formRoot} onSubmit={handleLogin} method='post'>
       
         <InputText type='text' label='Login' name='username' autoFocus/>

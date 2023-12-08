@@ -6,7 +6,9 @@ const router = {
         logout: '/out/'
     },
     status: "/status/",
-    negotiations: '/negotiations/'
+    negotiations: '/negotiations/',
+    company: '/company/',
+    classification: '/classification/'
 }
 
 export default router

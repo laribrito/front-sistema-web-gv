@@ -71,6 +71,10 @@ a {
   text-decoration: none;
 }
 
+form {
+  width: 100%;
+}
+
 /* tipografia */
 h1{
   font-size: var(--font-size-title1);

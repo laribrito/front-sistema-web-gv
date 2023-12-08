@@ -11,3 +11,9 @@
 .titulo{
     margin: 20px 0;
 }
+
+.btnSubmitForm{
+    padding: 30px 0 50px 0;
+    display: flex;
+    justify-content: center;
+}

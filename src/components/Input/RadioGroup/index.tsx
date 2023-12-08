@@ -6,7 +6,7 @@ import {Option} from "../interfaceInput"
 
 interface InputRadioGroupProps extends InputGeneric, InputHTMLAttributes<HTMLInputElement>{
     vertical?: boolean
-    options: Option[]
+    options: Option[] | null
 }
 
 export default function InputRadioGroup({ label, id, type, options, name, vertical=false, ...rest }:InputRadioGroupProps){
@@ -14,17 +14,19 @@ export default function InputRadioGroup({ label, id, type, options, name, vertic
   return (
     <div className={stylesInput.formField}>
       <label htmlFor={id}>{`${label}:`}</label>
-        <RadioGroup
-            defaultValue={options[0].valor}
-            name={name}
-            row={!vertical}
-        >
-            {options.map(
-                (op)=>(
-                    <FormControlLabel key={op.id} value={op.id} control={radioConfig} label={op.valor} />
-                )
-            )}
-        </RadioGroup>
+        {options && 
+          <RadioGroup
+              defaultValue={1}
+              name={name}
+              row={!vertical}
+          >
+              {options.map(
+                  (op)=>(
+                      <FormControlLabel key={op.id} value={op.id} control={radioConfig} label={op.valor} />
+                  )
+              )}
+          </RadioGroup>
+        }
     </div>
   );
 };

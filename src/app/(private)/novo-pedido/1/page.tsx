@@ -1,89 +1,217 @@
 'use client'
-import styles from './page.module.css'
-import ItemModelo from '@/components/ItemModelo'
+import styles from '@/app/(private)/main.module.css'
+import stylesPage from './page.module.css'
 import Header from '@/components/Header'
-import { BtnLogoutHeader, IconBusca, IconHome, IconNovoPedido, IconRelatorios } from "@/utils/elements"
-import Navbar from '@/components/Navbar'
 import { useAuth } from '@/context/authContext'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import router from '@/api/rotas'
 import toast from 'react-hot-toast'
-import LoadingScreen from '@/components/LoadingScreen'
 import Button from '@/components/Button'
 import InputText from '@/components/Input/InputText'
 import InputRadioGroup from '@/components/Input/RadioGroup'
 import { Option } from '@/components/Input/interfaceInput'
+import InputSelect from '@/components/Input/InputSelect'
+import { NewOrder1Validator } from '@/zod/validators'
+import { validarDados, ReturnValidator } from '@/zod/parseValidation'
+import { ZodIssue } from 'zod'
 
 export default function NovoPedido() {
-  const { accessToken, username, logout, getToken } = useAuth();
-  const [isLoading, setLoading] = useState(false)
-  const [usernameLabel, setUsernameLabel] = useState("-----");
+  type CompanyData = {
+    company_id: number
+    name: string
+  }
 
-//   isso aqui é uma requisição para api
-  const opcoesRadio: Option[] = [
-    { id: 1, valor: 'University Shop' },
-    { id: 2, valor: 'Green Factory' },
-  ];
+  type ClassifData = {
+    classification_id: number
+    name: string
+  }
 
+  type StatusData = {
+    status_id: number
+    name: string
+  }
 
-  useEffect(() => {
-    if (!accessToken) window.location.href = '/';
-    if(username) setUsernameLabel(username)
-  }, [accessToken]);
+  type DataPage= {
+    status: Option[],
+    company: Option[],
+    classif: Option[]
+  }
 
-  async function handleLogout(){
+  function processesData(statusData: StatusData[], companiesData: CompanyData[], classifData: ClassifData[]): DataPage {
+    // Transforma cada objeto DataResponse em um objeto Option
+    const status: Option[] = statusData.map((dataPage) => ({
+      id: dataPage.status_id,
+      valor: dataPage.name,
+    }));
+
+    const company: Option[] = companiesData.map((dataPage) => ({
+      id: dataPage.company_id,
+      valor: dataPage.name,
+    }));
+
+    const classif: Option[] = classifData.map((dataPage) => ({
+      id: dataPage.classification_id,
+      valor: dataPage.name,
+    }));
+
+    const dataPage = {
+      status: status,
+      company: company,
+      classif: classif
+    }
+  
+    return dataPage;
+  }
+
+  const { accessToken, getToken } = useAuth();
+  const [dataPage, setDataPage] = useState<DataPage | null>(null);
+  const [formErrors, setFormErrors] = useState<ZodIssue[]>({} as ZodIssue[]);
+
+  async function getData() {
     try {
-        setLoading(true)
-        const response = await axios.delete(router.API_ROOT+router.auth.logout, {
-            headers: {
+      const [companiesResponse, classifResponse, statusResponse] = await Promise.all([
+        axios.get(router.API_ROOT + router.company, {
+          headers: {
             'Content-Type': 'application/json',
             'Authorization': router.PREFIX_TOKEN + getToken(),
           },
-        });
-      
-        // Processar a resposta do servidor, se necessário
-        const data = response.data;
-        if(data.errors){
-          setLoading(false)
-          toast.error(data.errors)
-        } 
-        else{
-          //retira o token de acesso
-          logout()
-        }
-      } catch (error) {
-        toast.error('Ocorreu algum erro. Tente novamente')
-        setLoading(false)
+        }),
+        axios.get(router.API_ROOT + router.classification, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': router.PREFIX_TOKEN + getToken(),
+          },
+        }),
+        axios.get(router.API_ROOT + router.status, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': router.PREFIX_TOKEN + getToken(),
+          },
+        }),
+      ]);
+  
+      const responseS = statusResponse.data;
+      const responseCo = companiesResponse.data;
+      const responseCa = classifResponse.data;
+
+      // Processar as respostas do servidor
+      if (responseS.errors) {
+        toast.error(responseS.errors);
+      } else if (responseCo.errors) {
+        toast.error(responseCo.errors);
+      } else if (responseCa.errors) {
+          toast.error(responseCa.errors);
+      } else {
+        // Faça o que você precisa fazer com negotiationsData
+        const newData = processesData(responseS.data, responseCo.data, responseCa.data);
+        setDataPage(newData)
       }
+    } catch (error) {
+      toast.error('Ocorreu algum erro. Atualize a página');
+    }
+  }
+ 
+  useEffect(() => {
+    if(!dataPage) getData();
+  }, [])
+
+  //se não estiver logado, vai pra login
+  useEffect(() => {
+    if (!accessToken) window.location.href = '/';
+  }, [accessToken]);
+
+  // form submit
+  type FormData = {
+    nomePedido: string
+    nomeCliente: string
+    telefoneCliente: string
+    empresa: number
+    classificacao: number
+    status: number
+  }
+
+  function handleSubmit(e: React.FormEvent){
+    e.preventDefault();
+
+    const form = e.currentTarget as HTMLFormElement;
+
+    //validação com zode
+    const dados = validarDados(NewOrder1Validator, {
+      nomePedido:      form.nomePedido.value, 
+      nomeCliente:     form.nomeCliente.value,
+      telefoneCliente: form.telefoneCliente.value,
+      empresa:         form.empresa.value,
+      classificacao:   form.classificacao.value,
+      status:          form.status.value
+    }) as ReturnValidator;
+
+    if(!dados.success){
+      setFormErrors(dados.data as ZodIssue[])
+      setTimeout(() => {
+        setFormErrors({} as ZodIssue[]);
+      }, 4000);
+    } else {
+      setFormErrors({} as ZodIssue[])
+      // próxima página
+      toast.error('proxima página')
+      console.log('passou')
+    }
   }
 
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <Header.Root>
-            <Header.BtnReturn/>
-            <Header.Title>Novo pedido</Header.Title>  
-        </Header.Root>
+    <>
+      <Header.Root>
+          <Header.BtnReturn/>
+          <Header.Title>Novo pedido</Header.Title>  
+      </Header.Root>
+      <main className={styles.main}>
+          <form method='post' onSubmit={handleSubmit}>
+              <InputText 
+                type='text' 
+                label='Nome do pedido' 
+                name='nomePedido' 
+                id='nomePedido'
+                autoFocus 
+                required 
+                errors={formErrors}
+              />
 
-        <form method='post'>
-      
-            <InputText type='text' label='Nome do pedido' name='nomePedido' autoFocus required/>
+              <InputText 
+                type='text' 
+                label='Cliente Mediador' 
+                name='nomeCliente' 
+                id='nomeCliente'
+                required 
+                errors={formErrors}
+              />
+              
+              <InputText 
+                type='text' 
+                label='Whatsapp/Telefone'
+                id='telefoneCliente'
+                name='telefoneCliente' 
+                required 
+                errors={formErrors}
+              />
 
-            <InputText type='text' label='Cliente Mediador' name='nomeCliente' />
-            
-            <InputText type='text' label='Whatsapp/Telefone' name='telefoneCLiente' />
+              <InputRadioGroup label='Empresa Responsável' name='empresa' options={dataPage && dataPage.company}/>
 
-            <InputRadioGroup label='Empresa Responsável' options={opcoesRadio}/>
+              <div className={stylesPage.divForm}>
+                <div className={stylesPage.divFormChild}>
+                  <InputSelect label='Classificação' name='classificacao' id='classifPedido' options={dataPage && dataPage.classif} />
+                </div>
 
-            <div className={styles.rodape}>
-              <div>
-                <Button type='submit'>Próximo</Button>
+                <div className={stylesPage.divFormChild}>
+                  <InputSelect label='Status' id='statusPedido' name='status' options={dataPage && dataPage.status} />
+                </div>
               </div>
-            </div>
-        </form>
-      </div>
-      {isLoading && <LoadingScreen/>}
-    </main>
+
+                <div className={styles.btnSubmitForm}>
+                  <Button type='submit'>Próximo</Button>
+                </div>
+          </form>
+      </main>
+    </>
   )
 }

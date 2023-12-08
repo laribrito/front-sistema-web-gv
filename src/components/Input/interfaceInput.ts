@@ -1,7 +1,9 @@
 import { createTheme } from "@mui/material";
+import { ZodIssue } from "zod";
 
 export interface InputGeneric{
     label: string
+    errors?: ZodIssue[]
 }
 
 export interface Option {
@@ -10,13 +12,15 @@ export interface Option {
 }
 
 const styleMUI = {
-    // Name of the slot
-    root: {
-      // Some CSS
-      width: '100%',
-      background: 'white'
-    },
-  }
+  // Name of the slot
+  root: {
+    // Some CSS
+    width: '100%',
+  },
+  input: {
+    background: "white",
+  },
+}
 
 export const themeMUI = createTheme({
     components: {
@@ -29,3 +33,5 @@ export const themeMUI = createTheme({
       },
     },
   });
+
+export const variantOfInputs = "filled" 

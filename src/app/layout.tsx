@@ -1,6 +1,7 @@
 import {Poppins} from "next/font/google"
 import "./globals.css"
 import { AuthProvider } from "@/context/authContext"
+import { Toaster } from "react-hot-toast"
 
 export const metadata = {
   title: 'Next.js',
@@ -16,6 +17,7 @@ export default function RootLayout({children}: { children: React.ReactNode}) {
         <AuthProvider>
           {children}
         </AuthProvider>
+        <Toaster position="top-right" />
         </body>
       </html>
     )
