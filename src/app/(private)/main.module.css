@@ -17,3 +17,9 @@
     display: flex;
     justify-content: center;
 }
+
+.labelDiscreto{
+    font-size: var(--font-size-label-disc);
+    text-align: center;
+    color: var(--color-label-discreto);
+}

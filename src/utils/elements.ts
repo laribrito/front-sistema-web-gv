@@ -4,7 +4,7 @@ import { HiOutlineHome } from "react-icons/hi";
 import { HiMiniMagnifyingGlass, HiHome } from "react-icons/hi2";
 import { LuFilePlus2 } from "react-icons/lu";
 import { IoIosLogOut } from "react-icons/io";
-
+import { PiCirclesThreePlusFill } from "react-icons/pi";
 
 export const BtnEdicaoHeader = FaRegPenToSquare;
 export const BtnLogoutHeader = IoIosLogOut;
@@ -17,3 +17,5 @@ export const IconRelatorios = BsGraphUp
 export const IconBusca = HiMiniMagnifyingGlass
 
 export const IconNovoPedido = LuFilePlus2
+
+export const IconNovaCamisa = PiCirclesThreePlusFill

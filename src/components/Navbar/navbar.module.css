@@ -6,7 +6,7 @@
     left: 0;
     display: flex;
     padding: 0px 20px;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     flex-shrink: 0;
     z-index: 2;

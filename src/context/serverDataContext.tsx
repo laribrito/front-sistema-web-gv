@@ -52,6 +52,7 @@ type ServerDataContextType = {
   getCompanies: () => Promise<Option[] | null>;
   getClassifications: () => Promise<Option[] | null>;
   getStatus: () => Promise<Option[] | null>;
+  parseOptionName: (options: Option[], targetId: number) => string | null;
 };
 
 const ServerDataContext = createContext<ServerDataContextType | undefined>(undefined);
@@ -61,7 +62,7 @@ type ServerDataProviderProps = {
 };
 
 export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children }) => {
-  const { accessToken, getToken } = useAuth();
+  const { getToken } = useAuth();
 
   async function getClassifications(): Promise<Option[] | null> {
     const classifList = sessionStorage.getItem('classifications');
@@ -155,10 +156,16 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
     return null;
   }
 
+  function parseOptionName(options: Option[], targetId: number): string | null {
+    const foundOption = options.find((option) => option.id == targetId);
+    return foundOption ? foundOption.valor : null;
+  }
+
   const contextValue: ServerDataContextType = {
     getCompanies,
     getClassifications,
-    getStatus
+    getStatus,
+    parseOptionName
   };
   
   return (

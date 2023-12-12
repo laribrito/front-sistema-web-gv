@@ -1,15 +1,13 @@
 'use client'
 import Header from '@/components/Header'
-import styles from './page.module.css'
 import { BtnEdicaoHeader, IconBusca, IconHome, IconNovaCamisa, IconNovoPedido, IconRelatorios } from "@/utils/elements"
 import { useEffect, useState } from 'react'
 import { OrderInfos, useOrderContext } from '@/context/orderContext'
 import { useServerDataContext } from '@/context/serverDataContext'
-import Button from '@/components/Button'
 import Navbar from '@/components/Navbar'
 import mainStyles from '@/app/(private)/main.module.css'
 
-export default function DashboardProdutos() {
+export default function NovaCamisa() {
   type DataHeader={
     nomePedido: string
     nomeCliente: string
@@ -51,18 +49,16 @@ export default function DashboardProdutos() {
     <>
       <Header.Root>
           <Header.BtnReturn/>
-          <Header.Title>{dadosHeader?.nomePedido}</Header.Title>
-          <Header.Subtitle>{dadosHeader?.nomeCliente}</Header.Subtitle>
-          <Header.BtnExtra icon={BtnEdicaoHeader}/>
+          <Header.Title>Nova Camisa</Header.Title>
       </Header.Root>
 
-      <div className={styles.grid}>
+      <div>
         <h1>{dadosHeader?.empresa}</h1>
         <h2>{dadosHeader.classificacao}</h2>
       </div>
 
-      <div className={styles.spanBox}>
-        <span className={mainStyles.labelDiscreto}>Cadastre modelos</span>
+      <div>
+        <span className={`${mainStyles.labelDiscreto} `}>Cadastre modelos</span>
       </div>
 
       { 

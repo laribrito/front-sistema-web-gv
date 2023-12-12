@@ -131,7 +131,7 @@ export default function Home() {
             <Box width={config.WIDTH_WIDGETS} />
           </>
           ) : dataPage.length === 0 ? (
-          <span>Não há negociações ainda...</span>
+          <span className='discreto'>Não há negociações ainda...</span>
           ) : (
           /* Render your data here, assuming dataNegotiations is an array */
           dataPage.map((negotiation, index) => (
