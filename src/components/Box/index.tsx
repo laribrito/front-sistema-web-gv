@@ -3,7 +3,7 @@ import styles from "./box.module.css"
 
 interface BoxProps {
     children?: React.ReactNode
-    width: string
+    width?: string
 }
 
 export default function Box({children, width}: BoxProps){

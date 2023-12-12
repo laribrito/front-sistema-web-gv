@@ -6,6 +6,11 @@ import { OrderInfos, useOrderContext } from '@/context/orderContext'
 import { useServerDataContext } from '@/context/serverDataContext'
 import Navbar from '@/components/Navbar'
 import mainStyles from '@/app/(private)/main.module.css'
+import InputText from '@/components/Input/InputText'
+import InputSelect from '@/components/Input/InputSelect'
+import Button from '@/components/Button'
+import LoadingScreen from '@/components/LoadingScreen'
+import InputFile from '@/components/Input/InputFile'
 
 export default function NovaCamisa() {
   type DataHeader={
@@ -18,6 +23,7 @@ export default function NovaCamisa() {
   const { getOrderInfos } = useOrderContext()
   const { getCompanies, getClassifications, parseOptionName } = useServerDataContext()
   const [dadosHeader, setDadosHeader] = useState<DataHeader>({classificacao: '--', nomeCliente: '--', nomePedido: '--', empresa: '---'})
+  const [isLoading, setLoading] = useState(false)
 
   useEffect(() => {
     async function fetchDataInfo() {
@@ -52,14 +58,18 @@ export default function NovaCamisa() {
           <Header.Title>Nova Camisa</Header.Title>
       </Header.Root>
 
-      <div>
-        <h1>{dadosHeader?.empresa}</h1>
-        <h2>{dadosHeader.classificacao}</h2>
-      </div>
+      <form method='post'>
+      
+        <InputText type='text' label='Nome da Estampa' name='printName' autoFocus/>
 
-      <div>
-        <span className={`${mainStyles.labelDiscreto} `}>Cadastre modelos</span>
-      </div>
+        <InputSelect label='Modelo' name='shirtModeling' options={[]} />
+
+        <InputFile label='Imagem' id={'img'}></InputFile>
+
+        <Button type='submit'>Entrar</Button>
+      </form>
+
+      {isLoading && <LoadingScreen/>}
 
       { 
       // dataPage === null ? (
@@ -79,10 +89,6 @@ export default function NovaCamisa() {
       //     ))
       //   )
         }
-
-      <Navbar.Root>
-        <Navbar.Item icon={IconNovaCamisa}>Nova Camisa</Navbar.Item>
-      </Navbar.Root>
     </>
   )
 }

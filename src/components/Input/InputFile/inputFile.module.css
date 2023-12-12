@@ -1,3 +1,18 @@
 .boxFile {
     background: #FFF;
 }
+
+.inputFile{
+    background-color: #e5e5e5ff;
+    color: #000000;
+    box-shadow: none;
+    text-transform: capitalize;
+    border-radius: 5px 5px 0 0;
+    border-bottom: solid 0.001cm;
+    width: 100%;
+}
+
+.inputFile:hover{
+    background-color: #dddddd; 
+    box-shadow: none;
+};

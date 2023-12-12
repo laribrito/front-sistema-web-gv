@@ -160,9 +160,7 @@ export default function NovoPedido() {
             </div>
           </div>
 
-            <div className={styles.btnSubmitForm}>
-              <Button type='submit'>Próximo</Button>
-            </div>
+          <Button type='submit'>Próximo</Button>
       </form>
     </>
   )
