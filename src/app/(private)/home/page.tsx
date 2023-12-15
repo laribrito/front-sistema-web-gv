@@ -36,10 +36,10 @@ export default function Home() {
     return processedNegotiations;
   };
 
-  const { accessToken, username, logout, getToken } = useAuth();
+  const { username, logout, getToken } = useAuth();
   const { currentOrder } = useOrderContext();
   const [isLoading, setLoading] = useState(false)
-  const [usernameLabel, setUsernameLabel] = useState("-----");
+  const [usernameLabel, setUsernameLabel] = useState<string | null>(null);
   const [dataPage, setDataPage] = useState<DataItemNegotiation[] | null>(null)
 
   // pega os status e as negociações
@@ -80,6 +80,7 @@ export default function Home() {
  
   useEffect(() => {
     if(!dataPage) getStatusAndNegotiations();
+    if(username) setUsernameLabel(username)
   }, [])
 
   //processa logout
@@ -112,7 +113,7 @@ export default function Home() {
     <>
       <Header.Root>
         <Header.Title>Dashboard</Header.Title>  
-        <Header.Subtitle>Olá, {usernameLabel}</Header.Subtitle>  
+        <Header.Subtitle>Olá, {!usernameLabel && "-----"}{usernameLabel}</Header.Subtitle>  
         <Header.BtnExtra icon={BtnLogoutHeader} onClick={handleLogout}/>
       </Header.Root>
 
