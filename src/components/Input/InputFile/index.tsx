@@ -3,7 +3,6 @@ import stylesInput from '../input.module.css';
 import { InputGeneric, variantOfInputs } from '../interfaceInput';
 import { Button, styled } from '@mui/material';
 import Thumbnail from './thumbnail';
-import Modal from '@/components/Modal/index'
 
 const CustomButton = styled(Button)({
   backgroundColor: '#e5e5e5ff',

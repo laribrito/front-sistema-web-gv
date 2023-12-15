@@ -135,7 +135,7 @@ export default function Home() {
           ) : (
           /* Render your data here, assuming dataNegotiations is an array */
           dataPage.map((negotiation, index) => (
-            <ItemNegociacao customer_name={negotiation.customer_name} name={negotiation.name} total_number_units={negotiation.total_number_units}>
+            <ItemNegociacao key={index} customer_name={negotiation.customer_name} name={negotiation.name} total_number_units={negotiation.total_number_units}>
               <ItemNegociacaoStatus value={negotiation.status}/>
             </ItemNegociacao>
           ))

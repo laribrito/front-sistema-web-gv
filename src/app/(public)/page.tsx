@@ -31,22 +31,28 @@ export default function Login() {
     const form = e.currentTarget as HTMLFormElement;
 
     //validação com zode
-    const dados = validarDados(LoginValidator, {username: form.username.value, password: form.password.value}) as ReturnValidator;
+    const dados = validarDados(LoginValidator, {username: form.username.value, password: form.password.value}, true) as ReturnValidator;
     
     //envio dos dados pra api com axios
     if(dados.success)
     try {
       setLoading(true)
       const d = dados.data as LoginCredentials
-      const response = await axios.post(router.API_ROOT+router.auth.login, {
-        username: d.username,
-        password: d.password
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await axios.post(
+        router.API_ROOT + router.auth.login,
+        {
+          username: d.username,
+          password: d.password
         },
-      });
-    
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          timeout: 60000, // Tempo limite em milissegundos (60 segundos neste exemplo)
+        }
+      )
+      
+      toast.success('buscando o erro')
       // Processar a resposta do servidor, se necessário
       const data = response.data;
       if(data.errors){
@@ -58,7 +64,7 @@ export default function Login() {
         login(data.token, data.username)
       }
     } catch (error) {
-      toast.error('Ocorreu algum erro. Tente novamente')
+      toast.error('Ocorreu algum erro. Tente novamente!!!')
       setLoading(false)
     }
   }
@@ -66,7 +72,7 @@ export default function Login() {
   return (
     <main className={styles.mainLogin}>
       <h1 style={{margin: "2em", textTransform: "uppercase"}}>Sistema Greenville</h1>
-      <form className={styles.formRoot} onSubmit={handleLogin} method='post'>
+      <form className={styles.formRoot} onSubmit={handleLogin} method='post' action={window.location.href}>
       
         <InputText type='text' label='Login' name='username' autoFocus/>
 

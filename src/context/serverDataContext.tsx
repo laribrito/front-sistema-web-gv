@@ -21,6 +21,11 @@ type StatusData = {
   name: string
 }
 
+type ShirtTypeData = {
+  shirt_type_id: number
+  name: string
+}
+
 function processesDataClassif(data: ClassifData[]): Option[] {
   const newData: Option[] = data.map((dataPage) => ({
     id: dataPage.classification_id,
@@ -48,10 +53,20 @@ function processesDataStatus(data: StatusData[]): Option[] {
   return newData;
 }
 
+function processData<T>(data: T[], getId: (item: T) => number, getValue: (item: T) => string): Option[] {
+  const newData: Option[] = data.map((dataItem) => ({
+    id: getId(dataItem),
+    valor: getValue(dataItem),
+  }));
+
+  return newData;
+}
+
 type ServerDataContextType = {
   getCompanies: () => Promise<Option[] | null>;
   getClassifications: () => Promise<Option[] | null>;
   getStatus: () => Promise<Option[] | null>;
+  getShirtTypes: () => Promise<Option[] | null>;
   parseOptionName: (options: Option[], targetId: number) => string | null;
 };
 
@@ -156,6 +171,37 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
     return null;
   }
 
+  async function getShirtTypes(): Promise<Option[] | null> {
+    const labelStorage = 'shirt-types'
+    const dataList = sessionStorage.getItem(labelStorage);
+  
+    if (dataList) {
+      const datas: Option[] = JSON.parse(dataList);
+      return datas;
+    } else {
+      // requisição
+      try{
+        const response = await axios.get(router.shirtTypes, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': router.PREFIX_TOKEN + getToken(),
+          },
+        })
+
+        if (response.data.errors) {
+          toast.error(response.data.errors);
+        } else {
+          const newData = processData(response.data.data, (item : ShirtTypeData) => item.shirt_type_id, (item) => item.name);
+          sessionStorage.setItem(labelStorage, JSON.stringify(newData))
+          return newData;
+        }
+      } catch (error) {
+        toast.error('Ocorreu algum erro. Atualize a página');
+      }
+    }
+    return null;
+  }
+
   function parseOptionName(options: Option[], targetId: number): string | null {
     const foundOption = options.find((option) => option.id == targetId);
     return foundOption ? foundOption.valor : null;
@@ -165,6 +211,7 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
     getCompanies,
     getClassifications,
     getStatus,
+    getShirtTypes,
     parseOptionName
   };
   

@@ -26,6 +26,7 @@ const ModalContent = styled('div')({
   padding: '16px 16px 35px 16px',
   maxWidth: '320px',
   width: '100%',
+  wordBreak: 'break-word'
 });
 
 const Thumbnail: React.FC<ThumbnailProps> = ({ file, index, onDelete }) => {
@@ -78,7 +79,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({ file, index, onDelete }) => {
           <Button onClick={handleDelete} variant="contained" color="error">
             Excluir Arquivo
           </Button>
-          <h3>{file.name}</h3>
+          <h3 style={{width: '85%'}}>{file.name}</h3>
           {getThumbnail(file, index, handleThumbnailClick, { maxHeight: '60vh', maxWidth: '80%', minHeight: '150px', minWidth: '150px'})}
         </ModalContent>
       </CustomModal>

@@ -11,45 +11,30 @@ import InputSelect from '@/components/Input/InputSelect'
 import Button from '@/components/Button'
 import LoadingScreen from '@/components/LoadingScreen'
 import InputFile from '@/components/Input/InputFile'
+import toast, {Toaster} from 'react-hot-toast'
+import { Option } from '@/components/Input/interfaceInput'
 
 export default function NovaCamisa() {
-  type DataHeader={
-    nomePedido: string
-    nomeCliente: string
-    empresa: string
-    classificacao: string
-  }
-
   const { getOrderInfos } = useOrderContext()
-  const { getCompanies, getClassifications, parseOptionName } = useServerDataContext()
-  const [dadosHeader, setDadosHeader] = useState<DataHeader>({classificacao: '--', nomeCliente: '--', nomePedido: '--', empresa: '---'})
+  const { getShirtTypes } = useServerDataContext()
+  const [dataPage, setDataPage] = useState<Option[]>([])
   const [isLoading, setLoading] = useState(false)
 
-  useEffect(() => {
-    async function fetchDataInfo() {
-      try {
-        const pedidoInfo = getOrderInfos() as OrderInfos
-
-        const companiesData = await getCompanies();
-        const empresa = (companiesData)? parseOptionName(companiesData, pedidoInfo.empresa):''
-
-        const classifData = await getClassifications();
-        const classif = (classifData)? parseOptionName(classifData, pedidoInfo.classificacao):''
-
-        setDadosHeader({
-          nomePedido: pedidoInfo.nomePedido,
-          nomeCliente: pedidoInfo.nomeCliente,
-          empresa: empresa,
-          classificacao: classif
-        } as DataHeader); // Se companiesData for null, define um array vazio
-      } catch (error) {
-        console.error('Erro ao obter empresas:', error);
-        // Trate o erro conforme necessário
+  async function getData() {
+    try {
+      const dados = await getShirtTypes() as Option []
+      if(dados){
+        setDataPage(dados)
       }
+    } catch (error) {
+      toast.error('Ocorreu algum erro. Atualize a página');
     }
+  }
 
-    fetchDataInfo();
-  }, []);
+ 
+  useEffect(() => {
+    if(!dataPage.length) getData();
+  }, [])
 
   return (
     <>
@@ -62,12 +47,14 @@ export default function NovaCamisa() {
       
         <InputText type='text' label='Nome da Estampa' name='printName' autoFocus/>
 
-        <InputSelect label='Modelo' name='shirtModeling' options={[]} />
+        <InputSelect label='Modelo' name='shirtModeling' options={dataPage} />
 
         <InputFile label='Imagem' id={'img'}></InputFile>
 
         <Button type='submit'>Entrar</Button>
       </form>
+
+      <Toaster></Toaster>
 
       {isLoading && <LoadingScreen/>}
 
