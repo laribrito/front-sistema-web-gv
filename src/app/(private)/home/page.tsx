@@ -46,13 +46,13 @@ export default function Home() {
   async function getStatusAndNegotiations() {
     try {
       const [statusResponse, negotiationsResponse] = await Promise.all([
-        axios.get(router.API_ROOT + router.status, {
+        axios.get(router.statuses, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': router.PREFIX_TOKEN + getToken(),
           },
         }),
-        axios.get(router.API_ROOT + router.negotiations, {
+        axios.get(router.negotiations, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': router.PREFIX_TOKEN + getToken(),
@@ -92,7 +92,7 @@ export default function Home() {
   async function handleLogout(){
     try {
       setLoading(true)
-      const response = await axios.delete(router.API_ROOT+router.auth.logout, {
+      const response = await axios.delete(router.auth.logout, {
           headers: {
           'Content-Type': 'application/json',
           'Authorization': router.PREFIX_TOKEN + getToken(),

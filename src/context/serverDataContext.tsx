@@ -88,7 +88,7 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
     } else {
       // requisição
       try{
-        const response = await axios.get(router.API_ROOT + router.classification, {
+        const response = await axios.get(router.classifications, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': router.PREFIX_TOKEN + getToken(),
@@ -118,7 +118,7 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
     } else {
       // requisição
       try{
-        const response = await axios.get(router.API_ROOT + router.company, {
+        const response = await axios.get(router.companies, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': router.PREFIX_TOKEN + getToken(),
@@ -149,7 +149,7 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
     } else {
       // requisição
       try{
-        const response = await axios.get(router.API_ROOT + router.status, {
+        const response = await axios.get(router.statuses, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': router.PREFIX_TOKEN + getToken(),

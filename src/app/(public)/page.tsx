@@ -39,7 +39,7 @@ export default function Login() {
       setLoading(true)
       const d = dados.data as LoginCredentials
       const response = await axios.post(
-        router.API_ROOT + router.auth.login,
+        router.auth.login,
         {
           username: d.username,
           password: d.password
