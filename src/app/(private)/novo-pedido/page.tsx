@@ -33,7 +33,6 @@ export default function NovoPedido() {
     return dataPage;
   }
 
-  const { accessToken } = useAuth();
   const { setOrderInfos } = useOrderContext()
   const { getClassifications, getCompanies, getStatus } = useServerDataContext()
   const [dataPage, setDataPage] = useState<DataPage | null>(null);
@@ -59,11 +58,6 @@ export default function NovoPedido() {
   useEffect(() => {
     if(!dataPage) getData();
   }, [])
-
-  //se não estiver logado, vai pra login
-  useEffect(() => {
-    if (!accessToken) window.location.href = '/';
-  }, [accessToken]);
 
   // form submit
   type FormData = {

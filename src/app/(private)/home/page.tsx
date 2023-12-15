@@ -82,12 +82,6 @@ export default function Home() {
     if(!dataPage) getStatusAndNegotiations();
   }, [])
 
-  //se não estiver logado, vai pra login
-  useEffect(() => {
-    if (!accessToken) window.location.href = '/';
-    if(username) setUsernameLabel(username)
-  }, [accessToken]);
-
   //processa logout
   async function handleLogout(){
     try {
