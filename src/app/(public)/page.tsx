@@ -72,7 +72,7 @@ export default function Login() {
   return (
     <main className={styles.mainLogin}>
       <h1 style={{margin: "2em", textTransform: "uppercase"}}>Sistema Greenville</h1>
-      <form className={styles.formRoot} onSubmit={handleLogin} method='post' action={window.location.href}>
+      <form className={styles.formRoot} onSubmit={handleLogin} method='post'>
       
         <InputText type='text' label='Login' name='username' autoFocus/>
 
