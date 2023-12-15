@@ -1,11 +1,10 @@
 'use client'
 import Header from '@/components/Header'
 import styles from './page.module.css'
-import { BtnEdicaoHeader, IconBusca, IconHome, IconNovaCamisa, IconNovoPedido, IconRelatorios } from "@/utils/elements"
+import { BtnEdicaoHeader,IconNovaCamisa } from "@/utils/elements"
 import { useEffect, useState } from 'react'
 import { OrderInfos, useOrderContext } from '@/context/orderContext'
 import { useServerDataContext } from '@/context/serverDataContext'
-import Button from '@/components/Button'
 import Navbar from '@/components/Navbar'
 import mainStyles from '@/app/(private)/main.module.css'
 

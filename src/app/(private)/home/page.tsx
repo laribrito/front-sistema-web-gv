@@ -1,6 +1,5 @@
 'use client'
 import styles from '@/app/(private)/main.module.css'
-import ItemModelo from '@/components/ItemModelo'
 import Header from '@/components/Header'
 import { BtnLogoutHeader, IconBusca, IconHomeActive, IconNovoPedido, IconRelatorios } from "@/utils/elements"
 import Navbar from '@/components/Navbar'
@@ -9,7 +8,6 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import router from '@/api/rotas'
 import toast from 'react-hot-toast'
-import LoadingScreen from '@/components/LoadingScreen'
 import ItemNegociacao, {DataItemNegotiation} from '@/components/ItemNegociacao'
 import ItemNegociacaoStatus from '@/components/ItemNegociacao/itemNegociacaoStatus'
 import Box from '@/components/Box'
@@ -37,8 +35,6 @@ export default function Home() {
   };
 
   const { username, logout, getToken } = useAuth();
-  const { currentOrder } = useOrderContext();
-  const [isLoading, setLoading] = useState(false)
   const [usernameLabel, setUsernameLabel] = useState<string | null>(null);
   const [dataPage, setDataPage] = useState<DataItemNegotiation[] | null>(null)
 
@@ -86,7 +82,6 @@ export default function Home() {
   //processa logout
   async function handleLogout(){
     try {
-      setLoading(true)
       const response = await axios.delete(router.auth.logout, {
           headers: {
           'Content-Type': 'application/json',
@@ -97,7 +92,6 @@ export default function Home() {
       // Processar a resposta do servidor
       const data = response.data;
       if(data.errors){
-        setLoading(false)
         toast.error(data.errors)
       } else {
         //retira o token de acesso
@@ -105,7 +99,6 @@ export default function Home() {
       }
     } catch (error) {
       toast.error('Ocorreu algum erro. Tente novamente')
-      setLoading(false)
     }
   }
 

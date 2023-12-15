@@ -1,8 +1,6 @@
 'use client'
-import styles from '@/app/(private)/main.module.css'
 import stylesPage from './page.module.css'
 import Header from '@/components/Header'
-import { useAuth } from '@/context/authContext'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import Button from '@/components/Button'
