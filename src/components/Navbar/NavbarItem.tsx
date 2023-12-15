@@ -5,10 +5,11 @@ import { IconHome, IconHomeActive, IconNovoPedido, IconBusca, IconNovaCamisa } f
 interface HeaderItemProps extends HtmlHTMLAttributes<HTMLButtonElement>{
     icon: ElementType
     fontSize?: string
+    active?: boolean
     children: React.ReactNode
 }
 
-export default function HeaderItem({icon: Icon, fontSize, children, ...rest}: HeaderItemProps){
+export default function HeaderItem({icon: Icon, fontSize, active, children, ...rest}: HeaderItemProps){
     return (
         <button 
             className={styles.item}
@@ -21,7 +22,9 @@ export default function HeaderItem({icon: Icon, fontSize, children, ...rest}: He
             {...rest}
         >
             <Icon fontSize={fontSize? fontSize : "1.7em"}/>
-            <span>{children}</span>
+            <span className={active ? styles.btnAtivo : ''}>
+                {children}
+            </span>
         </button>
     )
 }

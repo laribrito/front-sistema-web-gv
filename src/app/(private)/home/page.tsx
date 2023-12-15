@@ -139,7 +139,7 @@ export default function Home() {
 
       <Navbar.Root>
         <Navbar.Item icon={IconRelatorios}>Análises</Navbar.Item>
-        <Navbar.Item icon={IconHomeActive}><u>Home</u></Navbar.Item>
+        <Navbar.Item icon={IconHomeActive} active>Home</Navbar.Item>
         <Navbar.Item icon={IconBusca}>Busca</Navbar.Item>
         <Navbar.Item icon={IconNovoPedido}>Novo<br/>Pedido</Navbar.Item>
       </Navbar.Root>
