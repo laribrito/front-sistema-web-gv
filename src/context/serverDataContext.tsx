@@ -26,33 +26,6 @@ type ShirtTypeData = {
   name: string
 }
 
-function processesDataClassif(data: ClassifData[]): Option[] {
-  const newData: Option[] = data.map((dataPage) => ({
-    id: dataPage.classification_id,
-    valor: dataPage.name,
-  }));
-
-  return newData;
-}
-
-function processesDataCompanies(data: CompanyData[]): Option[] {
-  const newData: Option[] = data.map((dataPage) => ({
-    id: dataPage.company_id,
-    valor: dataPage.name,
-  }));
-
-  return newData;
-}
-
-function processesDataStatus(data: StatusData[]): Option[] {
-  const newData: Option[] = data.map((dataPage) => ({
-    id: dataPage.status_id,
-    valor: dataPage.name,
-  }));
-
-  return newData;
-}
-
 function processData<T>(data: T[], getId: (item: T) => number, getValue: (item: T) => string): Option[] {
   const newData: Option[] = data.map((dataItem) => ({
     id: getId(dataItem),
@@ -80,7 +53,8 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
   const { getToken } = useAuth();
 
   async function getClassifications(): Promise<Option[] | null> {
-    const classifList = sessionStorage.getItem('classifications');
+    const labelStorage = 'classifications';
+    const classifList = sessionStorage.getItem(labelStorage);
   
     if (classifList) {
       const classifs: Option[] = JSON.parse(classifList);
@@ -98,8 +72,8 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
         if (response.data.errors) {
           toast.error(response.data.errors);
         } else {
-          const newData = processesDataClassif(response.data.data) as Option[];
-          sessionStorage.setItem('classifications', JSON.stringify(newData))
+          const newData = processData(response.data.data, (item : ClassifData) => item.classification_id, (item) => item.name);
+          sessionStorage.setItem(labelStorage, JSON.stringify(newData))
           return newData;
         }
       } catch (error) {
@@ -110,7 +84,8 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
   }
 
   async function getCompanies(): Promise<Option[] | null> {
-    const companiesList = sessionStorage.getItem('companies');
+    const labelStorage = 'companies';
+    const companiesList = sessionStorage.getItem(labelStorage);
   
     if (companiesList) {
       const companies: Option[] = JSON.parse(companiesList);
@@ -128,8 +103,8 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
         if (response.data.errors) {
           toast.error(response.data.errors);
         } else {
-          const newData = processesDataCompanies(response.data.data) as Option[];
-          sessionStorage.setItem('companies', JSON.stringify(newData))
+          const newData = processData(response.data.data, (item : CompanyData) => item.company_id, (item) => item.name);
+          sessionStorage.setItem(labelStorage, JSON.stringify(newData))
           return newData;
         }
       } catch (error) {
@@ -141,7 +116,8 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
   }
 
   async function getStatus(): Promise<Option[] | null> {
-    const statusList = sessionStorage.getItem('status');
+    const labelStorage = 'status'
+    const statusList = sessionStorage.getItem(labelStorage);
   
     if (statusList) {
       const status: Option[] = JSON.parse(statusList);
@@ -159,8 +135,8 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
         if (response.data.errors) {
           toast.error(response.data.errors);
         } else {
-          const newData = processesDataStatus(response.data.data) as Option[];
-          sessionStorage.setItem('status', JSON.stringify(newData))
+          const newData = processData(response.data.data, (item : StatusData) => item.status_id, (item) => item.name);
+          sessionStorage.setItem(labelStorage, JSON.stringify(newData))
           return newData;
         }
       } catch (error) {
