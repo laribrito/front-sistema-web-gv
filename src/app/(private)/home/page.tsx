@@ -49,13 +49,13 @@ export default function Home() {
         axios.get(router.statuses, {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': router.PREFIX_TOKEN + getToken(),
+            'Authorization': getToken(),
           },
         }),
         axios.get(router.negotiations, {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': router.PREFIX_TOKEN + getToken(),
+            'Authorization': getToken(),
           },
         }),
       ]);
@@ -90,7 +90,7 @@ export default function Home() {
       const response = await axios.delete(router.auth.logout, {
           headers: {
           'Content-Type': 'application/json',
-          'Authorization': router.PREFIX_TOKEN + getToken(),
+          'Authorization': getToken(),
         },
       });
     

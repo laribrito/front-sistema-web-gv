@@ -65,7 +65,7 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
         const response = await axios.get(router.classifications, {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': router.PREFIX_TOKEN + getToken(),
+            'Authorization': getToken(),
           },
         })
 
@@ -96,7 +96,7 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
         const response = await axios.get(router.companies, {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': router.PREFIX_TOKEN + getToken(),
+            'Authorization': getToken(),
           },
         })
 
@@ -128,7 +128,7 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
         const response = await axios.get(router.statuses, {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': router.PREFIX_TOKEN + getToken(),
+            'Authorization': getToken(),
           },
         })
 
@@ -160,7 +160,7 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
         const response = await axios.get(router.shirtTypes, {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': router.PREFIX_TOKEN + getToken(),
+            'Authorization': getToken(),
           },
         })
 
