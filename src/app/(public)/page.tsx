@@ -19,7 +19,7 @@ export default function Login() {
     password: string
   }
 
-  const { accessToken, login, logout } = useAuth();
+  const { accessToken, login } = useAuth();
   
   useEffect(() => {
     if (accessToken) window.location.href = '/home';
