@@ -55,25 +55,6 @@ export default function NovaCamisa() {
       </form>
 
       {isLoading && <LoadingScreen/>}
-
-      { 
-      // dataPage === null ? (
-      //     <>
-      //       <Box width={config.WIDTH_WIDGETS} />
-      //       <Box width={config.WIDTH_WIDGETS} />
-      //       <Box width={config.WIDTH_WIDGETS} />
-      //     </>
-      //     ) : dataPage.length === 0 ? (
-      //     <span className='discreto'>Não há negociações ainda...</span>
-      //     ) : (
-      //     /* Render your data here, assuming dataNegotiations is an array */
-      //     dataPage.map((negotiation, index) => (
-      //       <ItemNegociacao customer_name={negotiation.customer_name} name={negotiation.name} total_number_units={negotiation.total_number_units}>
-      //         <ItemNegociacaoStatus value={negotiation.status}/>
-      //       </ItemNegociacao>
-      //     ))
-      //   )
-        }
     </>
   )
 }
