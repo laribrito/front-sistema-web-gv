@@ -11,7 +11,7 @@ import InputSelect from '@/components/Input/InputSelect'
 import Button from '@/components/Button'
 import LoadingScreen from '@/components/LoadingScreen'
 import InputFile from '@/components/Input/InputFile'
-import toast, {Toaster} from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import { Option } from '@/components/Input/interfaceInput'
 
 export default function NovaCamisa() {
@@ -53,8 +53,6 @@ export default function NovaCamisa() {
 
         <Button type='submit'>Entrar</Button>
       </form>
-
-      <Toaster></Toaster>
 
       {isLoading && <LoadingScreen/>}
 

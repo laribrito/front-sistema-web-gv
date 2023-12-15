@@ -4,7 +4,7 @@ import InputText from '@/components/Input/InputText'
 import Button from '@/components/Button'
 import { LoginValidator } from '@/zod/validators';
 import { validarDados, ReturnValidator } from '@/zod/parseValidation'
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import axios from 'axios';
 import router from '@/api/rotas';
 import { useEffect, useState } from 'react';
