@@ -13,7 +13,7 @@ import { novaCamisaValidator } from '@/zod/validators'
 import { ZodIssue } from 'zod'
 import { ShirtModel, useOrderContext } from '@/context/orderContext'
 
-export default function NovaCamisa() {
+export default function NovaCamisa2() {
   const { getShirtTypes } = useServerDataContext()
   const { setShirtModels, getShirtModels } = useOrderContext()
   const [dataPage, setDataPage] = useState<Option[]>([])
@@ -69,7 +69,7 @@ export default function NovaCamisa() {
 
       setShirtModels(currentModels)
 
-      window.location.href="/nova-camisa/2"
+      // window.location.href="/novo-pedido/produtos"
     }
   }
 
@@ -80,31 +80,6 @@ export default function NovaCamisa() {
           <Header.Title>Nova Camisa</Header.Title>
       </Header.Root>
 
-      <form method='post' onSubmit={handleSubmit}>
-      
-        <InputText 
-          type='text' 
-          label='Nome da Estampa' 
-          name='printName'
-          id='printName'
-          required 
-          autoFocus
-          errors={formErrors}
-        />
-
-        <InputSelect 
-          label='Modelo' 
-          name='shirtModeling' 
-          id='shirtModeling'
-          required 
-          options={dataPage}
-          errors={formErrors} 
-        />
-
-        <InputFile label='Imagem' id='img'></InputFile>
-
-        <Button type='submit'>Próximo</Button>
-      </form>
     </>
   )
 }

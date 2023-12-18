@@ -22,3 +22,8 @@ export const NewOrder1Validator = z.object({
     classificacao: z.string(),
     status: z.string(),
 });
+
+export const novaCamisaValidator = z.object({
+    printName: z.string().min(1, {message: 'Nome da Estampa é obrigatório'}),
+    shirtModeling: z.string()
+})

@@ -11,10 +11,19 @@ export type OrderInfos = {
   status: number
 };
 
+export type ShirtModel = {
+  printName: string
+  shirtModeling: number
+  number_units?: number
+};
+
 type OrderContextType = {
   currentOrder: OrderInfos | null;
   setOrderInfos: (order: OrderInfos | null) => void;
   getOrderInfos: () => OrderInfos;
+
+  setShirtModels: (models: ShirtModel[]) => void;
+  getShirtModels: () => ShirtModel[];
 };
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
@@ -25,24 +34,36 @@ type OrderProviderProps = {
 
 export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
   const [currentOrder, setCurrentOrder] = useState<OrderInfos | null>(null);
+  const [shirtModels, setCurrentShirtModels] = useState<ShirtModel[]>([]);
+  const orderInfoLabelStorage = 'currentOrder'
+  const shirtModelsLabelStorage = 'shirtModels'
 
   const setOrderInfos = (order: OrderInfos | null) => {
     setCurrentOrder(order);
-    localStorage.setItem('currentOrder', JSON.stringify(order));
+    localStorage.setItem(orderInfoLabelStorage, JSON.stringify(order));
   };
 
-  const getOrderInfos = () => {
-    // Recupera o valor do localStorage
-    const savedOrder = localStorage.getItem('currentOrder');
-
-    // Se houver um valor, converte para objeto; senão, retorna null
+  const getOrderInfos = () : OrderInfos => {
+    const savedOrder = localStorage.getItem(orderInfoLabelStorage);
     return savedOrder ? JSON.parse(savedOrder) : null;
+  };
+
+  const setShirtModels = (models: ShirtModel[]) => {
+    setCurrentShirtModels(models);
+    localStorage.setItem(shirtModelsLabelStorage, JSON.stringify(models));
+  };
+
+  const getShirtModels = () : ShirtModel[] => {
+    const savedData = localStorage.getItem(shirtModelsLabelStorage);
+    return savedData ? JSON.parse(savedData) : [];
   };
 
   const contextValue: OrderContextType = {
     currentOrder,
     setOrderInfos,
-    getOrderInfos
+    getOrderInfos,
+    getShirtModels,
+    setShirtModels
   };
 
   return (
