@@ -6,6 +6,7 @@ import { LuFilePlus2 } from "react-icons/lu";
 import { IoIosLogOut } from "react-icons/io";
 import { PiCirclesThreePlusFill } from "react-icons/pi";
 import { SlDocs } from "react-icons/sl";
+import { CgStyle } from "react-icons/cg";
 
 // navbar
 export const BtnEdicaoHeader = FaRegPenToSquare;
@@ -21,6 +22,8 @@ export const IconBusca = HiMiniMagnifyingGlass
 export const IconNovoPedido = LuFilePlus2
 
 export const IconNovaCamisa = PiCirclesThreePlusFill
+
+export const IconNovoEstilo = CgStyle
 
 // miniaturas de arquivos
 export const IconPDF = FaFilePdf

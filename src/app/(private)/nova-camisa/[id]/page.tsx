@@ -1,34 +1,32 @@
 'use client'
 import Header from '@/components/Header'
 import styles from './page.module.css'
-import { BtnEdicaoHeader,IconNovaCamisa } from "@/utils/elements"
+import { BtnEdicaoHeader,IconNovaCamisa, IconNovoEstilo } from "@/utils/elements"
 import { useEffect, useState } from 'react'
 import { OrderInfos, ShirtModel, useOrderContext } from '@/context/orderContext'
 import { useServerDataContext } from '@/context/serverDataContext'
 import Navbar from '@/components/Navbar'
 import mainStyles from '@/app/(private)/main.module.css'
 
-export default function DashboardModel({idModel}:{idModel:number}) {
+export default function DashboardModel({ params }: { params: { id: number } }) {
   type dadosHeader = {
     printName: string
     shirtModeling: string
   }
   const { getOrderInfos, getShirtModel } = useOrderContext()
-  const { getCompanies, getClassifications, parseOptionName, getShirtTypes } = useServerDataContext()
+  const { getCompanies, getClassifications, parseOptionName, getShirtType } = useServerDataContext()
   const [dadosHeader, setDadosHeader] = useState<dadosHeader>({printName: '--', shirtModeling: '--'})
 
   useEffect(() => {
     async function fetchDataInfo() {
-        console.log(idModel)
-        const model = getShirtModel(idModel) as ShirtModel
-        console.log(model)
+        const model = getShirtModel(params.id) as ShirtModel
 
-        const allCurrentModels = await getShirtTypes()
+        const shirtModel = await getShirtType(model.shirtModeling)
 
-        if(allCurrentModels){
+        if(shirtModel){
           setDadosHeader({
             printName: model.printName,
-            shirtModeling: allCurrentModels[model.shirtModeling].valor
+            shirtModeling: shirtModel
           } as dadosHeader);
         } else {
 
@@ -52,7 +50,7 @@ export default function DashboardModel({idModel}:{idModel:number}) {
       </div>
 
       <Navbar.Root>
-        <Navbar.Item icon={IconNovaCamisa}>Novo estilo</Navbar.Item>
+        <Navbar.Item icon={IconNovoEstilo} idcamisa={params.id}>Novo estilo</Navbar.Item>
       </Navbar.Root>
     </>
   )

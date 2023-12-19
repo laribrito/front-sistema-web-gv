@@ -40,6 +40,7 @@ type ServerDataContextType = {
   getClassifications: () => Promise<Option[] | null>;
   getStatus: () => Promise<Option[] | null>;
   getShirtTypes: () => Promise<Option[] | null>;
+  getShirtType: (id:number) => Promise<string | undefined>;
   parseOptionName: (options: Option[], targetId: number) => string | null;
 };
 
@@ -178,6 +179,17 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
     return null;
   }
 
+  async function getShirtType(id:number): Promise<string|undefined> {
+    const allShirtModels = await getShirtTypes()
+    if(allShirtModels){
+      const model = allShirtModels.find((model:Option) => model.id == id)
+      if(model) return model.valor
+      else undefined
+    } else {
+      return undefined
+    }
+  }
+
   function parseOptionName(options: Option[], targetId: number): string | null {
     const foundOption = options.find((option) => option.id == targetId);
     return foundOption ? foundOption.valor : null;
@@ -188,6 +200,7 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
     getClassifications,
     getStatus,
     getShirtTypes,
+    getShirtType,
     parseOptionName
   };
   
