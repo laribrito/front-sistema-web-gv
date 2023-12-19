@@ -10,7 +10,8 @@ const router = {
     negotiations: API_ROOT + '/negotiations/',
     companies: API_ROOT + '/companies/',
     classifications: API_ROOT + '/classifications/',
-    shirtTypes: API_ROOT + '/shirt-types/'
+    shirtTypes: API_ROOT + '/shirt-types/',
+    fileManager: API_ROOT + '/file/',
 }
 
 export default router

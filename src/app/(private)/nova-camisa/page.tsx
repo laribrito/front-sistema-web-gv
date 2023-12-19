@@ -1,6 +1,6 @@
 'use client'
 import Header from '@/components/Header'
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useServerDataContext } from '@/context/serverDataContext'
 import InputText from '@/components/Input/InputText'
 import InputSelect from '@/components/Input/InputSelect'
@@ -12,12 +12,18 @@ import { ReturnValidator, validarDados } from '@/zod/parseValidation'
 import { novaCamisaValidator } from '@/zod/validators'
 import { ZodIssue } from 'zod'
 import { ShirtModel, useOrderContext } from '@/context/orderContext'
+import axios from 'axios'
+import LoadingScreen from '@/components/LoadingScreen'
+import router from '@/api/rotas'
+import { useAuth } from '@/context/authContext'
 
 export default function NovaCamisa() {
+  const { getToken } = useAuth()
   const { getShirtTypes } = useServerDataContext()
-  const { setShirtModels, getShirtModels } = useOrderContext()
+  const { setShirtModels, getShirtModels, getIdModel, filesUpload } = useOrderContext()
   const [dataPage, setDataPage] = useState<Option[]>([])
   const [formErrors, setFormErrors] = useState<ZodIssue[]>({} as ZodIssue[]);
+  const [isLoading, setLoading] = useState(false);
 
   async function getData() {
     try {
@@ -34,8 +40,9 @@ export default function NovaCamisa() {
     if(!dataPage.length) getData();
   }, [])
 
-  function handleSubmit(e: React.FormEvent){
+  async function handleSubmit(e: React.FormEvent){
     e.preventDefault();
+    setLoading(true)
 
     const form = e.currentTarget as HTMLFormElement;
 
@@ -60,6 +67,14 @@ export default function NovaCamisa() {
         shirtModeling: form.shirtModeling.value
       } as ShirtModel
 
+      //trata os documentos
+      const formData = new FormData();
+    
+      filesUpload.forEach((file, index) => {
+        formData.append(`file ${index}`, file);
+        newModel['namePhotoModel'] = file.name
+      });
+
       const currentModels = getShirtModels()
       const modelExists = currentModels.find(
         (model:ShirtModel) => model.printName.trim() == newModel.printName.trim() && 
@@ -69,8 +84,25 @@ export default function NovaCamisa() {
 
       setShirtModels(currentModels)
 
-      window.location.href="/nova-camisa/2"
+      try {
+        if(filesUpload.length>0) 
+          await axios.post(
+          router.fileManager, formData,
+          {
+            headers: {
+              'Authorization': getToken()
+            },
+          }
+        )
+        
+        window.location.href="/nova-camisa/"+ getIdModel(newModel)
+      } catch (error) {
+        toast.error("Erro ao enviar os arquivos. Tente novamente")
+      }
+
     }
+
+    setLoading(false)
   }
 
   return (
@@ -101,9 +133,11 @@ export default function NovaCamisa() {
           errors={formErrors} 
         />
 
-        <InputFile label='Imagem' id='img'></InputFile>
+        <InputFile label='Layout do Modelo' id='arquivo'></InputFile>
 
         <Button type='submit'>Próximo</Button>
+
+        {isLoading && <LoadingScreen />}
       </form>
     </>
   )

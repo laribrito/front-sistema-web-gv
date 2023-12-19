@@ -13,7 +13,7 @@ import { novaCamisaValidator } from '@/zod/validators'
 import { ZodIssue } from 'zod'
 import { ShirtModel, useOrderContext } from '@/context/orderContext'
 
-export default function NovaCamisa2() {
+export default function NovaCamisaDetalhamento({ idModel } : { idModel: string }) {
   const { getShirtTypes } = useServerDataContext()
   const { setShirtModels, getShirtModels } = useOrderContext()
   const [dataPage, setDataPage] = useState<Option[]>([])

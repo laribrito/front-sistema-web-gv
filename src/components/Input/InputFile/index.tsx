@@ -1,8 +1,9 @@
 import React, { useState, InputHTMLAttributes, ChangeEvent } from 'react';
 import stylesInput from '../input.module.css';
-import { InputGeneric, variantOfInputs } from '../interfaceInput';
+import { InputGeneric } from '../interfaceInput';
 import { Button, styled } from '@mui/material';
 import Thumbnail from './thumbnail';
+import { useOrderContext } from '@/context/orderContext';
 
 const CustomButton = styled(Button)({
   backgroundColor: '#e5e5e5ff',
@@ -20,21 +21,21 @@ const CustomButton = styled(Button)({
 
 interface FileInputProps extends InputGeneric, InputHTMLAttributes<HTMLInputElement> {}
 
-export default function FileInput({ label, id, type, ...rest }: FileInputProps) {
-  const [files, setFiles] = useState<File[]>([]);
+export default function FileInput({ label, id, type, multiple, ...rest }: FileInputProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const { filesUpload, setFilesUpload } = useOrderContext()
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const selectedFiles = Array.from(event.target.files);
-      setFiles(selectedFiles);
+      setFilesUpload(selectedFiles)
     }
   };
 
   const handleDeleteFile = (fileToDelete: File) => {
     // Remover o arquivo da lista
-    const updatedFiles = files.filter((f) => f !== fileToDelete);
-    setFiles(updatedFiles);
+    const updatedFiles = filesUpload.filter((f) => f !== fileToDelete);
+    setFilesUpload(updatedFiles);
   
     // Se o arquivo excluído é o arquivo selecionado, fechar o popup
     if (selectedFile === fileToDelete) {
@@ -48,14 +49,14 @@ export default function FileInput({ label, id, type, ...rest }: FileInputProps) 
       <label htmlFor={id}>{`${label}:`}</label>
       <CustomButton variant="contained" component="label">
         Upload
-        <input type="file" style={{ display: 'none' }} onChange={handleChange} multiple />
+        <input type="file" style={{ display: 'none' }} onChange={handleChange} multiple={multiple} />
       </CustomButton>
 
-      {files.length > 0 && (
+      {filesUpload.length > 0 && (
         <div>
           <p style={{ marginTop: '5px' }}>Arquivos Selecionados:</p>
           <div style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
-            {files.map((file, index) => (
+            {filesUpload.map((file, index) => (
               <Thumbnail key={`thumbnail-${index}`} file={file} index={index} onDelete={() => handleDeleteFile(file)} />            
             ))}
           </div>

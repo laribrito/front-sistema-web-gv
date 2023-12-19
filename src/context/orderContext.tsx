@@ -15,6 +15,7 @@ export type ShirtModel = {
   printName: string
   shirtModeling: number
   number_units?: number
+  namePhotoModel?: string
 };
 
 type OrderContextType = {
@@ -24,6 +25,12 @@ type OrderContextType = {
 
   setShirtModels: (models: ShirtModel[]) => void;
   getShirtModels: () => ShirtModel[];
+  getShirtModel: (id: number) => ShirtModel
+  getIdModel: (model: ShirtModel) => number
+
+  filesUpload: File[]
+  setFilesUpload: (files: File[]) => void;
+  getFilesUpload: () => File[];
 };
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
@@ -35,6 +42,7 @@ type OrderProviderProps = {
 export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
   const [currentOrder, setCurrentOrder] = useState<OrderInfos | null>(null);
   const [shirtModels, setCurrentShirtModels] = useState<ShirtModel[]>([]);
+  const [filesUpload, setFilesAux] = useState<File[]>([]);
   const orderInfoLabelStorage = 'currentOrder'
   const shirtModelsLabelStorage = 'shirtModels'
 
@@ -58,12 +66,37 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
     return savedData ? JSON.parse(savedData) : [];
   };
 
+  const getShirtModel = (id: number) : ShirtModel =>{
+    const currentModels = getShirtModels()
+    return currentModels[id]
+  }
+
+  const getIdModel = (model: ShirtModel) : number =>{
+    const currentModels = getShirtModels()
+    return currentModels.findIndex(
+      (model:ShirtModel) => model.printName.trim() == model.printName.trim() && 
+      model.shirtModeling == model.shirtModeling);
+  }
+
+  const setFilesUpload = (files: File[]) =>{
+    setFilesAux(files)
+  }
+
+  const getFilesUpload = () : File[] =>{
+    return filesUpload
+  }
+
   const contextValue: OrderContextType = {
     currentOrder,
+    filesUpload,
     setOrderInfos,
     getOrderInfos,
     getShirtModels,
-    setShirtModels
+    setShirtModels,
+    getShirtModel,
+    getIdModel,
+    setFilesUpload,
+    getFilesUpload
   };
 
   return (
