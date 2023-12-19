@@ -10,9 +10,11 @@ import apiRouter from '@/api/rotas';
 import { useEffect, useState } from 'react';
 import LoadingScreen from '@/components/LoadingScreen';
 import { useAuth } from '@/context/authContext';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
   const [isLoading, setLoading] = useState(false)
+  const router = useRouter()
 
   type LoginCredentials = {
     username: string,
@@ -22,7 +24,7 @@ export default function Login() {
   const { accessToken, login } = useAuth();
   
   useEffect(() => {
-    if (accessToken) window.location.href = '/home';
+    if (accessToken) router.push('/home');
   }, [accessToken]);
 
   const handleLogin = async (e: React.FormEvent) => {

@@ -1,6 +1,7 @@
 import React, { HtmlHTMLAttributes, ElementType } from "react"
 import styles from "./navbar.module.css"
 import { IconHome, IconHomeActive, IconNovoPedido, IconBusca, IconNovaCamisa } from "@/utils/elements"
+import { useRouter } from "next/navigation"
 
 interface HeaderItemProps extends HtmlHTMLAttributes<HTMLButtonElement>{
     icon: ElementType
@@ -10,13 +11,14 @@ interface HeaderItemProps extends HtmlHTMLAttributes<HTMLButtonElement>{
 }
 
 export default function HeaderItem({icon: Icon, fontSize, active, children, ...rest}: HeaderItemProps){
+    const router = useRouter()
     return (
         <button 
             className={styles.item}
             onClick={()=>{
-                if(Icon==IconNovoPedido) window.location.href="/novo-pedido/"
-                else if(Icon==IconHome) window.location.href="/home"
-                else if(Icon==IconNovaCamisa) window.location.href="/nova-camisa"
+                if(Icon==IconNovoPedido) router.push("/novo-pedido/")
+                else if(Icon==IconHome) router.push("/home")
+                else if(Icon==IconNovaCamisa) router.push("/nova-camisa")
                 else if(Icon==IconBusca) console.log("Busca")
             }}
             {...rest}

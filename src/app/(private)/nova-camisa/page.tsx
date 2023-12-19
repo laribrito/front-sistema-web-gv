@@ -16,8 +16,10 @@ import axios from 'axios'
 import LoadingScreen from '@/components/LoadingScreen'
 import apiRouter from '@/api/rotas'
 import { useAuth } from '@/context/authContext'
+import { useRouter } from 'next/navigation'
 
 export default function NovaCamisa() {
+  const router = useRouter()
   const { getToken } = useAuth()
   const { getShirtTypes } = useServerDataContext()
   const { setShirtModels, getShirtModels, getIdModel, filesUpload } = useOrderContext()
@@ -64,7 +66,8 @@ export default function NovaCamisa() {
 
       const newModel = {
         printName: form.printName.value,
-        shirtModeling: form.shirtModeling.value
+        shirtModeling: form.shirtModeling.value,
+        namePhotoModel: ''
       } as ShirtModel
 
       //trata os documentos
@@ -94,8 +97,8 @@ export default function NovaCamisa() {
             },
           }
         )
-        
-        window.location.href="/nova-camisa/"+ getIdModel(newModel)
+         
+        router.push(`/nova-camisa/${getIdModel(newModel)}`);
       } catch (error) {
         toast.error("Erro ao enviar os arquivos. Tente novamente")
       }

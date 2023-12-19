@@ -13,6 +13,7 @@ import { validarDados, ReturnValidator } from '@/zod/parseValidation'
 import { ZodIssue } from 'zod'
 import { useOrderContext, OrderInfos } from '@/context/orderContext'
 import { useServerDataContext } from '@/context/serverDataContext'
+import { useRouter } from 'next/navigation'
 
 export default function NovoPedido() {
   type DataPage= {
@@ -31,6 +32,7 @@ export default function NovoPedido() {
     return dataPage;
   }
 
+  const router = useRouter()
   const { setOrderInfos } = useOrderContext()
   const { getClassifications, getCompanies, getStatus } = useServerDataContext()
   const [dataPage, setDataPage] = useState<DataPage | null>(null);
@@ -101,7 +103,7 @@ export default function NovoPedido() {
         status: data.status
       })
 
-      window.location.href="/novo-pedido/produtos"
+      router.push("/novo-pedido/produtos")
     }
   }
 
