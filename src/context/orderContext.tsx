@@ -68,6 +68,8 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
 
   const getShirtModel = (id: number) : ShirtModel =>{
     const currentModels = getShirtModels()
+    console.log(currentModels)
+    console.log(id)
     return currentModels[id]
   }
 

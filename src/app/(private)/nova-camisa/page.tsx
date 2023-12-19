@@ -14,7 +14,7 @@ import { ZodIssue } from 'zod'
 import { ShirtModel, useOrderContext } from '@/context/orderContext'
 import axios from 'axios'
 import LoadingScreen from '@/components/LoadingScreen'
-import router from '@/api/rotas'
+import apiRouter from '@/api/rotas'
 import { useAuth } from '@/context/authContext'
 
 export default function NovaCamisa() {
@@ -87,7 +87,7 @@ export default function NovaCamisa() {
       try {
         if(filesUpload.length>0) 
           await axios.post(
-          router.fileManager, formData,
+          apiRouter.fileManager, formData,
           {
             headers: {
               'Authorization': getToken()

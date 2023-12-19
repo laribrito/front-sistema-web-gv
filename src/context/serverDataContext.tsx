@@ -2,7 +2,7 @@
 import { createContext, useContext, ReactNode, useState } from 'react';
 import { Option } from '@/components/Input/interfaceInput'
 import axios from 'axios';
-import router from '@/api/rotas';
+import apiRouter from '@/api/rotas';
 import { useAuth } from './authContext';
 import toast from 'react-hot-toast';
 
@@ -62,7 +62,7 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
     } else {
       // requisição
       try{
-        const response = await axios.get(router.classifications, {
+        const response = await axios.get(apiRouter.classifications, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': getToken(),
@@ -93,7 +93,7 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
     } else {
       // requisição
       try{
-        const response = await axios.get(router.companies, {
+        const response = await axios.get(apiRouter.companies, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': getToken(),
@@ -125,7 +125,7 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
     } else {
       // requisição
       try{
-        const response = await axios.get(router.statuses, {
+        const response = await axios.get(apiRouter.statuses, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': getToken(),
@@ -157,7 +157,7 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
     } else {
       // requisição
       try{
-        const response = await axios.get(router.shirtTypes, {
+        const response = await axios.get(apiRouter.shirtTypes, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': getToken(),

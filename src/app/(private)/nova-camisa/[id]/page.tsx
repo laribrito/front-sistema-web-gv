@@ -1,85 +1,59 @@
 'use client'
 import Header from '@/components/Header'
+import styles from './page.module.css'
+import { BtnEdicaoHeader,IconNovaCamisa } from "@/utils/elements"
 import { useEffect, useState } from 'react'
+import { OrderInfos, ShirtModel, useOrderContext } from '@/context/orderContext'
 import { useServerDataContext } from '@/context/serverDataContext'
-import InputText from '@/components/Input/InputText'
-import InputSelect from '@/components/Input/InputSelect'
-import Button from '@/components/Button'
-import InputFile from '@/components/Input/InputFile'
-import toast from 'react-hot-toast'
-import { Option } from '@/components/Input/interfaceInput'
-import { ReturnValidator, validarDados } from '@/zod/parseValidation'
-import { novaCamisaValidator } from '@/zod/validators'
-import { ZodIssue } from 'zod'
-import { ShirtModel, useOrderContext } from '@/context/orderContext'
+import Navbar from '@/components/Navbar'
+import mainStyles from '@/app/(private)/main.module.css'
 
-export default function NovaCamisaDetalhamento({ idModel } : { idModel: string }) {
-  const { getShirtTypes } = useServerDataContext()
-  const { setShirtModels, getShirtModels } = useOrderContext()
-  const [dataPage, setDataPage] = useState<Option[]>([])
-  const [formErrors, setFormErrors] = useState<ZodIssue[]>({} as ZodIssue[]);
-
-  async function getData() {
-    try {
-      const dados = await getShirtTypes() as Option []
-      if(dados){
-        setDataPage(dados)
-      }
-    } catch (error) {
-      toast.error('Ocorreu algum erro. Atualize a página');
-    }
+export default function DashboardModel({idModel}:{idModel:number}) {
+  type dadosHeader = {
+    printName: string
+    shirtModeling: string
   }
- 
+  const { getOrderInfos, getShirtModel } = useOrderContext()
+  const { getCompanies, getClassifications, parseOptionName, getShirtTypes } = useServerDataContext()
+  const [dadosHeader, setDadosHeader] = useState<dadosHeader>({printName: '--', shirtModeling: '--'})
+
   useEffect(() => {
-    if(!dataPage.length) getData();
-  }, [])
+    async function fetchDataInfo() {
+        console.log(idModel)
+        const model = getShirtModel(idModel) as ShirtModel
+        console.log(model)
 
-  function handleSubmit(e: React.FormEvent){
-    e.preventDefault();
+        const allCurrentModels = await getShirtTypes()
 
-    const form = e.currentTarget as HTMLFormElement;
+        if(allCurrentModels){
+          setDadosHeader({
+            printName: model.printName,
+            shirtModeling: allCurrentModels[model.shirtModeling].valor
+          } as dadosHeader);
+        } else {
 
-    //validação com zode
-    const dados = validarDados(novaCamisaValidator, {
-      printName:      form.printName.value, 
-      shirtModeling:     form.shirtModeling.value
-    }) as ReturnValidator;
-    
-    if(!dados.success){
-      setFormErrors(dados.data as ZodIssue[])
-      setTimeout(() => {
-        setFormErrors({} as ZodIssue[]);
-      }, 4000);
-    } else {
-      const data = dados.data as ShirtModel
-      setFormErrors({} as ZodIssue[])
-      // próxima página
-
-      const newModel = {
-        printName: form.printName.value,
-        shirtModeling: form.shirtModeling.value
-      } as ShirtModel
-
-      const currentModels = getShirtModels()
-      const modelExists = currentModels.find(
-        (model:ShirtModel) => model.printName.trim() == newModel.printName.trim() && 
-        model.shirtModeling == newModel.shirtModeling);
-
-      if (!modelExists) currentModels.push(newModel)
-
-      setShirtModels(currentModels)
-
-      // window.location.href="/novo-pedido/produtos"
+        }
     }
-  }
+
+    fetchDataInfo();
+  }, []);
 
   return (
     <>
       <Header.Root>
           <Header.BtnReturn/>
-          <Header.Title>Nova Camisa</Header.Title>
+          <Header.Title>{dadosHeader?.printName}</Header.Title>
+          <Header.Subtitle>{dadosHeader?.shirtModeling}</Header.Subtitle>
+          <Header.BtnExtra icon={BtnEdicaoHeader}/>
       </Header.Root>
 
+      <div className={styles.spanBox}>
+        <span className={mainStyles.labelDiscreto}>Não há malhas cadastradas<br/>nessa camisa</span>
+      </div>
+
+      <Navbar.Root>
+        <Navbar.Item icon={IconNovaCamisa}>Novo estilo</Navbar.Item>
+      </Navbar.Root>
     </>
   )
 }

@@ -6,7 +6,7 @@ import { LoginValidator } from '@/zod/validators';
 import { validarDados, ReturnValidator } from '@/zod/parseValidation'
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import router from '@/api/rotas';
+import apiRouter from '@/api/rotas';
 import { useEffect, useState } from 'react';
 import LoadingScreen from '@/components/LoadingScreen';
 import { useAuth } from '@/context/authContext';
@@ -39,7 +39,7 @@ export default function Login() {
       setLoading(true)
       const d = dados.data as LoginCredentials
       const response = await axios.post(
-        router.auth.login,
+        apiRouter.auth.login,
         {
           username: d.username,
           password: d.password

@@ -1,6 +1,6 @@
 const API_ROOT = "http://192.168.0.95:8000/api"
 
-const router = {
+const apiRouter = {
     PREFIX_TOKEN: 'Token ',
     auth: {
         login: API_ROOT + '/auth/',
@@ -14,4 +14,4 @@ const router = {
     fileManager: API_ROOT + '/file/',
 }
 
-export default router
+export default apiRouter

@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar'
 import { useAuth } from '@/context/authContext'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import router from '@/api/rotas'
+import apiRouter from '@/api/rotas'
 import toast from 'react-hot-toast'
 import ItemNegociacao, {DataItemNegotiation} from '@/components/ItemNegociacao'
 import ItemNegociacaoStatus from '@/components/ItemNegociacao/itemNegociacaoStatus'
@@ -42,13 +42,13 @@ export default function Home() {
   async function getStatusAndNegotiations() {
     try {
       const [statusResponse, negotiationsResponse] = await Promise.all([
-        axios.get(router.statuses, {
+        axios.get(apiRouter.statuses, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': getToken(),
           },
         }),
-        axios.get(router.negotiations, {
+        axios.get(apiRouter.negotiations, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': getToken(),
@@ -82,7 +82,7 @@ export default function Home() {
   //processa logout
   async function handleLogout(){
     try {
-      const response = await axios.delete(router.auth.logout, {
+      const response = await axios.delete(apiRouter.auth.logout, {
           headers: {
           'Content-Type': 'application/json',
           'Authorization': getToken(),

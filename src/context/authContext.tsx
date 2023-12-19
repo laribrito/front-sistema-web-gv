@@ -2,7 +2,7 @@
 import { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 import cookies from 'js-cookie'
 import { decrypt, encrypt } from '@/utils/criptografia';
-import router from '@/api/rotas';
+import apiRouter from '@/api/rotas';
 
 // Definindo tipos
 type AuthContextType = {
@@ -25,7 +25,7 @@ export function AuthProvider({ children }:AuthProviderProps){
   const [username, setUsername] = useState<string | null | undefined>(cookies.get('username'))
 
   const login = (token: string, username: string) => {
-    const encryptedToken = encrypt(router.PREFIX_TOKEN + token);
+    const encryptedToken = encrypt(apiRouter.PREFIX_TOKEN + token);
     cookies.set('accessToken', encryptedToken);
     cookies.set('username', username);
     setAuthToken(encryptedToken);
