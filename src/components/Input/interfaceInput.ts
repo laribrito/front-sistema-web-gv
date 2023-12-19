@@ -9,6 +9,8 @@ export interface InputGeneric{
 export interface Option {
     id: number;
     valor: string;
+    isAvailable?: boolean
+    relation_id?: number
 }
 
 const styleMUI = {

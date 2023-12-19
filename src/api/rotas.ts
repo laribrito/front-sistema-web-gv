@@ -12,6 +12,8 @@ const apiRouter = {
     classifications: API_ROOT + '/classifications/',
     shirtTypes: API_ROOT + '/shirt-types/',
     fileManager: API_ROOT + '/file/',
+    meshs: API_ROOT + '/meshs/',
+    meshColors: API_ROOT + '/mesh-colors/',
 }
 
 export default apiRouter

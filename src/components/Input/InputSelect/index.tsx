@@ -13,7 +13,7 @@ export default function InputSelect({options, id, label, name, ...rest}:InputSel
       <label htmlFor={id}>{`${label}:`}</label>
 
       <ThemeProvider theme={themeMUI}>
-        <Select variant={variantOfInputs} size="small" defaultValue={1} hiddenLabel name={name}>
+        <Select variant={variantOfInputs} size="small" defaultValue={1} hiddenLabel name={name} {...rest}>
           {options && options.map((op) => (
             <MenuItem key={op.id} value={op.id}>
               {op.valor}

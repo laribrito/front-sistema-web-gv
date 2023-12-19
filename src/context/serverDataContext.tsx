@@ -26,11 +26,42 @@ type ShirtTypeData = {
   name: string
 }
 
-function processData<T>(data: T[], getId: (item: T) => number, getValue: (item: T) => string): Option[] {
+type MeshData = {
+  mesh_id: number
+  name: string
+}
+
+type MeshColorData = {
+  mesh_color_id: number
+  name: string
+  isAvailable: boolean
+  mesh_id: number
+}
+
+function processData<T>(
+  data: T[], 
+  getId: (item: T) => number, 
+  getValue: (item: T) => string,
+  getIsAvailable?: (item: T) => boolean,
+  getRelationId?: (item: T) => number
+): Option[] {
+
   const newData: Option[] = data.map((dataItem) => ({
     id: getId(dataItem),
     valor: getValue(dataItem),
   }));
+
+  if (getIsAvailable) {
+    newData.forEach((dataItem, index) => {
+      newData[index].isAvailable = getIsAvailable(data[index]);
+    });
+  }
+
+  if (getRelationId) {
+    newData.forEach((dataItem, index) => {
+      newData[index].relation_id = getRelationId(data[index]);
+    });
+  }
 
   return newData;
 }
@@ -39,6 +70,8 @@ type ServerDataContextType = {
   getCompanies: () => Promise<Option[] | null>;
   getClassifications: () => Promise<Option[] | null>;
   getStatus: () => Promise<Option[] | null>;
+  getMeshs: () => Promise<Option[] | null>;
+  getMeshColors: () => Promise<Option[] | null>;
   getShirtTypes: () => Promise<Option[] | null>;
   getShirtType: (id:number) => Promise<string | undefined>;
   parseOptionName: (options: Option[], targetId: number) => string | null;
@@ -148,6 +181,76 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
     return null;
   }
 
+  async function getMeshs(): Promise<Option[] | null> {
+    const labelStorage = 'meshs'
+    const meshsList = sessionStorage.getItem(labelStorage);
+  
+    if (meshsList) {
+      const status: Option[] = JSON.parse(meshsList);
+      return status;
+    } else {
+      // requisição
+      try{
+        const response = await axios.get(apiRouter.meshs, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': getToken(),
+          },
+        })
+
+        if (response.data.errors) {
+          toast.error(response.data.errors);
+        } else {
+          const newData = processData(response.data.data, (item : MeshData) => item.mesh_id, (item) => item.name);
+          sessionStorage.setItem(labelStorage, JSON.stringify(newData))
+          return newData;
+        }
+      } catch (error) {
+        toast.error('Ocorreu algum erro. Atualize a página');
+      }
+    }
+    
+    return null;
+  }
+
+  async function getMeshColors(): Promise<Option[] | null> {
+    const labelStorage = 'mesh-colors'
+    const meshsColorsList = sessionStorage.getItem(labelStorage);
+  
+    if (meshsColorsList) {
+      const status: Option[] = JSON.parse(meshsColorsList);
+      return status;
+    } else {
+      // requisição
+      try{
+        const response = await axios.get(apiRouter.meshColors, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': getToken(),
+          },
+        })
+
+        if (response.data.errors) {
+          toast.error(response.data.errors);
+        } else {
+          const newData = processData(
+            response.data.data, 
+            (item : MeshColorData) => item.mesh_color_id, 
+            (item) => item.name,
+            (item) => item.isAvailable,
+            (item) => item.mesh_id,
+          );
+          sessionStorage.setItem(labelStorage, JSON.stringify(newData))
+          return newData;
+        }
+      } catch (error) {
+        toast.error('Ocorreu algum erro. Atualize a página');
+      }
+    }
+    
+    return null;
+  }
+
   async function getShirtTypes(): Promise<Option[] | null> {
     const labelStorage = 'shirt-types'
     const dataList = sessionStorage.getItem(labelStorage);
@@ -199,6 +302,8 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
     getCompanies,
     getClassifications,
     getStatus,
+    getMeshs,
+    getMeshColors,
     getShirtTypes,
     getShirtType,
     parseOptionName
