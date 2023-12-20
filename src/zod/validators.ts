@@ -27,3 +27,13 @@ export const novaCamisaValidator = z.object({
     printName: z.string().min(1, {message: 'Nome da Estampa é obrigatório'}),
     shirtModeling: z.string()
 })
+
+export const newDetailing01 = z.object({
+    shirtCollar: z.string().min(1, {message: 'Gola é obrigatório'}),
+    printingTechnique: z.string().min(1, {message: 'Técnica de impressão é obrigatório'}),
+    printingColors: z.string().min(1, {message: 'Cores da estampa são obrigatório'}),
+    printingPositions: z.string().min(1, {message: 'Posições da estampa são obrigatório'}),
+    sleeveColor: z.string(),
+    cuffStyle: z.string(),
+    specialElement: z.string(),
+})

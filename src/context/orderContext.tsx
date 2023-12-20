@@ -14,8 +14,16 @@ export type OrderInfos = {
 export type ShirtStyle = {
   mesh: number
   meshColor: number
-  printColors?: string
-  printPositions?: string
+
+  shirtCollar?: string
+  printingTechnique?: string
+  printingColors?: string
+  printingPositions?: string
+
+  sleeveColor?: string
+  cuffStyle?: string
+  specialElement?: string
+  
   sizes?: {
     female?:{
        p: number
@@ -42,11 +50,6 @@ export type ShirtStyle = {
     }
   }
 
-  shirtCollar?: string
-  printingTechnique?: string
-  shirtSleeveStyle?: string
-  cuffStyle?: string
-  specialElement?: string
   comments?: string
   attachments?: string[]
 }

@@ -14,7 +14,7 @@ import styles from './page.module.css'
 import InputText from '@/components/Input/InputText'
 import { newDetailing01 } from '@/zod/validators'
 
-export default function Detailing01({params}: { params:{id: number, mesh: number, meshcolor: number}}) {
+export default function Sizes({params}: { params:{id: number, mesh: number, meshcolor: number}}) {
   type DataPage = {
       meshName: string
       meshColorName: string
@@ -100,7 +100,7 @@ export default function Detailing01({params}: { params:{id: number, mesh: number
   
       setShirtModels(currentModels)
          
-      router.push(`/nova-camisa/${params.id}/${params.mesh}/${params.meshcolor}/sizes`);
+    //   router.push(`/nova-camisa/${getIdModel(newModel)}`);
     }
 
     setLoading(false)

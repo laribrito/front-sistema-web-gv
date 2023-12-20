@@ -27,6 +27,7 @@ export default function InputText({type, id, label, errors, ...rest}:InputTextPr
           autoFocus={rest["autoFocus"]}
           error={hasError!=''}
           helperText={hasError}
+          {...rest}
         />
       </ThemeProvider>
     </div>

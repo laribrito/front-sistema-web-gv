@@ -87,22 +87,24 @@ export default function NovaCamisa({params}: { params:{id: number}}) {
 
     const form = e.currentTarget as HTMLFormElement;
 
-      const newModel = {
-        mesh: form.mesh.value,
-        meshColor: form.meshColor.value
-      } as ShirtStyle
+    const newModel = {
+      mesh: form.mesh.value,
+      meshColor: form.meshColor.value
+    } as ShirtStyle
 
-      const currentModels = getShirtModels()
-      const currentModel = currentModels[params.id]
-      const styleExists = currentModel.shirtStyles.find(
-        (style:ShirtStyle) => style.mesh == newModel.mesh &&
-        style.meshColor == newModel.meshColor);
+    const currentModels = getShirtModels()
+    const currentModel = currentModels[params.id]
+    const styleExists = currentModel.shirtStyles.find(
+      (style:ShirtStyle) => style.mesh == newModel.mesh &&
+      style.meshColor == newModel.meshColor);
 
-      if (!styleExists) currentModels[params.id].shirtStyles.push(newModel)
+    if (!styleExists) currentModels[params.id].shirtStyles.push(newModel)
 
-      setShirtModels(currentModels)
+    setShirtModels(currentModels)
 
     setLoading(false)
+
+    router.push(`/nova-camisa/${params.id}/novo-estilo/${form.mesh.value}/${form.meshColor.value}/detailing`)
   }
 
   return (
