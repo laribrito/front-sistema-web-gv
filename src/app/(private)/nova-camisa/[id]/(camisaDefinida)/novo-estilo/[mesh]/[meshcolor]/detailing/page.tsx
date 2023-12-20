@@ -18,7 +18,7 @@ import apiRouter from '@/api/rotas'
 import { useAuth } from '@/context/authContext'
 import { useRouter } from 'next/navigation'
 
-export default function NovaCamisa({params}: { params:{id: number}}) {
+export default function NovaCamisa({params}: { params:{id: number, mesh: number, meshcolor: number}}) {
   type DataPage = {
       meshs: Option[]
       meshColors: Option[]

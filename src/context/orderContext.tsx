@@ -11,9 +11,51 @@ export type OrderInfos = {
   status: number
 };
 
+export type ShirtStyle = {
+  mesh: number
+  meshColor: number
+  printColors?: string
+  printPositions?: string
+  sizes?: {
+    female?:{
+       p: number
+       m: number
+       g: number
+      gg: number
+      xg: number
+    }, 
+    male?:{
+       p: number
+       m: number
+       g: number
+      gg: number
+      xg: number
+    },
+    infant?:{
+       1: number
+       2: number
+       4: number
+       6: number
+       8: number
+      10: number
+      12: number
+    }
+  }
+
+  shirtCollar?: string
+  printingTechnique?: string
+  shirtSleeveStyle?: string
+  cuffStyle?: string
+  specialElement?: string
+  comments?: string
+  attachments?: string[]
+}
+
 export type ShirtModel = {
   printName: string
   shirtModeling: number
+  shirtStyles: ShirtStyle[]
+  
   number_units?: number
   namePhotoModel?: string
 };

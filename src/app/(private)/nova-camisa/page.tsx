@@ -67,7 +67,8 @@ export default function NovaCamisa() {
       const newModel = {
         printName: form.printName.value,
         shirtModeling: form.shirtModeling.value,
-        namePhotoModel: ''
+        namePhotoModel: '',
+        shirtStyles: []
       } as ShirtModel
 
       //trata os documentos

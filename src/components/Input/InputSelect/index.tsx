@@ -8,7 +8,7 @@ interface InputSelectProps extends InputGeneric, SelectHTMLAttributes<HTMLSelect
 }
 
 export default function InputSelect({options, id, label, name, ...rest}:InputSelectProps) {
-  const [selectedValue, setSelectedValue] = useState<HTMLSelectElement | undefined>((options)? options[0].id as unknown as HTMLSelectElement: undefined);
+  const [selectedValue, setSelectedValue] = useState<HTMLSelectElement | undefined>((options && options.length>0)? options[0].id as unknown as HTMLSelectElement: undefined);
 
   const handleSelectChange = (event: SelectChangeEvent<HTMLSelectElement>) => {
     setSelectedValue(event.target.value as HTMLSelectElement)
