@@ -11,7 +11,7 @@ export type OrderInfos = {
   status: number
 };
 
-type InfosSizeGrid = {
+export type InfosSizeGrid = {
   totalFemale: number;
   totalMale: number;
   totalInfant: number;

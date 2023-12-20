@@ -3,23 +3,40 @@ import { useEffect, useRef, useState } from 'react'
 import { useServerDataContext } from '@/context/serverDataContext'
 import Button from '@/components/Button'
 import toast from 'react-hot-toast'
-import { ShirtStyle, SizeGrid, calcularInfosGrade, useOrderContext } from '@/context/orderContext'
+import { InfosSizeGrid, ShirtStyle, SizeGrid, calcularInfosGrade, useOrderContext } from '@/context/orderContext'
 import LoadingScreen from '@/components/LoadingScreen'
 import { useRouter } from 'next/navigation'
 import styles from './page.module.css'
 import InputText from '@/components/Input/InputText'
 import ShirtStyleDisplay from '@/components/ShirtStyleDisplay'
+import InputFile from '@/components/Input/InputFile'
+import axios from 'axios'
+import apiRouter from '@/api/rotas'
+import { useAuth } from '@/context/authContext'
+
+function LabelAndContent({label, content}: {label: string, content: number}){
+  content = content? content : 0
+  return (
+    <div className={styles.LabelAndContent}>
+      <p className={styles.label}>{label}</p>
+      <p>{content}</p>
+    </div>
+  )
+}
 
 export default function Resume({params}: { params:{id: number, mesh: number, meshcolor: number}}) {
   type DataPage = {
       meshName: string
       meshColorName: string
       currentStyle?: ShirtStyle
+      currentGrid?: SizeGrid
+      gridInfo?: InfosSizeGrid
   }
 
   const router = useRouter()
+  const { getToken } = useAuth()
   const { parseOptionName, getMeshColors, getMeshs } = useServerDataContext()
-  const { setShirtModels, getShirtModels } = useOrderContext()
+  const { setShirtModels, getShirtModels, filesUpload } = useOrderContext()
   const [dataPage, setDataPage] = useState<DataPage>({meshName: '---', meshColorName: '---'})
   const [isLoading, setLoading] = useState(false);
   const [alturaElemento, setAlturaElemento] = useState(0);
@@ -46,11 +63,15 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
           (style:ShirtStyle) => style.mesh == params.mesh &&
           style.meshColor == params.meshcolor);
 
-        if(meshs && colorsMeshs){
+        const currentGrid = currentModels[params.id].shirtStyles[stylePos].sizes
+
+        if(meshs && colorsMeshs && currentGrid){
             setDataPage({
                 meshName: parseOptionName(meshs, params.mesh) as string,
                 meshColorName: parseOptionName(colorsMeshs, params.mesh) as string,
-                currentStyle: currentModels[params.id].shirtStyles[stylePos]
+                currentStyle: currentModels[params.id].shirtStyles[stylePos],
+                currentGrid: currentGrid,
+                gridInfo: calcularInfosGrade(currentGrid),
             })
         }
     } catch (error) {
@@ -68,95 +89,112 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
     setLoading(true)
 
     const form = e.currentTarget as HTMLFormElement;
+ 
+    //trata os documentos
+    const formData = new FormData();
 
-    //validação 
-    const newGrid = {
-      female: {
-        p:  form.babyP.value?   parseInt(form.babyP.value):  0,
-        m:  form.babyM.value?   parseInt(form.babyM.value):  0,
-        g:  form.babyG.value?   parseInt(form.babyG.value):  0,
-        gg: form.babyGG.value?  parseInt(form.babyGG.value): 0,
-        xg: form.babyXG.value?  parseInt(form.babyGG.value): 0
-      },
-      male: {
-        p:  form.mascP.value?   parseInt(form.mascP.value):  0,
-        m:  form.mascM.value?   parseInt(form.mascM.value):  0,
-        g:  form.mascG.value?   parseInt(form.mascG.value):  0,
-        gg: form.mascGG.value?  parseInt(form.mascGG.value): 0,
-        xg: form.mascXG.value?  parseInt(form.mascGG.value): 0
-      },
-      infant:{
-        1:  form.ano1.value?  parseInt(form.ano1.value):  0,
-        2:  form.ano2.value?  parseInt(form.ano2.value):  0,
-        4:  form.ano4.value?  parseInt(form.ano4.value):  0,
-        6:  form.ano6.value?  parseInt(form.ano6.value):  0,
-        8:  form.ano8.value?  parseInt(form.ano8.value):  0,
-        10: form.ano10.value? parseInt(form.ano10.value): 0,
-        12: form.ano12.value? parseInt(form.ano12.value): 0,
-      }
-    } as SizeGrid
+    const listaAnexos = [] as string[]
+    
+    filesUpload.forEach((file, index) => {
+      formData.append(`file ${index}`, file);
+      listaAnexos.push(file.name)
+    });
 
-    const infos = calcularInfosGrade(newGrid)
-    if(infos.grandTotal==0) toast.error('Preencha algum tamanho de camisa')
-    else{
-      const currentModels = getShirtModels()
-      const currentModel = currentModels[params.id]
-      const stylePos = currentModel.shirtStyles.findIndex(
-        (style:ShirtStyle) => style.mesh == params.mesh &&
-        style.meshColor == params.meshcolor);
-      currentModels[params.id].shirtStyles[stylePos].sizes = newGrid
-      
+    const currentModels = getShirtModels()
+    const currentModel = currentModels[params.id]
+    const stylePos = currentModel.shirtStyles.findIndex(
+      (style:ShirtStyle) => style.mesh == params.mesh &&
+      style.meshColor == params.meshcolor);
+
+    try {
+      if(filesUpload.length>0) 
+        await axios.post(
+        apiRouter.fileManager, formData,
+        {
+          headers: {
+            'Authorization': getToken()
+          },
+        }
+      )
+
+      currentModels[params.id].shirtStyles[stylePos].attachments = listaAnexos
+      currentModels[params.id].shirtStyles[stylePos].comments = form.obs.value
       setShirtModels(currentModels)
-
+       
       // router.push(`/nova-camisa/${getIdModel(newModel)}`);
+    } catch (error) {
+      toast.error("Erro ao enviar os arquivos. Tente novamente")
     }
     setLoading(false)
   }
 
   return (
     <>
+        {isLoading && <LoadingScreen />}
+
         <div className={styles.malhaDiv}>
             <h1>{dataPage?.meshName}</h1>
             <h2>{dataPage?.meshColorName}</h2>
             <hr className={styles.divisor} />
-            
             <ShirtStyleDisplay shirtStyle={dataPage?.currentStyle} refer={elementoRef}/>
+            <hr className={styles.divisor} />
         </div>
 
-      <form method='post' onSubmit={handleSubmit} style={{margin: `${alturaElemento+100}px 0 40px 0`}}>
-        {/* <h3>Babylooks:</h3>
-        <div className={styles.gridSizes}>
-          <InputText type='text' label='P' id='babyP' name='babyP' tosize/>
-          <InputText type='text' label='M' id='babyM' name='babyM' tosize/>
-          <InputText type='text' label='G' id='babyG' name='babyG' tosize/>
-          <InputText type='text' label='GG' id='babyGG' name='babyGG' tosize/>
-          <InputText type='text' label='XG' id='babyXG' name='babyXG' tosize/>
+        <div className={styles.contentBox} style={{padding: `${alturaElemento+100}px 0px 40px 0px`, width: '100%'}}>
+            { dataPage.currentGrid &&
+            <>
+              {dataPage.gridInfo?.totalFemale!=0 && 
+                <>
+                  <h3>Babylooks:</h3>
+                  <div className={styles.gridSizes}>
+                    <LabelAndContent label='P' content={dataPage.currentGrid?.female.p} />
+                    <LabelAndContent label='M' content={dataPage.currentGrid?.female.m} />
+                    <LabelAndContent label='G' content={dataPage.currentGrid?.female.g} />
+                    <LabelAndContent label='GG' content={dataPage.currentGrid?.female.gg} />
+                    <LabelAndContent label='XG' content={dataPage.currentGrid?.female.xg} />
+                  </div>
+                </>
+              } 
+
+              {dataPage.gridInfo?.totalMale!=0 && 
+                <>
+                  <h3>Masculinas:</h3>
+                  <div className={styles.gridSizes}>
+                    <LabelAndContent label='P' content={dataPage.currentGrid?.male.p} />
+                    <LabelAndContent label='M' content={dataPage.currentGrid?.male.m} />
+                    <LabelAndContent label='G' content={dataPage.currentGrid?.male.g} />
+                    <LabelAndContent label='GG' content={dataPage.currentGrid?.male.gg} />
+                    <LabelAndContent label='XG' content={dataPage.currentGrid?.male.xg} />
+                  </div>
+                </>
+              }  
+
+              {dataPage.gridInfo?.totalInfant!=0 && 
+                <>
+                  <h3>Infantis:</h3>
+                  <div className={styles.gridSizes}>
+                    <LabelAndContent label='1' content={dataPage.currentGrid?.infant[1]} />
+                    <LabelAndContent label='2' content={dataPage.currentGrid?.infant[2]} />
+                    <LabelAndContent label='4' content={dataPage.currentGrid?.infant[4]} />
+                    <LabelAndContent label='6' content={dataPage.currentGrid?.infant[6]} />
+                    <LabelAndContent label='8' content={dataPage.currentGrid?.infant[8]} />
+                    <LabelAndContent label='10' content={dataPage.currentGrid?.infant[10]} />
+                    <LabelAndContent label='12' content={dataPage.currentGrid?.infant[12]} />
+                  </div>
+                </>
+              }                
+            </>
+            }
+
+          <form method='post' onSubmit={handleSubmit} style={{marginTop: '20px'}}>
+            <InputText type='text' label='Observações' id='obs' name='obs' multiline />
+
+            <InputFile label='Anexos' id='anexos' multiple/>
+
+            <Button type='submit'>Salvar</Button>
+
+          </form>
         </div>
-
-        <h3>Masculinas:</h3>
-        <div className={styles.gridSizes}>
-          <InputText type='text' label='P' id='mascP' name='mascP' tosize/>
-          <InputText type='text' label='M' id='mascM' name='mascM' tosize/>
-          <InputText type='text' label='G' id='mascG' name='mascG' tosize/>
-          <InputText type='text' label='GG' id='mascGG' name='mascGG' tosize/>
-          <InputText type='text' label='XG' id='mascXG' name='mascXG' tosize/>
-        </div>
-
-        <h3>Infantis:</h3>
-        <div className={styles.gridSizes}>
-          <InputText type='text' label='1' id='ano1' name='ano1' tosize/>
-          <InputText type='text' label='2' id='ano2' name='ano2' tosize/>
-          <InputText type='text' label='4' id='ano4' name='ano4' tosize/>
-          <InputText type='text' label='6' id='ano6' name='ano6' tosize/>
-          <InputText type='text' label='8' id='ano8' name='ano8' tosize/>
-          <InputText type='text' label='10' id='ano10' name='ano10' tosize/>
-          <InputText type='text' label='12' id='ano12' name='ano12' tosize/>
-        </div> */}
-
-        <Button type='submit'>Próximo</Button>
-
-        {isLoading && <LoadingScreen />}
-      </form>
     </>
   )
 }
