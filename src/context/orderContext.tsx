@@ -11,6 +11,65 @@ export type OrderInfos = {
   status: number
 };
 
+type InfosSizeGrid = {
+  totalFemale: number;
+  totalMale: number;
+  totalInfant: number;
+  grandTotal: number;
+};
+
+export type SizeGrid = {
+  female:{
+     p: number
+     m: number
+     g: number
+    gg: number
+    xg: number
+  }, 
+  male:{
+     p: number
+     m: number
+     g: number
+    gg: number
+    xg: number
+  },
+  infant:{
+     1: number
+     2: number
+     4: number
+     6: number
+     8: number
+    10: number
+    12: number
+  }
+}
+
+export function calcularInfosGrade(grid: SizeGrid): InfosSizeGrid {
+  const totalFemale =
+    grid.female.p + grid.female.m + grid.female.g + grid.female.gg + grid.female.xg;
+
+  const totalMale =
+    grid.male.p + grid.male.m + grid.male.g + grid.male.gg + grid.male.xg;
+
+  const totalInfant =
+    grid.infant[1] +
+    grid.infant[2] +
+    grid.infant[4] +
+    grid.infant[6] +
+    grid.infant[8] +
+    grid.infant[10] +
+    grid.infant[12];
+
+  const grandTotal = totalFemale + totalMale + totalInfant;
+
+  return {
+    totalFemale,
+    totalMale,
+    totalInfant,
+    grandTotal,
+  };
+}
+
 export type ShirtStyle = {
   mesh: number
   meshColor: number
@@ -24,31 +83,7 @@ export type ShirtStyle = {
   cuffStyle?: string
   specialElement?: string
   
-  sizes?: {
-    female?:{
-       p: number
-       m: number
-       g: number
-      gg: number
-      xg: number
-    }, 
-    male?:{
-       p: number
-       m: number
-       g: number
-      gg: number
-      xg: number
-    },
-    infant?:{
-       1: number
-       2: number
-       4: number
-       6: number
-       8: number
-      10: number
-      12: number
-    }
-  }
+  sizes?: SizeGrid
 
   comments?: string
   attachments?: string[]

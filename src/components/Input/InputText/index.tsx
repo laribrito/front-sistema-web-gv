@@ -5,16 +5,20 @@ import { TextField, ThemeProvider } from "@mui/material";
 
 interface InputTextProps extends InputGeneric, InputHTMLAttributes<HTMLInputElement> {
   type: "text" | "email" | "password"
+  tosize?: boolean
 }
 
-export default function InputText({type, id, label, errors, ...rest}:InputTextProps) { 
+export default function InputText({type, id, label, errors, tosize=false, ...rest}:InputTextProps) { 
   const hasError = errors && Array.isArray(errors)
   ? errors.find((error) => error.path[0] === id)?.message || ''
   : '';
 
+  const styleSizes = (tosize)? {width: '50px', scale: '0.8'}:{}
+  const labelSizes = (tosize)? {textAlign: 'center', padding: '0px'}:{}
+
   return (
-    <div className={stylesInput.formField}>
-      <label htmlFor={id}>{`${label}:`}{rest['required'] && ' *'}</label>
+    <div className={stylesInput.formField} style={styleSizes}>
+      <label htmlFor={id} style={labelSizes}> {!tosize && `${label}:`} {tosize && label} {rest['required'] && ' *'}</label>
       <ThemeProvider theme={themeMUI}>
         <TextField 
           variant={variantOfInputs}

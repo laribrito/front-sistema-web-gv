@@ -1,14 +1,12 @@
 'use client'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useServerDataContext } from '@/context/serverDataContext'
 import Button from '@/components/Button'
 import toast from 'react-hot-toast'
-import { Option } from '@/components/Input/interfaceInput'
 import { ReturnValidator, validarDados } from '@/zod/parseValidation'
 import { ZodIssue } from 'zod'
-import { ShirtModel, ShirtStyle, useOrderContext } from '@/context/orderContext'
+import { ShirtStyle, useOrderContext } from '@/context/orderContext'
 import LoadingScreen from '@/components/LoadingScreen'
-import { useAuth } from '@/context/authContext'
 import { useRouter } from 'next/navigation'
 import styles from './page.module.css'
 import InputText from '@/components/Input/InputText'
@@ -21,7 +19,6 @@ export default function Detailing01({params}: { params:{id: number, mesh: number
   }
 
   const router = useRouter()
-  const { getToken } = useAuth()
   const { parseOptionName, getMeshColors, getMeshs } = useServerDataContext()
   const { setShirtModels, getShirtModels } = useOrderContext()
   const [dataPage, setDataPage] = useState<DataPage>({meshName: '---', meshColorName: '---'})
@@ -100,7 +97,7 @@ export default function Detailing01({params}: { params:{id: number, mesh: number
   
       setShirtModels(currentModels)
          
-      router.push(`/nova-camisa/${params.id}/${params.mesh}/${params.meshcolor}/sizes`);
+      router.push(`/nova-camisa/${params.id}/novo-estilo/${params.mesh}/${params.meshcolor}/sizes`);
     }
 
     setLoading(false)

@@ -10,7 +10,7 @@ import styles from './page.module.css'
 import InputText from '@/components/Input/InputText'
 import ShirtStyleDisplay from '@/components/ShirtStyleDisplay'
 
-export default function Sizes({params}: { params:{id: number, mesh: number, meshcolor: number}}) {
+export default function Resume({params}: { params:{id: number, mesh: number, meshcolor: number}}) {
   type DataPage = {
       meshName: string
       meshColorName: string
@@ -108,7 +108,7 @@ export default function Sizes({params}: { params:{id: number, mesh: number, mesh
       
       setShirtModels(currentModels)
 
-      router.push(`/nova-camisa/${params.id}/novo-estilo/${params.mesh}/${params.meshcolor}/resume`);
+      // router.push(`/nova-camisa/${getIdModel(newModel)}`);
     }
     setLoading(false)
   }
@@ -124,7 +124,7 @@ export default function Sizes({params}: { params:{id: number, mesh: number, mesh
         </div>
 
       <form method='post' onSubmit={handleSubmit} style={{margin: `${alturaElemento+100}px 0 40px 0`}}>
-        <h3>Babylooks:</h3>
+        {/* <h3>Babylooks:</h3>
         <div className={styles.gridSizes}>
           <InputText type='text' label='P' id='babyP' name='babyP' tosize/>
           <InputText type='text' label='M' id='babyM' name='babyM' tosize/>
@@ -151,7 +151,7 @@ export default function Sizes({params}: { params:{id: number, mesh: number, mesh
           <InputText type='text' label='8' id='ano8' name='ano8' tosize/>
           <InputText type='text' label='10' id='ano10' name='ano10' tosize/>
           <InputText type='text' label='12' id='ano12' name='ano12' tosize/>
-        </div>
+        </div> */}
 
         <Button type='submit'>Próximo</Button>
 
