@@ -9,20 +9,25 @@ interface HeaderItemProps extends HtmlHTMLAttributes<HTMLButtonElement>{
     active?: boolean
     children: React.ReactNode
     idcamisa?: number
+    submit?: boolean
+    goto?: string | (() => void)
 }
 
-export default function HeaderItem({icon: Icon, fontSize, active, children, ...rest}: HeaderItemProps){
+export default function HeaderItem({icon: Icon, goto, fontSize, active, children, submit=false, ...rest}: HeaderItemProps){
     const router = useRouter()
     return (
         <button 
             className={styles.item}
             onClick={()=>{
-                if(Icon==IconNovoPedido) router.push("/novo-pedido/")
+                if(goto && typeof goto == 'string') router.push(goto)
+                else if(goto && typeof goto == 'function') goto()
+                else if(Icon==IconNovoPedido) router.push("/novo-pedido/")
                 else if(Icon==IconHome) router.push("/home")
                 else if(Icon==IconNovaCamisa) router.push("/nova-camisa")
                 else if(Icon==IconNovoEstilo) router.push(`/nova-camisa/${rest['idcamisa']}/novo-estilo`)
                 else if(Icon==IconBusca) console.log("Busca")
             }}
+            type={submit? 'submit':'button'}
             {...rest}
         >
             <Icon fontSize={fontSize? fontSize : "1.7em"}/>
