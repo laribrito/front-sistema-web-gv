@@ -6,9 +6,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>{
     width?: string
 }
 
-export default function Button({children, width, ...rest}:ButtonProps){
+export default function Button({children, width, type, ...rest}:ButtonProps){
     return (
-        <button className={styles.botao} style={{width: width}} {...rest}>
+        <button className={`${styles.botao} ${type == 'submit'? styles.submit : ''}`} style={{width: width}} {...rest}>
             {children}
         </button>
     )

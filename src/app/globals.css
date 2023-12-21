@@ -102,10 +102,3 @@ label{
 p{
   font-size: var(--font-size-p);
 }
-
-button[type="submit"]{
-  display: block;
-  margin: auto;
-  margin-top: 30px;
-  margin-top: 50px;
-}
