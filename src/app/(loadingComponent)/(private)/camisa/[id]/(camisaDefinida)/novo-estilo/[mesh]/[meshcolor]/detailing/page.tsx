@@ -6,11 +6,11 @@ import toast from 'react-hot-toast'
 import { ReturnValidator, validarDados } from '@/zod/parseValidation'
 import { ZodIssue } from 'zod'
 import { ShirtStyle, useOrderContext } from '@/context/orderContext'
-import LoadingScreen from '@/components/LoadingScreen'
 import { useRouter } from 'next/navigation'
 import styles from './page.module.css'
 import InputText from '@/components/Input/InputText'
 import { newDetailing01 } from '@/zod/validators'
+import { useComponentsContext } from '@/context/componentsContext'
 
 export default function Detailing01({params}: { params:{id: number, mesh: number, meshcolor: number}}) {
   type DataPage = {
@@ -19,11 +19,11 @@ export default function Detailing01({params}: { params:{id: number, mesh: number
   }
 
   const router = useRouter()
+  const { setLoading } = useComponentsContext()
   const { parseOptionName, getMeshColors, getMeshs } = useServerDataContext()
   const { setShirtModels, getShirtModels } = useOrderContext()
   const [dataPage, setDataPage] = useState<DataPage>({meshName: '---', meshColorName: '---'})
   const [formErrors, setFormErrors] = useState<ZodIssue[]>({} as ZodIssue[]);
-  const [isLoading, setLoading] = useState(false);
 
   async function getData() {
     try {
@@ -124,8 +124,6 @@ export default function Detailing01({params}: { params:{id: number, mesh: number
         <InputText type='text' label='Elemento Especial' id='specialElement' name='specialElement' errors={formErrors}/>
 
         <Button type='submit'>Próximo</Button>
-
-        {isLoading && <LoadingScreen />}
       </form>
     </>
   )

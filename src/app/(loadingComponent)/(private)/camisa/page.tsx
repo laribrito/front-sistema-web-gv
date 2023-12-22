@@ -13,19 +13,19 @@ import { novaCamisaValidator } from '@/zod/validators'
 import { ZodIssue } from 'zod'
 import { ShirtModel, useOrderContext } from '@/context/orderContext'
 import axios from 'axios'
-import LoadingScreen from '@/components/LoadingScreen'
 import apiRouter from '@/api/rotas'
 import { useAuth } from '@/context/authContext'
 import { useRouter } from 'next/navigation'
+import { useComponentsContext } from '@/context/componentsContext'
 
 export default function NovaCamisa() {
   const router = useRouter()
   const { getToken } = useAuth()
+  const { setLoading } = useComponentsContext()
   const { getShirtTypes } = useServerDataContext()
   const { setShirtModels, getShirtModels, getIdModel, filesUpload } = useOrderContext()
   const [dataPage, setDataPage] = useState<Option[]>([])
   const [formErrors, setFormErrors] = useState<ZodIssue[]>({} as ZodIssue[]);
-  const [isLoading, setLoading] = useState(false);
 
   async function getData() {
     try {
@@ -141,8 +141,6 @@ export default function NovaCamisa() {
         <InputFile label='Layout do Modelo' id='arquivo'></InputFile>
 
         <Button type='submit'>Próximo</Button>
-
-        {isLoading && <LoadingScreen />}
       </form>
     </>
   )

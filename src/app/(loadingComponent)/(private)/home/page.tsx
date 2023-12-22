@@ -1,5 +1,5 @@
 'use client'
-import styles from '@/app/(private)/main.module.css'
+import styles from '@/app/(loadingComponent)/(private)/main.module.css'
 import Header from '@/components/Header'
 import { BtnLogoutHeader, IconBusca, IconHomeActive, IconNovoPedido, IconRelatorios } from "@/utils/elements"
 import Navbar from '@/components/Navbar'

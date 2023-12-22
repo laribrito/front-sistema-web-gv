@@ -4,6 +4,8 @@ import { AuthProvider } from "@/context/authContext"
 import { Toaster } from "react-hot-toast"
 import { OrderProvider } from "@/context/orderContext"
 import { ServerDataProvider } from "@/context/serverDataContext"
+import LoadingScreen from "@/components/LoadingScreen"
+import { ComponentsProvider, useComponentsContext } from "@/context/componentsContext"
 
 export const metadata = {
   title: 'Next.js',
@@ -19,7 +21,9 @@ export default function RootLayout({children}: { children: React.ReactNode}) {
         <AuthProvider>
           <OrderProvider>
             <ServerDataProvider>
-              {children}
+              <ComponentsProvider>
+                {children}
+              </ComponentsProvider>
             </ServerDataProvider>
           </OrderProvider>
         </AuthProvider>

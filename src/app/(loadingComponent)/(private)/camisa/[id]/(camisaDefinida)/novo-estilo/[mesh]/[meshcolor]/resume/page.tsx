@@ -4,7 +4,6 @@ import { useServerDataContext } from '@/context/serverDataContext'
 import Button from '@/components/Button'
 import toast from 'react-hot-toast'
 import { InfosSizeGrid, ShirtStyle, SizeGrid, calcularInfosGrade, useOrderContext } from '@/context/orderContext'
-import LoadingScreen from '@/components/LoadingScreen'
 import { useRouter } from 'next/navigation'
 import styles from './page.module.css'
 import InputText from '@/components/Input/InputText'
@@ -16,6 +15,7 @@ import { useAuth } from '@/context/authContext'
 import Navbar from '@/components/Navbar'
 import { IconBusca, IconCancel, IconHome, IconHomeActive, IconNext, IconNovoPedido, IconRelatorios, IconSave } from '@/utils/elements'
 import ModalYesOrNo from '@/components/ModalYesOrNo/indext'
+import { useComponentsContext } from '@/context/componentsContext'
 
 function LabelAndContent({label, content}: {label: string, content: number}){
   content = content? content : 0
@@ -38,10 +38,10 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
 
   const router = useRouter()
   const { getToken } = useAuth()
+  const { setLoading } = useComponentsContext()
   const { parseOptionName, getMeshColors, getMeshs } = useServerDataContext()
   const { setShirtModels, getShirtModels, filesUpload } = useOrderContext()
   const [dataPage, setDataPage] = useState<DataPage>({meshName: '---', meshColorName: '---'})
-  const [isLoading, setLoading] = useState(false);
   const [alturaElemento, setAlturaElemento] = useState(0);
   const elementoRef = useRef<HTMLDivElement>(null);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
@@ -146,8 +146,6 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
 
   return (
     <>
-        {isLoading && <LoadingScreen />}
-
         <div className={styles.malhaDiv}>
             <h1>{dataPage?.meshName}</h1>
             <h2>{dataPage?.meshColorName}</h2>

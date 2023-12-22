@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { OrderInfos, ShirtModel, useOrderContext } from '@/context/orderContext'
 import { useServerDataContext } from '@/context/serverDataContext'
 import Navbar from '@/components/Navbar'
-import mainStyles from '@/app/(private)/main.module.css'
+import mainStyles from '@/app/(loadingComponent)/(private)/main.module.css'
 
 export default function DashboardModel({ params }: { params: { id: number } }) {
   type dadosHeader = {

@@ -4,11 +4,11 @@ import { useServerDataContext } from '@/context/serverDataContext'
 import Button from '@/components/Button'
 import toast from 'react-hot-toast'
 import { ShirtStyle, SizeGrid, calcularInfosGrade, useOrderContext } from '@/context/orderContext'
-import LoadingScreen from '@/components/LoadingScreen'
 import { useRouter } from 'next/navigation'
 import styles from './page.module.css'
 import InputText from '@/components/Input/InputText'
 import ShirtStyleDisplay from '@/components/ShirtStyleDisplay'
+import { useComponentsContext } from '@/context/componentsContext'
 
 export default function Sizes({params}: { params:{id: number, mesh: number, meshcolor: number}}) {
   type DataPage = {
@@ -18,10 +18,10 @@ export default function Sizes({params}: { params:{id: number, mesh: number, mesh
   }
 
   const router = useRouter()
+  const { setLoading } = useComponentsContext()
   const { parseOptionName, getMeshColors, getMeshs } = useServerDataContext()
   const { setShirtModels, getShirtModels } = useOrderContext()
   const [dataPage, setDataPage] = useState<DataPage>({meshName: '---', meshColorName: '---'})
-  const [isLoading, setLoading] = useState(false);
   const [alturaElemento, setAlturaElemento] = useState(0);
   const elementoRef = useRef<HTMLDivElement>(null);
 
@@ -154,8 +154,6 @@ export default function Sizes({params}: { params:{id: number, mesh: number, mesh
         </div>
 
         <Button type='submit'>Próximo</Button>
-
-        {isLoading && <LoadingScreen />}
       </form>
     </>
   )

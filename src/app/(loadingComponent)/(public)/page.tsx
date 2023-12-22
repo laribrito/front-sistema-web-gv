@@ -8,13 +8,13 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import apiRouter from '@/api/rotas';
 import { useEffect, useState } from 'react';
-import LoadingScreen from '@/components/LoadingScreen';
 import { useAuth } from '@/context/authContext';
 import { useRouter } from 'next/navigation';
+import { useComponentsContext } from '@/context/componentsContext';
 
 export default function Login() {
-  const [isLoading, setLoading] = useState(false)
   const router = useRouter()
+  const { setLoading } = useComponentsContext()
 
   type LoginCredentials = {
     username: string,
@@ -82,8 +82,6 @@ export default function Login() {
 
         <Button type='submit'>Entrar</Button>
       </form>
-
-      {isLoading && <LoadingScreen/>}
     </main>
   )
 }
