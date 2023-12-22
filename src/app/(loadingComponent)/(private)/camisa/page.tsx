@@ -28,6 +28,7 @@ export default function NovaCamisa() {
   const [formErrors, setFormErrors] = useState<ZodIssue[]>({} as ZodIssue[]);
 
   async function getData() {
+    setLoading(true)
     try {
       const dados = await getShirtTypes() as Option []
       if(dados){
@@ -36,6 +37,7 @@ export default function NovaCamisa() {
     } catch (error) {
       toast.error('Ocorreu algum erro. Atualize a página');
     }
+    setLoading(false)
   }
  
   useEffect(() => {
@@ -55,6 +57,7 @@ export default function NovaCamisa() {
     }) as ReturnValidator;
     
     if(!dados.success){
+      setLoading(false)
       setFormErrors(dados.data as ZodIssue[])
       setTimeout(() => {
         setFormErrors({} as ZodIssue[]);
@@ -102,12 +105,10 @@ export default function NovaCamisa() {
          
         router.push(`/camisa/${getIdModel(newModel)}`);
       } catch (error) {
+        setLoading(false)
         toast.error("Erro ao enviar os arquivos. Tente novamente")
       }
-
     }
-
-    setLoading(false)
   }
 
   return (

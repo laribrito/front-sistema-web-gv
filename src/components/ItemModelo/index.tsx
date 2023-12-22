@@ -4,6 +4,7 @@ import Box from "@/components/Box"
 import config from "@/utils/config"
 import { QtdUnidadesPorExtenso } from "@/utils/functions"
 import { useRouter } from "next/navigation"
+import { useComponentsContext } from "@/context/componentsContext"
 
 interface ItemModeloProps {
     nomeModelo: string
@@ -16,9 +17,11 @@ interface ItemModeloProps {
 export default function ItemModelo({nomeModelo, tipoCamisa, url, qtdCamisas, vertical = false}: ItemModeloProps){
     const qtdExtenso = QtdUnidadesPorExtenso(qtdCamisas);
     const router = useRouter()
+    const { setLoading } = useComponentsContext()
     return (
         <Box width={vertical ? config.WIDTH_HALF_WIDGETS : config.WIDTH_WIDGETS}>
             <div className={styles.itemModelo} onClick={()=>{
+                setLoading(true)
                 router.push(url)
             }}>
                 <h3>{nomeModelo}</h3>

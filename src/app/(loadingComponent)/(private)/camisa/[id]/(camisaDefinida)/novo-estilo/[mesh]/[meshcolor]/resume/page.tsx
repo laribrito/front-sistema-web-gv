@@ -58,30 +58,32 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
   }, [elementoRef.current, dataPage?.currentStyle]);
 
   async function getData() {
+    setLoading(true)
     try {
-        const meshs = await getMeshs()
-        const colorsMeshs = await getMeshColors()
+      const meshs = await getMeshs()
+      const colorsMeshs = await getMeshColors()
 
-        const currentModels = getShirtModels()
-        const currentModel = currentModels[params.id]
-        const stylePos = currentModel.shirtStyles.findIndex(
-          (style:ShirtStyle) => style.mesh == params.mesh &&
-          style.meshColor == params.meshcolor);
+      const currentModels = getShirtModels()
+      const currentModel = currentModels[params.id]
+      const stylePos = currentModel.shirtStyles.findIndex(
+        (style:ShirtStyle) => style.mesh == params.mesh &&
+        style.meshColor == params.meshcolor);
 
-        const currentGrid = currentModels[params.id].shirtStyles[stylePos].sizes
+      const currentGrid = currentModels[params.id].shirtStyles[stylePos].sizes
 
-        if(meshs && colorsMeshs && currentGrid){
-            setDataPage({
-                meshName: parseOptionName(meshs, params.mesh) as string,
-                meshColorName: parseOptionName(colorsMeshs, params.mesh) as string,
-                currentStyle: currentModels[params.id].shirtStyles[stylePos],
-                currentGrid: currentGrid,
-                gridInfo: calcularInfosGrade(currentGrid),
-            })
-        }
+      if(meshs && colorsMeshs && currentGrid){
+          setDataPage({
+              meshName: parseOptionName(meshs, params.mesh) as string,
+              meshColorName: parseOptionName(colorsMeshs, params.mesh) as string,
+              currentStyle: currentModels[params.id].shirtStyles[stylePos],
+              currentGrid: currentGrid,
+              gridInfo: calcularInfosGrade(currentGrid),
+          })
+      }
     } catch (error) {
       toast.error('Ocorreu algum erro. Atualize a página');
     }
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -139,9 +141,9 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
        
       router.push(`/novo-pedido/produtos/`);
     } catch (error) {
+      setLoading(false)
       toast.error("Erro ao enviar os arquivos. Tente novamente")
     }
-    setLoading(false)
   }
 
   return (

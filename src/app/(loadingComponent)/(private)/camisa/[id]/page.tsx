@@ -7,6 +7,8 @@ import { OrderInfos, ShirtModel, useOrderContext } from '@/context/orderContext'
 import { useServerDataContext } from '@/context/serverDataContext'
 import Navbar from '@/components/Navbar'
 import mainStyles from '@/app/(loadingComponent)/(private)/main.module.css'
+import toast from 'react-hot-toast'
+import { useComponentsContext } from '@/context/componentsContext'
 
 export default function DashboardModel({ params }: { params: { id: number } }) {
   type dadosHeader = {
@@ -14,23 +16,26 @@ export default function DashboardModel({ params }: { params: { id: number } }) {
     shirtModeling: string
   }
   const { getOrderInfos, getShirtModel } = useOrderContext()
+  const { setLoading } = useComponentsContext()
   const { getCompanies, getClassifications, parseOptionName, getShirtType } = useServerDataContext()
   const [dadosHeader, setDadosHeader] = useState<dadosHeader>({printName: '--', shirtModeling: '--'})
 
   useEffect(() => {
     async function fetchDataInfo() {
-        const model = getShirtModel(params.id) as ShirtModel
+      setLoading(true)
+      const model = getShirtModel(params.id) as ShirtModel
 
-        const shirtModel = await getShirtType(model.shirtModeling)
+      const shirtModel = await getShirtType(model.shirtModeling)
 
-        if(shirtModel){
-          setDadosHeader({
-            printName: model.printName,
-            shirtModeling: shirtModel
-          } as dadosHeader);
-        } else {
-
-        }
+      if(shirtModel){
+        setDadosHeader({
+          printName: model.printName,
+          shirtModeling: shirtModel
+        } as dadosHeader);
+      } else {
+        toast.error('Ocorreu algum erro. Atualize a página')
+      }
+      setLoading(false)
     }
 
     fetchDataInfo();

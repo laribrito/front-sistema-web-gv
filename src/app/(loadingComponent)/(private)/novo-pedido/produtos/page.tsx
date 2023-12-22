@@ -8,6 +8,7 @@ import { useServerDataContext } from '@/context/serverDataContext'
 import Navbar from '@/components/Navbar'
 import mainStyles from '@/app/(loadingComponent)/(private)/main.module.css'
 import ItemModelo from '@/components/ItemModelo'
+import { useComponentsContext } from '@/context/componentsContext'
 
 export default function DashboardProdutos() {
   type DataHeader={
@@ -31,11 +32,13 @@ export default function DashboardProdutos() {
   }
 
   const { getOrderInfos, getShirtModels, setShirtModels } = useOrderContext()
+  const { setLoading } = useComponentsContext()
   const { getCompanies, getClassifications, getShirtTypes, parseOptionName } = useServerDataContext()
   const [dadosHeader, setDadosHeader] = useState<DataHeader>({classificacao: '--', nomeCliente: '--', nomePedido: '--', empresa: '---'})
   const [products, setProducts] = useState<Products|null>(null)
 
   async function getDataInfo() {
+    setLoading(true)
     try {
       const pedidoInfo = getOrderInfos() as OrderInfos
 
@@ -55,9 +58,11 @@ export default function DashboardProdutos() {
       console.error('Erro ao obter empresas:', error);
       // Trate o erro conforme necessário
     }
+    setLoading(false)
   }
 
   async function getProducts() {
+    setLoading(true)
     var haveProducts = false
 
     const allShirts = getShirtModels()
@@ -89,6 +94,7 @@ export default function DashboardProdutos() {
       shirts: shirts,
       haveProducts: haveProducts
     })
+    setLoading(false)
   }
 
   useEffect(() => {

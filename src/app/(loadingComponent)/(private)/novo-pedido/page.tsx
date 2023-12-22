@@ -14,6 +14,7 @@ import { ZodIssue } from 'zod'
 import { useOrderContext, OrderInfos } from '@/context/orderContext'
 import { useServerDataContext } from '@/context/serverDataContext'
 import { useRouter } from 'next/navigation'
+import { useComponentsContext } from '@/context/componentsContext'
 
 export default function NovoPedido() {
   type DataPage= {
@@ -34,11 +35,13 @@ export default function NovoPedido() {
 
   const router = useRouter()
   const { setOrderInfos } = useOrderContext()
+  const { setLoading } = useComponentsContext()
   const { getClassifications, getCompanies, getStatus } = useServerDataContext()
   const [dataPage, setDataPage] = useState<DataPage | null>(null);
   const [formErrors, setFormErrors] = useState<ZodIssue[]>({} as ZodIssue[]);
 
   async function getData() {
+    setLoading(true)
     try {
       const [companiesResponse, classifResponse, statusResponse] = await Promise.all([
         getClassifications(),
@@ -53,6 +56,7 @@ export default function NovoPedido() {
     } catch (error) {
       toast.error('Ocorreu algum erro. Atualize a página');
     }
+    setLoading(false)
   }
  
   useEffect(() => {
@@ -71,6 +75,7 @@ export default function NovoPedido() {
 
   function handleSubmit(e: React.FormEvent){
     e.preventDefault();
+    setLoading(true)
 
     const form = e.currentTarget as HTMLFormElement;
 
@@ -85,6 +90,7 @@ export default function NovoPedido() {
     }) as ReturnValidator;
 
     if(!dados.success){
+      setLoading(false)
       setFormErrors(dados.data as ZodIssue[])
       setTimeout(() => {
         setFormErrors({} as ZodIssue[]);

@@ -36,6 +36,7 @@ export default function Sizes({params}: { params:{id: number, mesh: number, mesh
   }, [elementoRef.current, dataPage?.currentStyle]);
 
   async function getData() {
+    setLoading(true)
     try {
         const meshs = await getMeshs()
         const colorsMeshs = await getMeshColors()
@@ -56,6 +57,7 @@ export default function Sizes({params}: { params:{id: number, mesh: number, mesh
     } catch (error) {
       toast.error('Ocorreu algum erro. Atualize a página');
     }
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -97,8 +99,10 @@ export default function Sizes({params}: { params:{id: number, mesh: number, mesh
     } as SizeGrid
 
     const infos = calcularInfosGrade(newGrid)
-    if(infos.grandTotal==0) toast.error('Preencha algum tamanho de camisa')
-    else{
+    if(infos.grandTotal==0){
+      setLoading(false)
+      toast.error('Preencha algum tamanho de camisa')
+    } else {
       const currentModels = getShirtModels()
       const currentModel = currentModels[params.id]
       const stylePos = currentModel.shirtStyles.findIndex(
@@ -110,7 +114,6 @@ export default function Sizes({params}: { params:{id: number, mesh: number, mesh
 
       router.push(`/camisa/${params.id}/novo-estilo/${params.mesh}/${params.meshcolor}/resume`);
     }
-    setLoading(false)
   }
 
   return (

@@ -26,19 +26,21 @@ export default function Detailing01({params}: { params:{id: number, mesh: number
   const [formErrors, setFormErrors] = useState<ZodIssue[]>({} as ZodIssue[]);
 
   async function getData() {
+    setLoading(true)
     try {
-        const meshs = await getMeshs()
-        const colorsMeshs = await getMeshColors()
+      const meshs = await getMeshs()
+      const colorsMeshs = await getMeshColors()
 
-        if(meshs && colorsMeshs){
-            setDataPage({
-                meshName: parseOptionName(meshs, params.mesh) as string,
-                meshColorName: parseOptionName(colorsMeshs, params.mesh) as string
-            })
-        }
+      if(meshs && colorsMeshs){
+        setDataPage({
+            meshName: parseOptionName(meshs, params.mesh) as string,
+            meshColorName: parseOptionName(colorsMeshs, params.mesh) as string
+        })
+      }
     } catch (error) {
       toast.error('Ocorreu algum erro. Atualize a página');
     }
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -65,6 +67,7 @@ export default function Detailing01({params}: { params:{id: number, mesh: number
     }) as ReturnValidator;
     
     if(!dados.success){
+      setLoading(false)
       setFormErrors(dados.data as ZodIssue[])
       setTimeout(() => {
         setFormErrors({} as ZodIssue[]);
@@ -99,8 +102,6 @@ export default function Detailing01({params}: { params:{id: number, mesh: number
          
       router.push(`/camisa/${params.id}/novo-estilo/${params.mesh}/${params.meshcolor}/sizes`);
     }
-
-    setLoading(false)
   }
 
   return (

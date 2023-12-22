@@ -24,7 +24,10 @@ export default function Login() {
   const { accessToken, login } = useAuth();
   
   useEffect(() => {
-    if (accessToken) router.push('/home');
+    if (accessToken){
+      setLoading(true)      
+      router.push('/home');
+    } 
   }, [accessToken]);
 
   const handleLogin = async (e: React.FormEvent) => {

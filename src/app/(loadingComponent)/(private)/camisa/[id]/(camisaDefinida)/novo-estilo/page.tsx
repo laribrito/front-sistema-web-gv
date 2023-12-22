@@ -34,6 +34,7 @@ export default function NovaCamisa({params}: { params:{id: number}}) {
   const [formErrors, setFormErrors] = useState<ZodIssue[]>({} as ZodIssue[]);
 
   async function getData() {
+    setLoading(true)
     try {
       const dados = await getMeshs() as Option []
       if(dados && allMeshColors){
@@ -47,9 +48,11 @@ export default function NovaCamisa({params}: { params:{id: number}}) {
     } catch (error) {
       toast.error('Ocorreu algum erro. Atualize a página');
     }
+    setLoading(false)
   }
 
   async function getMC() {
+    setLoading(true)
     try {
       const dados2 = await getMeshColors() as Option []
       if(dados2){
@@ -58,6 +61,7 @@ export default function NovaCamisa({params}: { params:{id: number}}) {
     } catch (error) {
       toast.error('Ocorreu algum erro. Atualize a página');
     }
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -101,8 +105,6 @@ export default function NovaCamisa({params}: { params:{id: number}}) {
     if (!styleExists) currentModels[params.id].shirtStyles.push(newModel)
 
     setShirtModels(currentModels)
-
-    setLoading(false)
 
     router.push(`/camisa/${params.id}/novo-estilo/${form.mesh.value}/${form.meshColor.value}/detailing`)
   }
