@@ -68,7 +68,8 @@ export default function NovaCamisa() {
         printName: form.printName.value,
         shirtModeling: form.shirtModeling.value,
         namePhotoModel: '',
-        shirtStyles: []
+        shirtStyles: [],
+        number_units: 0
       } as ShirtModel
 
       //trata os documentos
@@ -99,7 +100,7 @@ export default function NovaCamisa() {
           }
         )
          
-        router.push(`/nova-camisa/${getIdModel(newModel)}`);
+        router.push(`/camisa/${getIdModel(newModel)}`);
       } catch (error) {
         toast.error("Erro ao enviar os arquivos. Tente novamente")
       }

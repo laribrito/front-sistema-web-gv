@@ -35,6 +35,7 @@ export default function Home() {
   };
 
   const { username, logout, getToken } = useAuth();
+  const { cleanOrdenContext } = useOrderContext()
   const [usernameLabel, setUsernameLabel] = useState<string | null>(null);
   const [dataPage, setDataPage] = useState<DataItemNegotiation[] | null>(null)
 
@@ -77,7 +78,8 @@ export default function Home() {
   useEffect(() => {
     if(!dataPage) getStatusAndNegotiations();
     if(username) setUsernameLabel(username)
-  }, [])
+    cleanOrdenContext()
+  }, [username])
 
   //processa logout
   async function handleLogout(){

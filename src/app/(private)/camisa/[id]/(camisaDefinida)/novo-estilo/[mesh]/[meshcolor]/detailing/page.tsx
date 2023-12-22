@@ -97,7 +97,7 @@ export default function Detailing01({params}: { params:{id: number, mesh: number
   
       setShirtModels(currentModels)
          
-      router.push(`/nova-camisa/${params.id}/novo-estilo/${params.mesh}/${params.meshcolor}/sizes`);
+      router.push(`/camisa/${params.id}/novo-estilo/${params.mesh}/${params.meshcolor}/sizes`);
     }
 
     setLoading(false)

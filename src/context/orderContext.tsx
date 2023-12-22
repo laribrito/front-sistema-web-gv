@@ -2,7 +2,6 @@
 import { createContext, useContext, ReactNode, useState } from 'react';
 
 export type OrderInfos = {
-  // Defina a estrutura dos detalhes do pedido
   nomePedido: string
   nomeCliente: string
   telefoneCliente: string
@@ -93,8 +92,8 @@ export type ShirtModel = {
   printName: string
   shirtModeling: number
   shirtStyles: ShirtStyle[]
+  number_units: number
   
-  number_units?: number
   namePhotoModel?: string
 };
 
@@ -111,6 +110,8 @@ type OrderContextType = {
   filesUpload: File[]
   setFilesUpload: (files: File[]) => void;
   getFilesUpload: () => File[];
+
+  cleanOrdenContext: ()=>void
 };
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
@@ -166,6 +167,12 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
     return filesUpload
   }
 
+  const cleanOrdenContext = () =>{
+    setOrderInfos(null)
+    setShirtModels([])
+    setFilesUpload([])
+  }
+
   const contextValue: OrderContextType = {
     currentOrder,
     filesUpload,
@@ -176,7 +183,8 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
     getShirtModel,
     getIdModel,
     setFilesUpload,
-    getFilesUpload
+    getFilesUpload,
+    cleanOrdenContext
   };
 
   return (

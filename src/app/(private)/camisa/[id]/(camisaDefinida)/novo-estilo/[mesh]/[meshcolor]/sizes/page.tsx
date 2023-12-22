@@ -108,7 +108,7 @@ export default function Sizes({params}: { params:{id: number, mesh: number, mesh
       
       setShirtModels(currentModels)
 
-      router.push(`/nova-camisa/${params.id}/novo-estilo/${params.mesh}/${params.meshcolor}/resume`);
+      router.push(`/camisa/${params.id}/novo-estilo/${params.mesh}/${params.meshcolor}/resume`);
     }
     setLoading(false)
   }

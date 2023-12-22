@@ -13,6 +13,9 @@ import InputFile from '@/components/Input/InputFile'
 import axios from 'axios'
 import apiRouter from '@/api/rotas'
 import { useAuth } from '@/context/authContext'
+import Navbar from '@/components/Navbar'
+import { IconBusca, IconCancel, IconHome, IconHomeActive, IconNext, IconNovoPedido, IconRelatorios, IconSave } from '@/utils/elements'
+import ModalYesOrNo from '@/components/ModalYesOrNo/indext'
 
 function LabelAndContent({label, content}: {label: string, content: number}){
   content = content? content : 0
@@ -41,6 +44,8 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
   const [isLoading, setLoading] = useState(false);
   const [alturaElemento, setAlturaElemento] = useState(0);
   const elementoRef = useRef<HTMLDivElement>(null);
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  const [HomeModalOpen, setHomeModalOpen] = useState(false);
 
   useEffect(() => {
     if (elementoRef.current) {
@@ -119,9 +124,20 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
 
       currentModels[params.id].shirtStyles[stylePos].attachments = listaAnexos
       currentModels[params.id].shirtStyles[stylePos].comments = form.obs.value
+      
+      var numberShirt = 0
+      currentModels[params.id].shirtStyles.forEach((shirtStyle, index)=>{
+        if(shirtStyle.sizes){
+          const infos = calcularInfosGrade(shirtStyle.sizes)
+          numberShirt+=infos.grandTotal
+        }
+      })
+      
+      currentModels[params.id].number_units = numberShirt
+
       setShirtModels(currentModels)
        
-      // router.push(`/nova-camisa/${getIdModel(newModel)}`);
+      router.push(`/novo-pedido/produtos/`);
     } catch (error) {
       toast.error("Erro ao enviar os arquivos. Tente novamente")
     }
@@ -191,8 +207,25 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
 
             <InputFile label='Anexos' id='anexos' multiple/>
 
-            <Button type='submit'>Salvar</Button>
+            <ModalYesOrNo 
+                  open={cancelModalOpen}
+                  question={`Tem certeza que deseja cancelar o cadastro de ${dataPage.meshName} na cor ${dataPage.meshColorName}?`}
+                  onConfirm={()=>{toast.success('confirmou')}}
+                  onClose={()=>{setCancelModalOpen(false)}}
+            />
 
+            <ModalYesOrNo 
+                  open={HomeModalOpen}
+                  question={`Tem certeza que deseja cancelar a criação desse pedido?`}
+                  onConfirm={()=>{toast.success('confirmou')}}
+                  onClose={()=>{setHomeModalOpen(false)}}
+            />
+
+            <Navbar.Root>
+              <Navbar.Item icon={IconHome} goto={()=>{setHomeModalOpen(true)}}>Home</Navbar.Item>
+              <Navbar.Item icon={IconCancel} goto={()=>{setCancelModalOpen(true)}}>Cancelar Estilo</Navbar.Item>
+              <Navbar.Item icon={IconSave} submit>Salvar</Navbar.Item>
+            </Navbar.Root>
           </form>
         </div>
     </>

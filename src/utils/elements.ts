@@ -7,6 +7,9 @@ import { IoIosLogOut } from "react-icons/io";
 import { PiCirclesThreePlusFill } from "react-icons/pi";
 import { SlDocs } from "react-icons/sl";
 import { CgStyle } from "react-icons/cg";
+import { MdNextPlan } from "react-icons/md";
+import { FaSave } from "react-icons/fa";
+import { MdCancel } from "react-icons/md";
 
 // navbar
 export const BtnEdicaoHeader = FaRegPenToSquare;
@@ -29,3 +32,10 @@ export const IconNovoEstilo = CgStyle
 export const IconPDF = FaFilePdf
 
 export const IconGeneric = SlDocs
+
+// outros
+export const IconNext = MdNextPlan
+
+export const IconSave = FaSave
+
+export const IconCancel = MdCancel
