@@ -1,17 +1,32 @@
-import {SelectHTMLAttributes, useState, ChangeEvent} from "react";
+import {SelectHTMLAttributes, useState, ChangeEvent, useEffect} from "react";
 import stylesInput from "../input.module.css"
 import { InputGeneric, Option, themeMUI, variantOfInputs } from "../interfaceInput";
 import { MenuItem, Select, SelectChangeEvent, ThemeProvider } from "@mui/material";
 
 interface InputSelectProps extends InputGeneric, SelectHTMLAttributes<HTMLSelectElement>{
   options: Option[] | null
+  defaultValue?: string
 }
 
-export default function InputSelect({options, id, label, name, ...rest}:InputSelectProps) {
-  const [selectedValue, setSelectedValue] = useState<HTMLSelectElement | undefined>((options && options.length>0)? options[0].id as unknown as HTMLSelectElement: undefined);
+export default function InputSelect({options, id, label, name, defaultValue, ...rest}:InputSelectProps) {
+  var initialValue = ''
 
-  const handleSelectChange = (event: SelectChangeEvent<HTMLSelectElement>) => {
-    setSelectedValue(event.target.value as HTMLSelectElement)
+  if(defaultValue) initialValue = defaultValue
+  else if(options && options.length>0) initialValue = options[0].id.toString()
+
+  console.log(initialValue)
+
+  const [selectedValue, setSelectedValue] = useState<String>(initialValue);
+  
+  useEffect(()=>{
+    if(!selectedValue)
+      if(defaultValue) setSelectedValue(defaultValue)
+      else if(options && options.length>0) setSelectedValue(options[0].id.toString())
+  }, [options, defaultValue])
+
+
+  const handleSelectChange = (event: SelectChangeEvent<string>) => {
+    setSelectedValue(event.target.value as string)
   };
   
   return (
@@ -22,7 +37,7 @@ export default function InputSelect({options, id, label, name, ...rest}:InputSel
         <Select 
           variant={variantOfInputs} 
           size="small" 
-          value={selectedValue || ""}
+          value={selectedValue}
           onChange={handleSelectChange}
           hiddenLabel 
           name={name} 
