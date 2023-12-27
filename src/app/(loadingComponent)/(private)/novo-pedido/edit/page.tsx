@@ -16,7 +16,7 @@ import { useServerDataContext } from '@/context/serverDataContext'
 import { useRouter } from 'next/navigation'
 import { useComponentsContext } from '@/context/componentsContext'
 
-export default function NovoPedido() {
+export default function EditarInfoPedido() {
   type DataPage= {
     status: Option[],
     company: Option[],
@@ -33,11 +33,21 @@ export default function NovoPedido() {
     return dataPage;
   }
 
+  type FormContent = {
+    customerName: string
+    orderName: string
+    status: string
+    customerPhone: string
+    class: string
+    company: string
+  }
+
   const router = useRouter()
-  const { setOrderInfos } = useOrderContext()
+  const { setOrderInfos, getOrderInfos } = useOrderContext()
   const { setLoading } = useComponentsContext()
   const { getClassifications, getCompanies, getStatus } = useServerDataContext()
   const [dataPage, setDataPage] = useState<DataPage | null>(null);
+  const [infosOrder, setInfosOrder] = useState<FormContent | null> (null)
   const [formErrors, setFormErrors] = useState<ZodIssue[]>({} as ZodIssue[]);
 
   async function getData() {
@@ -58,10 +68,23 @@ export default function NovoPedido() {
     }
     setLoading(false)
   }
+
+  function getInfosOrder(){
+    const infos = getOrderInfos()
+    setInfosOrder({
+        customerName: infos.nomeCliente,
+        customerPhone: infos.telefoneCliente,
+        class: infos.classificacao.toString(),
+        company: infos.empresa.toString(),
+        orderName: infos.nomePedido,
+        status: infos.status.toString()
+    })
+  }
  
   useEffect(() => {
-    if(!dataPage) getData();
-  }, [])
+    if(!dataPage) getData()
+    if(!infosOrder) getInfosOrder()
+  }, [dataPage, infosOrder])
 
   // form submit
   type FormData = {
@@ -117,7 +140,7 @@ export default function NovoPedido() {
     <>
       <Header.Root>
           <Header.BtnReturn/>
-          <Header.Title>Nova Negociação</Header.Title>  
+          <Header.Title>Editar Negociação</Header.Title>  
       </Header.Root>
       <form method='post' onSubmit={handleSubmit}>
           <InputText 
@@ -125,6 +148,7 @@ export default function NovoPedido() {
             label='Nome do pedido' 
             name='nomePedido' 
             id='nomePedido'
+            defaultValue={infosOrder?.orderName}
             autoFocus 
             required 
             errors={formErrors}
@@ -134,6 +158,7 @@ export default function NovoPedido() {
             type='text' 
             label='Cliente Mediador' 
             name='nomeCliente' 
+            defaultValue={infosOrder?.customerName}
             id='nomeCliente'
             required 
             errors={formErrors}
@@ -144,19 +169,37 @@ export default function NovoPedido() {
             label='Whatsapp/Telefone'
             id='telefoneCliente'
             name='telefoneCliente' 
+            defaultValue={infosOrder?.customerPhone}
             required 
             errors={formErrors}
           />
 
-          <InputRadioGroup label='Empresa Responsável' name='empresa' options={dataPage && dataPage.company}/>
+          <InputRadioGroup 
+            label='Empresa Responsável' 
+            defaultValue={infosOrder?.company} 
+            name='empresa' 
+            options={dataPage && dataPage.company}
+          />
 
           <div className={stylesPage.divForm}>
             <div className={stylesPage.divFormChild}>
-              <InputSelect label='Status' name='status' id='statusPedido' options={dataPage && dataPage.classif} />
+              <InputSelect 
+                label='Status' 
+                name='status' 
+                id='statusPedido' 
+                options={dataPage && dataPage.classif} 
+                defaultValue={infosOrder?.status}
+              />
             </div>
 
             <div className={stylesPage.divFormChild}>
-              <InputSelect label='Classificação' id='classifPedido' name='classificacao' options={dataPage && dataPage.status} />
+              <InputSelect 
+                label='Classificação' 
+                id='classifPedido' 
+                name='classificacao' 
+                options={dataPage && dataPage.status} 
+                defaultValue={infosOrder?.class}
+              />
             </div>
           </div>
 

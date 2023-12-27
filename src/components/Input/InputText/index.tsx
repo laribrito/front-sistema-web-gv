@@ -9,7 +9,7 @@ interface InputTextProps extends InputGeneric, InputHTMLAttributes<HTMLInputElem
   multiline?: boolean
 }
 
-export default function InputText({type, id, label, errors, tosize=false, multiline=false, ...rest}:InputTextProps) { 
+export default function InputText({type, id, label, errors, defaultValue, tosize=false, multiline=false, ...rest}:InputTextProps) { 
   const hasError = errors && Array.isArray(errors)
   ? errors.find((error) => error.path[0] === id)?.message || ''
   : '';
@@ -27,6 +27,7 @@ export default function InputText({type, id, label, errors, tosize=false, multil
           hiddenLabel
           id={id}
           type={type} 
+          defaultValue={defaultValue && defaultValue}
           multiline = {multiline}
           aria-label={rest["aria-label"]} 
           name={rest["name"]} 

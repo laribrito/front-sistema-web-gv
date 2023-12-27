@@ -7,16 +7,17 @@ import {Option} from "../interfaceInput"
 interface InputRadioGroupProps extends InputGeneric, InputHTMLAttributes<HTMLInputElement>{
     vertical?: boolean
     options: Option[] | null
+    defaultValue?: number
 }
 
-export default function InputRadioGroup({ label, id, type, options, name, vertical=false, ...rest }:InputRadioGroupProps){
-    const radioConfig = <Radio size='small' color='default'/>;
+export default function InputRadioGroup({ label, id, type, options, name, defaultValue, vertical=false, ...rest }:InputRadioGroupProps){
+  const radioConfig = <Radio size='small' color='default'/>;
   return (
     <div className={stylesInput.formField}>
       <label htmlFor={id}>{`${label}:`}</label>
         {options && 
           <RadioGroup
-              defaultValue={1}
+              defaultValue={defaultValue? defaultValue : 1}
               name={name}
               row={!vertical}
           >

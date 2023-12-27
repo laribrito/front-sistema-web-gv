@@ -1,7 +1,7 @@
 'use client'
 import Header from '@/components/Header'
 import styles from './page.module.css'
-import { BtnEdicaoHeader,IconNovaCamisa } from "@/utils/elements"
+import { BtnEdicaoHeader,IconCancel,IconNovaCamisa } from "@/utils/elements"
 import { useEffect, useState } from 'react'
 import { OrderInfos, ShirtModel, useOrderContext } from '@/context/orderContext'
 import { useServerDataContext } from '@/context/serverDataContext'
@@ -9,6 +9,8 @@ import Navbar from '@/components/Navbar'
 import mainStyles from '@/app/(loadingComponent)/(private)/main.module.css'
 import ItemModelo from '@/components/ItemModelo'
 import { useComponentsContext } from '@/context/componentsContext'
+import { useRouter } from 'next/navigation'
+import ModalYesOrNo from '@/components/ModalYesOrNo/indext'
 
 export default function DashboardProdutos() {
   type DataHeader={
@@ -31,11 +33,17 @@ export default function DashboardProdutos() {
     haveProducts: boolean
   }
 
+  const router = useRouter()
   const { getOrderInfos, getShirtModels, setShirtModels } = useOrderContext()
   const { setLoading } = useComponentsContext()
   const { getCompanies, getClassifications, getShirtTypes, parseOptionName } = useServerDataContext()
   const [dadosHeader, setDadosHeader] = useState<DataHeader>({classificacao: '--', nomeCliente: '--', nomePedido: '--', empresa: '---'})
   const [products, setProducts] = useState<Products|null>(null)
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
+
+  useEffect(()=>{
+    setLoading(false)
+  }, [cancelModalOpen])
 
   async function getDataInfo() {
     setLoading(true)
@@ -105,10 +113,11 @@ export default function DashboardProdutos() {
   return (
     <>
       <Header.Root>
-          <Header.BtnReturn/>
           <Header.Title>{dadosHeader?.nomePedido}</Header.Title>
           <Header.Subtitle>{dadosHeader?.nomeCliente}</Header.Subtitle>
-          <Header.BtnExtra icon={BtnEdicaoHeader}/>
+          <Header.BtnExtra icon={BtnEdicaoHeader} onClick={()=>{
+            router.push('/novo-pedido/edit')
+          }}/>
       </Header.Root>
 
       <div className={styles.grid}>
@@ -130,7 +139,7 @@ export default function DashboardProdutos() {
         </div>
         : (products && !products.haveProducts)?
             <div className={styles.spanBox}>
-              <span className={mainStyles.labelDiscreto}>Cadastre modelos</span>
+              <span className={mainStyles.labelDiscreto}>Cadastre produtos no pedido</span>
             </div>
             :
             <div>
@@ -139,9 +148,15 @@ export default function DashboardProdutos() {
             </div>
       }
 
-      
+      <ModalYesOrNo 
+            open={cancelModalOpen}
+            question={`Tem certeza que deseja cancelar o cadastro desse pedido?`}
+            onConfirm={()=>{router.push('/home')}}
+            onClose={()=>{setCancelModalOpen(false)}}
+      />
 
       <Navbar.Root>
+      <Navbar.Item icon={IconCancel} goto={()=>{setCancelModalOpen(true)}}>Cancelar<br/>Cadastro</Navbar.Item>
         <Navbar.Item icon={IconNovaCamisa}>Nova Camisa</Navbar.Item>
       </Navbar.Root>
     </>

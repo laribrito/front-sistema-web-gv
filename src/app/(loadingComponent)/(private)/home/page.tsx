@@ -13,6 +13,7 @@ import ItemNegociacaoStatus from '@/components/ItemNegociacao/itemNegociacaoStat
 import Box from '@/components/Box'
 import config from '@/utils/config'
 import { useOrderContext } from '@/context/orderContext'
+import { useComponentsContext } from '@/context/componentsContext'
 
 export default function Home() {
   type DataStatus = {
@@ -36,11 +37,13 @@ export default function Home() {
 
   const { username, logout, getToken } = useAuth();
   const { cleanOrdenContext } = useOrderContext()
+  const { setLoading } = useComponentsContext()
   const [usernameLabel, setUsernameLabel] = useState<string | null>(null);
   const [dataPage, setDataPage] = useState<DataItemNegotiation[] | null>(null)
 
   // pega os status e as negociações
   async function getStatusAndNegotiations() {
+    setLoading(true)
     try {
       const [statusResponse, negotiationsResponse] = await Promise.all([
         axios.get(apiRouter.statuses, {
@@ -73,6 +76,8 @@ export default function Home() {
     } catch (error) {
       toast.error('Ocorreu algum erro. Atualize a página');
     }
+
+    setLoading(false)
   }
  
   useEffect(() => {

@@ -1,0 +1,8 @@
+.divFormChild{
+    width: 48%;
+}
+
+.divForm{
+    display: flex;
+    justify-content: space-between;
+}

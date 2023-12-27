@@ -14,8 +14,6 @@ export default function InputSelect({options, id, label, name, defaultValue, ...
   if(defaultValue) initialValue = defaultValue
   else if(options && options.length>0) initialValue = options[0].id.toString()
 
-  console.log(initialValue)
-
   const [selectedValue, setSelectedValue] = useState<String>(initialValue);
   
   useEffect(()=>{
