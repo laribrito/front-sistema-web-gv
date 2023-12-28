@@ -7,9 +7,11 @@ import toast from 'react-hot-toast'
 import { Option } from '@/components/Input/interfaceInput'
 import { ZodIssue } from 'zod'
 import { ShirtStyle, useOrderContext } from '@/context/orderContext'
-import { useAuth } from '@/context/authContext'
 import { useRouter } from 'next/navigation'
 import { useComponentsContext } from '@/context/componentsContext'
+import Navbar from '@/components/Navbar'
+import { IconNext, IconSave } from '@/utils/elements'
+import { SelectChangeEvent } from '@mui/material'
 
 export default function EditarCamisa({params}: { params:{id: number, idshirtstyle: number}}) {
   type DataPage = {
@@ -30,16 +32,20 @@ export default function EditarCamisa({params}: { params:{id: number, idshirtstyl
   const [allMeshColors, setMeshColors] = useState<Option[] | null>(null)
   const [formErrors, setFormErrors] = useState<ZodIssue[]>({} as ZodIssue[])
   const [formContent, setFormContent] = useState<FormContent | null>(null)
+  const [isNext, setIsNext] = useState<boolean>(false)
 
   async function getData() {
     setLoading(true)
     try {
       const dados = await getMeshs() as Option []
+      const current = getShirtModel(params.id)
+      const style = current.shirtStyles[params.idshirtstyle]
+
       if(dados && allMeshColors){
         setDataPage({
           meshs: dados,
           meshColors: allMeshColors.filter((color) => {
-            return color.isAvailable == true && color.relation_id == 1;
+            return color.isAvailable == true && color.relation_id == style.mesh;
           }),
         })
       }
@@ -81,12 +87,14 @@ export default function EditarCamisa({params}: { params:{id: number, idshirtstyl
 
   }, [allMeshColors])
   
-  const selectMeshColors = (event: ChangeEvent<HTMLSelectElement>) => {
+  const selectMeshColors = (event:  SelectChangeEvent<string>) => {
     const selectedValue = event.target.value;
     const idMesh = parseInt(selectedValue, 10)
     const currentData = dataPage
 
     if(currentData && allMeshColors){
+      setFormContent(null)
+      
       setDataPage({
         meshs: currentData.meshs,
         meshColors: allMeshColors.filter((color) => {
@@ -108,16 +116,14 @@ export default function EditarCamisa({params}: { params:{id: number, idshirtstyl
     } as ShirtStyle
 
     const currentModels = getShirtModels()
-    const currentModel = currentModels[params.id]
-    const styleExists = currentModel.shirtStyles.find(
-      (style:ShirtStyle) => style.mesh == newModel.mesh &&
-      style.meshColor == newModel.meshColor);
-
-    if (!styleExists) currentModels[params.id].shirtStyles.push(newModel)
+    
+    currentModels[params.id].shirtStyles[params.idshirtstyle].mesh = newModel.mesh
+    currentModels[params.id].shirtStyles[params.idshirtstyle].meshColor = newModel.meshColor    
 
     setShirtModels(currentModels)
 
-    router.push(`/camisa/${params.id}/novo-estilo/${form.mesh.value}/${form.meshColor.value}/detailing`)
+    if(isNext) router.push(`/camisa/${params.id}/${params.idshirtstyle}/detailing`)
+    else router.push(`/camisa/${params.id}/`)
   }
 
   return (
@@ -129,7 +135,7 @@ export default function EditarCamisa({params}: { params:{id: number, idshirtstyl
           id='mesh'
           required
           defaultValue={formContent? formContent.mesh : ''}
-          onChange={selectMeshColors}
+          otherOnChange={selectMeshColors}
           options={dataPage && dataPage.meshs}
           errors={formErrors}
         />
@@ -144,7 +150,10 @@ export default function EditarCamisa({params}: { params:{id: number, idshirtstyl
           errors={formErrors}
         />
 
-        <Button type='submit'>Próximo</Button>
+        <Navbar.Root>
+          <Navbar.Item icon={IconSave} submit >Finalizar<br/>Edição</Navbar.Item>
+          <Navbar.Item icon={IconNext} submit onClick={()=>{ setIsNext(true) }}>Próximo</Navbar.Item>
+        </Navbar.Root>
       </form>
     </>
   )

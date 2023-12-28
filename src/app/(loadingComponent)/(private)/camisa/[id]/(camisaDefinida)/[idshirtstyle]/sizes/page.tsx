@@ -9,21 +9,27 @@ import styles from './page.module.css'
 import InputText from '@/components/Input/InputText'
 import ShirtStyleDisplay from '@/components/ShirtStyleDisplay'
 import { useComponentsContext } from '@/context/componentsContext'
+import Navbar from '@/components/Navbar'
+import { IconNext, IconSave } from '@/utils/elements'
 
-export default function Sizes({params}: { params:{id: number, mesh: number, meshcolor: number}}) {
+export default function Sizes({params}: { params:{id: number, idshirtstyle: number}}) {
   type DataPage = {
       meshName: string
       meshColorName: string
       currentStyle?: ShirtStyle
   }
 
+  type FormContent = SizeGrid
+
   const router = useRouter()
   const { setLoading } = useComponentsContext()
   const { parseOptionName, getMeshColors, getMeshs } = useServerDataContext()
-  const { setShirtModels, getShirtModels } = useOrderContext()
+  const { setShirtModels, getShirtModels, getShirtModel } = useOrderContext()
   const [dataPage, setDataPage] = useState<DataPage>({meshName: '---', meshColorName: '---'})
   const [alturaElemento, setAlturaElemento] = useState(0);
   const elementoRef = useRef<HTMLDivElement>(null);
+  const [isNext, setIsNext] = useState<boolean>(false)
+  const [formContent, setFormContent] = useState<FormContent | null>(null)
 
   useEffect(() => {
     if (elementoRef.current) {
@@ -41,18 +47,17 @@ export default function Sizes({params}: { params:{id: number, mesh: number, mesh
         const meshs = await getMeshs()
         const colorsMeshs = await getMeshColors()
 
-        const currentModels = getShirtModels()
-        const currentModel = currentModels[params.id]
-        const stylePos = currentModel.shirtStyles.findIndex(
-          (style:ShirtStyle) => style.mesh == params.mesh &&
-          style.meshColor == params.meshcolor);
+        const current = getShirtModel(params.id)
+        const style = current.shirtStyles[params.idshirtstyle]
 
         if(meshs && colorsMeshs){
             setDataPage({
-                meshName: parseOptionName(meshs, params.mesh) as string,
-                meshColorName: parseOptionName(colorsMeshs, params.mesh) as string,
-                currentStyle: currentModels[params.id].shirtStyles[stylePos]
+                meshName: parseOptionName(meshs, style.mesh) as string,
+                meshColorName: parseOptionName(colorsMeshs, style.meshColor) as string,
+                currentStyle: style
             })
+
+            setFormContent(style.sizes as FormContent)
         }
     } catch (error) {
       toast.error('Ocorreu algum erro. Atualize a página');
@@ -104,15 +109,12 @@ export default function Sizes({params}: { params:{id: number, mesh: number, mesh
       toast.error('Preencha algum tamanho de camisa')
     } else {
       const currentModels = getShirtModels()
-      const currentModel = currentModels[params.id]
-      const stylePos = currentModel.shirtStyles.findIndex(
-        (style:ShirtStyle) => style.mesh == params.mesh &&
-        style.meshColor == params.meshcolor);
-      currentModels[params.id].shirtStyles[stylePos].sizes = newGrid
+      currentModels[params.id].shirtStyles[params.idshirtstyle].sizes = newGrid
       
       setShirtModels(currentModels)
 
-      router.push(`/camisa/${params.id}/novo-estilo/${params.mesh}/${params.meshcolor}/resume`);
+      if(isNext) router.push(`/camisa/${params.id}/${params.idshirtstyle}/resume`)
+      else router.push(`/camisa/${params.id}/`)
     }
   }
 
@@ -129,34 +131,37 @@ export default function Sizes({params}: { params:{id: number, mesh: number, mesh
       <form method='post' onSubmit={handleSubmit} style={{margin: `${alturaElemento+100}px 0 40px 0`}}>
         <h3>Babylooks:</h3>
         <div className={styles.gridSizes}>
-          <InputText type='text' label='P' id='babyP' name='babyP' tosize/>
-          <InputText type='text' label='M' id='babyM' name='babyM' tosize/>
-          <InputText type='text' label='G' id='babyG' name='babyG' tosize/>
-          <InputText type='text' label='GG' id='babyGG' name='babyGG' tosize/>
-          <InputText type='text' label='XG' id='babyXG' name='babyXG' tosize/>
+          <InputText type='text' defaultValue={formContent?.female.p } label='P' id='babyP' name='babyP' tosize/>
+          <InputText type='text' defaultValue={formContent?.female.m } label='M' id='babyM' name='babyM' tosize/>
+          <InputText type='text' defaultValue={formContent?.female.g } label='G' id='babyG' name='babyG' tosize/>
+          <InputText type='text' defaultValue={formContent?.female.gg} label='GG' id='babyGG' name='babyGG' tosize/>
+          <InputText type='text' defaultValue={formContent?.female.xg} label='XG' id='babyXG' name='babyXG' tosize/>
         </div>
 
         <h3>Masculinas:</h3>
         <div className={styles.gridSizes}>
-          <InputText type='text' label='P' id='mascP' name='mascP' tosize/>
-          <InputText type='text' label='M' id='mascM' name='mascM' tosize/>
-          <InputText type='text' label='G' id='mascG' name='mascG' tosize/>
-          <InputText type='text' label='GG' id='mascGG' name='mascGG' tosize/>
-          <InputText type='text' label='XG' id='mascXG' name='mascXG' tosize/>
+          <InputText type='text' defaultValue={formContent?.male.p } label='P' id='mascP' name='mascP' tosize/>
+          <InputText type='text' defaultValue={formContent?.male.m } label='M' id='mascM' name='mascM' tosize/>
+          <InputText type='text' defaultValue={formContent?.male.g } label='G' id='mascG' name='mascG' tosize/>
+          <InputText type='text' defaultValue={formContent?.male.gg} label='GG' id='mascGG' name='mascGG' tosize/>
+          <InputText type='text' defaultValue={formContent?.male.xg} label='XG' id='mascXG' name='mascXG' tosize/>
         </div>
 
         <h3>Infantis:</h3>
         <div className={styles.gridSizes}>
-          <InputText type='text' label='1' id='ano1' name='ano1' tosize/>
-          <InputText type='text' label='2' id='ano2' name='ano2' tosize/>
-          <InputText type='text' label='4' id='ano4' name='ano4' tosize/>
-          <InputText type='text' label='6' id='ano6' name='ano6' tosize/>
-          <InputText type='text' label='8' id='ano8' name='ano8' tosize/>
-          <InputText type='text' label='10' id='ano10' name='ano10' tosize/>
-          <InputText type='text' label='12' id='ano12' name='ano12' tosize/>
+          <InputText type='text' defaultValue={formContent?.infant[ 1]} label='1' id='ano1' name='ano1' tosize/>
+          <InputText type='text' defaultValue={formContent?.infant[ 2]}label='2' id='ano2' name='ano2' tosize/>
+          <InputText type='text' defaultValue={formContent?.infant[ 4]}label='4' id='ano4' name='ano4' tosize/>
+          <InputText type='text' defaultValue={formContent?.infant[ 6]}label='6' id='ano6' name='ano6' tosize/>
+          <InputText type='text' defaultValue={formContent?.infant[ 8]}label='8' id='ano8' name='ano8' tosize/>
+          <InputText type='text' defaultValue={formContent?.infant[10]}label='10' id='ano10' name='ano10' tosize/>
+          <InputText type='text' defaultValue={formContent?.infant[12]}label='12' id='ano12' name='ano12' tosize/>
         </div>
 
-        <Button type='submit'>Próximo</Button>
+        <Navbar.Root>
+          <Navbar.Item icon={IconSave} submit >Finalizar<br/>Edição</Navbar.Item>
+          <Navbar.Item icon={IconNext} submit onClick={()=>{ setIsNext(true) }}>Próximo</Navbar.Item>
+        </Navbar.Root>
       </form>
     </>
   )

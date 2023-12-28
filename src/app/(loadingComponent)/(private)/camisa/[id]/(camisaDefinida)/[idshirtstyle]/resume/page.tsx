@@ -27,13 +27,18 @@ function LabelAndContent({label, content}: {label: string, content: number}){
   )
 }
 
-export default function Resume({params}: { params:{id: number, mesh: number, meshcolor: number}}) {
+export default function Resume({params}: { params:{id: number, idshirtstyle: number}}) {
   type DataPage = {
       meshName: string
       meshColorName: string
       currentStyle?: ShirtStyle
       currentGrid?: SizeGrid
       gridInfo?: InfosSizeGrid
+  }
+
+  type FormContent = {
+    obs: string
+    attachments: string[]
   }
 
   const router = useRouter()
@@ -45,7 +50,8 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
   const [alturaElemento, setAlturaElemento] = useState(0);
   const elementoRef = useRef<HTMLDivElement>(null);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
-  const [HomeModalOpen, setHomeModalOpen] = useState(false);
+  const [formContent, setFormContent] = useState<FormContent|null> (null)
+  const [filesAtt, setFilesAtt] = useState<File[]>()
 
   useEffect(() => {
     if (elementoRef.current) {
@@ -57,6 +63,61 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
 
   }, [elementoRef.current, dataPage?.currentStyle]);
 
+async function getFormContent() {
+  try {
+    setLoading(true);
+
+    const currentModels = getShirtModels();
+    const current = currentModels[params.id].shirtStyles[params.idshirtstyle];
+
+    const attachments = current.attachments as string[];
+    const obs = current.comments as string;
+
+    setFormContent({
+      attachments,
+      obs,
+    });
+
+    // Pega imagem do modelo
+    if (attachments?.length) {
+      const filePromises = attachments.map(async (name) => {
+        try {
+          const encodedFileName = encodeURIComponent(name);
+          const response = await axios.get(apiRouter.fileManager + encodedFileName, {
+            responseType: 'blob',
+          });
+
+          const currentExtension = encodedFileName.split('.').pop();
+          let fileType = 'application/octet-stream';
+
+          if (currentExtension) {
+            fileType = currentExtension.toLowerCase();
+
+            if (['jpg', 'jpeg', 'png', 'gif', 'bmp'].includes(currentExtension.toLowerCase())) {
+              fileType = 'image/' + fileType;
+            }
+          }
+
+          const file = new File([response.data], name, { type: fileType });
+          return file;
+        } catch (error) {
+          // Trate o erro específico para cada imagem ou adote uma abordagem geral
+          console.error(`Erro ao baixar a imagem ${name}:`, error);
+          throw new Error('Erro ao baixar uma ou mais imagens. Recarregue a página.');
+        }
+      });
+
+      const files = await Promise.all(filePromises);
+      setFilesUpload(files);
+      console.log(files);
+    }
+  } catch (error) {
+    console.error('Erro ao obter o conteúdo do formulário:', error);
+    toast.error('Erro ao obter o conteúdo do formulário. Recarregue a página.');
+  } finally {
+    setLoading(false);
+  }
+}
   async function getData() {
     setLoading(true)
     try {
@@ -64,18 +125,15 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
       const colorsMeshs = await getMeshColors()
 
       const currentModels = getShirtModels()
-      const currentModel = currentModels[params.id]
-      const stylePos = currentModel.shirtStyles.findIndex(
-        (style:ShirtStyle) => style.mesh == params.mesh &&
-        style.meshColor == params.meshcolor);
+      const currentStyle = currentModels[params.id].shirtStyles[params.idshirtstyle]
 
-      const currentGrid = currentModels[params.id].shirtStyles[stylePos].sizes
+      const currentGrid = currentStyle.sizes
 
       if(meshs && colorsMeshs && currentGrid){
           setDataPage({
-              meshName: parseOptionName(meshs, params.mesh) as string,
-              meshColorName: parseOptionName(colorsMeshs, params.mesh) as string,
-              currentStyle: currentModels[params.id].shirtStyles[stylePos],
+              meshName: parseOptionName(meshs, currentStyle.mesh) as string,
+              meshColorName: parseOptionName(colorsMeshs, currentStyle.meshColor) as string,
+              currentStyle: currentStyle,
               currentGrid: currentGrid,
               gridInfo: calcularInfosGrade(currentGrid),
           })
@@ -88,8 +146,12 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
 
   useEffect(() => {
     if(dataPage.meshName=='---' || dataPage.meshColorName=='---') getData();
-
+    if(!formContent) getFormContent()
   }, [dataPage])
+
+  useEffect(()=>{
+    console.log('foi')
+  },[formContent])
 
   async function handleSubmit(e: React.FormEvent){
     e.preventDefault();
@@ -108,10 +170,6 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
     });
 
     const currentModels = getShirtModels()
-    const currentModel = currentModels[params.id]
-    const stylePos = currentModel.shirtStyles.findIndex(
-      (style:ShirtStyle) => style.mesh == params.mesh &&
-      style.meshColor == params.meshcolor);
 
     try {
       if(filesUpload.length>0) 
@@ -123,10 +181,11 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
           },
         }
       )
+
       setFilesUpload([])
 
-      currentModels[params.id].shirtStyles[stylePos].attachments = listaAnexos
-      currentModels[params.id].shirtStyles[stylePos].comments = form.obs.value
+      currentModels[params.id].shirtStyles[params.idshirtstyle].attachments = listaAnexos
+      currentModels[params.id].shirtStyles[params.idshirtstyle].comments = form.obs.value
       
       var numberShirt = 0
       currentModels[params.id].shirtStyles.forEach((shirtStyle, index)=>{
@@ -140,7 +199,7 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
 
       setShirtModels(currentModels)
        
-      router.push(`/novo-pedido/produtos/`);
+      router.push(`/camisa/${params.id}/`);
     } catch (error) {
       setLoading(false)
       toast.error("Erro ao enviar os arquivos. Tente novamente")
@@ -203,28 +262,12 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
             </>
             }
 
-          <form method='post' onSubmit={handleSubmit} style={{marginTop: '20px'}}>
-            <InputText type='text' label='Observações' id='obs' name='obs' multiline />
+          <form method='post' onSubmit={handleSubmit} style={{marginTop: '20px', marginBottom: '80px'}}>
+            <InputText type='text' defaultValue={formContent?.obs} label='Observações' id='obs' name='obs' multiline />
 
             <InputFile label='Anexos' id='anexos' multiple/>
 
-            <ModalYesOrNo 
-                  open={cancelModalOpen}
-                  question={`Tem certeza que deseja cancelar o cadastro de ${dataPage.meshName} na cor ${dataPage.meshColorName}?`}
-                  onConfirm={()=>{toast.success('confirmou')}}
-                  onClose={()=>{setCancelModalOpen(false)}}
-            />
-
-            <ModalYesOrNo 
-                  open={HomeModalOpen}
-                  question={`Tem certeza que deseja cancelar a criação desse pedido?`}
-                  onConfirm={()=>{toast.success('confirmou')}}
-                  onClose={()=>{setHomeModalOpen(false)}}
-            />
-
             <Navbar.Root>
-              <Navbar.Item icon={IconHome} goto={()=>{setHomeModalOpen(true)}}>Home</Navbar.Item>
-              <Navbar.Item icon={IconCancel} goto={()=>{setCancelModalOpen(true)}}>Cancelar Estilo</Navbar.Item>
               <Navbar.Item icon={IconSave} submit>Salvar</Navbar.Item>
             </Navbar.Root>
           </form>
