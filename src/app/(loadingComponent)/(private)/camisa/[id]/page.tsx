@@ -14,6 +14,7 @@ import ItemCombinacao from '@/components/ItemCombinacao'
 import ItemCombinacaoIndicators from '@/components/ItemCombinacao/ItemCombinacaoIndicators'
 import ModalYesOrNo from '@/components/ModalYesOrNo/indext'
 import { useRouter } from 'next/navigation'
+import BotaoLateral from '@/components/BotaoLateral'
 
 export default function DashboardModel({ params }: { params: { id: number } }) {
   type dadosHeader = {
@@ -99,12 +100,38 @@ export default function DashboardModel({ params }: { params: { id: number } }) {
   return (
     <>
       <Header.Root>
+          <Header.BtnReturn goto={'/novo-pedido/produtos'} />
           <Header.Title>{dadosHeader?.printName}</Header.Title>
           <Header.Subtitle>{dadosHeader?.shirtModeling}</Header.Subtitle>
           <Header.BtnExtra icon={BtnEdicaoHeader} onClick={()=>{
             router.push(`/camisa/${params.id}/edit`)
           }}/>
       </Header.Root>
+
+      <ModalYesOrNo 
+            open={cancelModalOpen}
+            question={`Tem certeza que deseja excluir a camisa ${dadosHeader?.printName}?`}
+            onConfirm={()=>{
+              const models = getShirtModels()
+              const newModels = [] as ShirtModel[]
+              models.forEach((model, index)=>{
+                if(index!=params.id){
+                  newModels.push(model)
+                }
+              })
+
+              setShirtModels(newModels)
+
+              setLoading(true)
+              router.push('/novo-pedido/produtos')
+            }}
+            onClose={()=>{
+              setCancelModalOpen(false)
+              setLoading(false)
+            }}
+      />
+
+      <BotaoLateral tipo='EXCLUIR' onClick={()=>{ setCancelModalOpen(true) }}></BotaoLateral>
 
       {(shirtStyles && shirtStyles.length)? 
         <div style={{marginTop: '20px'}}>
@@ -131,18 +158,7 @@ export default function DashboardModel({ params }: { params: { id: number } }) {
             </div>
       }
 
-      <ModalYesOrNo 
-            open={cancelModalOpen}
-            question={`Tem certeza que deseja cancelar o cadastro da ${dadosHeader?.printName}?`}
-            onConfirm={()=>{router.push('/novo-pedido/produtos')}}
-            onClose={()=>{
-              setCancelModalOpen(false)
-              setLoading(false)
-            }}
-      />
-
       <Navbar.Root>
-        <Navbar.Item icon={IconCancel} goto={()=>{setCancelModalOpen(true)}}>Cancelar<br/>Camisa</Navbar.Item>
         <Navbar.Item icon={IconNovoEstilo} idcamisa={params.id}>Novo estilo</Navbar.Item>
       </Navbar.Root>
     </>
