@@ -48,7 +48,7 @@ export default function FileInput({ label, id, type, multiple, ...rest }: FileIn
     <div className={stylesInput.formField}>
       <label htmlFor={id}>{`${label}:`}</label>
       <CustomButton variant="contained" component="label">
-        Upload
+        {filesUpload.length>0 ? 'Substituir':'Upload'}
         <input type="file" style={{ display: 'none' }} onChange={handleChange} multiple={multiple} />
       </CustomButton>
 
