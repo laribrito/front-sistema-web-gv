@@ -73,7 +73,7 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
       if(meshs && colorsMeshs && currentGrid){
           setDataPage({
               meshName: parseOptionName(meshs, params.mesh) as string,
-              meshColorName: parseOptionName(colorsMeshs, params.mesh) as string,
+              meshColorName: parseOptionName(colorsMeshs, params.meshcolor) as string,
               currentStyle: currentModels[params.id].shirtStyles[stylePos],
               currentGrid: currentGrid,
               gridInfo: calcularInfosGrade(currentGrid),

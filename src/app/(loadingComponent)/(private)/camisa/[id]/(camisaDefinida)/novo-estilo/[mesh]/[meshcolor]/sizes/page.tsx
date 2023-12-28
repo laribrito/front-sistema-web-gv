@@ -50,7 +50,7 @@ export default function Sizes({params}: { params:{id: number, mesh: number, mesh
         if(meshs && colorsMeshs){
             setDataPage({
                 meshName: parseOptionName(meshs, params.mesh) as string,
-                meshColorName: parseOptionName(colorsMeshs, params.mesh) as string,
+                meshColorName: parseOptionName(colorsMeshs, params.meshcolor) as string,
                 currentStyle: currentModels[params.id].shirtStyles[stylePos]
             })
         }

@@ -34,7 +34,7 @@ export default function Detailing01({params}: { params:{id: number, mesh: number
       if(meshs && colorsMeshs){
         setDataPage({
             meshName: parseOptionName(meshs, params.mesh) as string,
-            meshColorName: parseOptionName(colorsMeshs, params.mesh) as string
+            meshColorName: parseOptionName(colorsMeshs, params.meshcolor) as string
         })
       }
     } catch (error) {
