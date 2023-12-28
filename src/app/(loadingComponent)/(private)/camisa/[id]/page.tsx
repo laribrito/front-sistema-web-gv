@@ -63,6 +63,7 @@ export default function DashboardModel({ params }: { params: { id: number } }) {
       const allMeshColors = await getMeshColors() as Option[]
       const styles = [] as ShirtStyleItem[]
       const attShirtStyles = [] as ShirtStyle[]
+      var totalUnits = 0
       
       model.shirtStyles.forEach((style, index)=>{
         if(style.toSave){
@@ -76,10 +77,13 @@ export default function DashboardModel({ params }: { params: { id: number } }) {
             meshColorName: parseOptionName(allMeshColors, style.meshColor) as string,
             numberUnits: infosSize.grandTotal
           })
+
+          totalUnits+=infosSize.grandTotal
         }
       })
 
       model.shirtStyles = attShirtStyles
+      model.number_units = totalUnits
       allModels[params.id] = model
       setShirtModels(allModels)
 
