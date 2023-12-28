@@ -6,25 +6,35 @@ import { MenuItem, Select, SelectChangeEvent, ThemeProvider } from "@mui/materia
 interface InputSelectProps extends InputGeneric, SelectHTMLAttributes<HTMLSelectElement>{
   options: Option[] | null
   defaultValue?: string
+  otherOnChange?: (event: SelectChangeEvent<string>) => void
 }
 
-export default function InputSelect({options, id, label, name, defaultValue, ...rest}:InputSelectProps) {
+export default function InputSelect({options, id, label, name, otherOnChange, defaultValue, ...rest}:InputSelectProps) {
   var initialValue = ''
 
   if(defaultValue) initialValue = defaultValue
   else if(options && options.length>0) initialValue = options[0].id.toString()
 
-  const [selectedValue, setSelectedValue] = useState<String>(initialValue);
+  const [selectedValue, setSelectedValue] = useState<string>(initialValue);
   
   useEffect(()=>{
-    if(!selectedValue)
-      if(defaultValue) setSelectedValue(defaultValue)
-      else if(options && options.length>0) setSelectedValue(options[0].id.toString())
+    console.log("troca")
+    if(defaultValue) setSelectedValue(defaultValue)
+    else if(options && options.length>0){
+      const opc = options[0].id.toString()
+      console.log(opc)
+      setSelectedValue(options[0].id.toString())
+    } 
   }, [options, defaultValue])
 
 
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     setSelectedValue(event.target.value as string)
+  };
+
+  const handleCombinedChange = (event : SelectChangeEvent<string>) => {
+    if(otherOnChange) otherOnChange(event)
+    handleSelectChange(event); 
   };
   
   return (
@@ -36,7 +46,7 @@ export default function InputSelect({options, id, label, name, defaultValue, ...
           variant={variantOfInputs} 
           size="small" 
           value={selectedValue}
-          onChange={handleSelectChange}
+          onChange={handleCombinedChange}
           hiddenLabel 
           name={name} 
         >

@@ -204,7 +204,7 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
             </>
             }
 
-          <form method='post' onSubmit={handleSubmit} style={{marginTop: '20px'}}>
+          <form method='post' onSubmit={handleSubmit} style={{marginTop: '20px', marginBottom: '80px'}}>
             <InputText type='text' label='Observações' id='obs' name='obs' multiline />
 
             <InputFile label='Anexos' id='anexos' multiple/>

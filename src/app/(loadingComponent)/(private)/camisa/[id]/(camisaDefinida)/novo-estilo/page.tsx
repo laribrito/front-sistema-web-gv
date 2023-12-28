@@ -17,6 +17,7 @@ import apiRouter from '@/api/rotas'
 import { useAuth } from '@/context/authContext'
 import { useRouter } from 'next/navigation'
 import { useComponentsContext } from '@/context/componentsContext'
+import { SelectChangeEvent } from '@mui/material'
 
 export default function NovaCamisa({params}: { params:{id: number}}) {
   type DataPage = {
@@ -70,7 +71,7 @@ export default function NovaCamisa({params}: { params:{id: number}}) {
 
   }, [allMeshColors])
   
-  const selectMeshColors = (event: ChangeEvent<HTMLSelectElement>) => {
+  const selectMeshColors = (event:  SelectChangeEvent<string>) => {
     const selectedValue = event.target.value;
     const idMesh = parseInt(selectedValue, 10)
     const currentData = dataPage
@@ -117,7 +118,7 @@ export default function NovaCamisa({params}: { params:{id: number}}) {
           name='mesh'
           id='mesh'
           required
-          onChange={selectMeshColors}
+          otherOnChange={selectMeshColors}
           options={dataPage && dataPage.meshs}
           errors={formErrors}
         />

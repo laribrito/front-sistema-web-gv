@@ -106,8 +106,8 @@ export default function DashboardModel({ params }: { params: { id: number } }) {
         <div style={{marginTop: '20px'}}>
           {shirtStyles.map((style, index) => (
             <ItemCombinacao 
-              cor={style.meshName} 
-              malha={style.meshColorName} 
+              cor={style.meshColorName} 
+              malha={style.meshName} 
               qtdCamisas={style.numberUnits}
               url={`/camisa/${params.id}/${index}/estilo`}
             >
