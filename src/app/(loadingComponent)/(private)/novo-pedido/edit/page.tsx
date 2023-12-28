@@ -203,7 +203,7 @@ export default function EditarInfoPedido() {
             </div>
           </div>
 
-          <Button type='submit'>Próximo</Button>
+          <Button type='submit'>Salvar</Button>
       </form>
     </>
   )
