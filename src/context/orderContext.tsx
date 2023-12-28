@@ -154,9 +154,10 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
 
   const getIdModel = (model: ShirtModel) : number =>{
     const currentModels = getShirtModels()
+
     return currentModels.findIndex(
-      (model:ShirtModel) => model.printName.trim() == model.printName.trim() && 
-      model.shirtModeling == model.shirtModeling);
+      (shirt:ShirtModel) => shirt.printName.trim() == model.printName.trim() && 
+      shirt.shirtModeling == model.shirtModeling)
   }
 
   const setFilesUpload = (files: File[]) =>{
