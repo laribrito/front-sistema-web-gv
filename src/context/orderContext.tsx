@@ -86,6 +86,7 @@ export type ShirtStyle = {
 
   comments?: string
   attachments?: string[]
+  toSave?: boolean
 }
 
 export type ShirtModel = {

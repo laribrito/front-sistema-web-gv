@@ -45,6 +45,7 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
   const [alturaElemento, setAlturaElemento] = useState(0);
   const elementoRef = useRef<HTMLDivElement>(null);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  const [HomeModalOpen, setHomeModalOpen] = useState(false);
 
   useEffect(() => {
     if (elementoRef.current) {
@@ -122,12 +123,10 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
           },
         }
       )
-
       setFilesUpload([])
 
       currentModels[params.id].shirtStyles[stylePos].attachments = listaAnexos
       currentModels[params.id].shirtStyles[stylePos].comments = form.obs.value
-      currentModels[params.id].shirtStyles[stylePos].toSave = true
       
       var numberShirt = 0
       currentModels[params.id].shirtStyles.forEach((shirtStyle, index)=>{
@@ -141,7 +140,7 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
 
       setShirtModels(currentModels)
        
-      router.push(`/camisa/${params.id}/`);
+      router.push(`/novo-pedido/produtos/`);
     } catch (error) {
       setLoading(false)
       toast.error("Erro ao enviar os arquivos. Tente novamente")
@@ -211,19 +210,21 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
 
             <ModalYesOrNo 
                   open={cancelModalOpen}
-                  question={`Tem certeza que deseja cancelar o cadastro de ${dataPage.meshName} na cor ${dataPage.meshColorName} nessa camisa?`}
-                  onConfirm={()=>{
-                    setLoading(true)
-                    router.push(`/camisa/${params.id}`)
-                  }}
-                  onClose={()=>{
-                    setLoading(false)
-                    setCancelModalOpen(false)
-                  }}
+                  question={`Tem certeza que deseja cancelar o cadastro de ${dataPage.meshName} na cor ${dataPage.meshColorName}?`}
+                  onConfirm={()=>{toast.success('confirmou')}}
+                  onClose={()=>{setCancelModalOpen(false)}}
+            />
+
+            <ModalYesOrNo 
+                  open={HomeModalOpen}
+                  question={`Tem certeza que deseja cancelar a criação desse pedido?`}
+                  onConfirm={()=>{toast.success('confirmou')}}
+                  onClose={()=>{setHomeModalOpen(false)}}
             />
 
             <Navbar.Root>
-              <Navbar.Item icon={IconCancel} goto={()=>{setCancelModalOpen(true)}}>Cancelar<br/>Estilo</Navbar.Item>
+              <Navbar.Item icon={IconHome} goto={()=>{setHomeModalOpen(true)}}>Home</Navbar.Item>
+              <Navbar.Item icon={IconCancel} goto={()=>{setCancelModalOpen(true)}}>Cancelar Estilo</Navbar.Item>
               <Navbar.Item icon={IconSave} submit>Salvar</Navbar.Item>
             </Navbar.Root>
           </form>
