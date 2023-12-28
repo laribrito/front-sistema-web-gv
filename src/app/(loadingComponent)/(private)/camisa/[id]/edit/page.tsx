@@ -57,8 +57,6 @@ export default function EditarCamisaInfo({params}:{params: {id: number}}) {
     if(current.namePhotoModel && current.namePhotoModel!='')
     try {
       const encodedFileName = encodeURIComponent(current.namePhotoModel);
-      console.log(current.namePhotoModel)
-      console.log(encodedFileName)
 
       const response = await axios.get(apiRouter.fileManager + encodedFileName, {
         responseType: 'blob', // Indica que a resposta é binária (um arquivo)

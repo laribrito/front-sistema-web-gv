@@ -3,6 +3,7 @@ import styles from "./navbar.module.css"
 import { IconHome, IconHomeActive, IconNovoPedido, IconBusca, IconNovaCamisa, IconNovoEstilo } from "@/utils/elements"
 import { useRouter } from "next/navigation"
 import { useComponentsContext } from "@/context/componentsContext"
+import toast from "react-hot-toast"
 
 interface HeaderItemProps extends HtmlHTMLAttributes<HTMLButtonElement>{
     icon: ElementType
@@ -28,7 +29,7 @@ export default function HeaderItem({icon: Icon, goto, fontSize, active, children
                 else if(Icon==IconHome) router.push("/home")
                 else if(Icon==IconNovaCamisa) router.push("/camisa")
                 else if(Icon==IconNovoEstilo) router.push(`/camisa/${rest['idcamisa']}/novo-estilo`)
-                else if(Icon==IconBusca) console.log("Busca")
+                else if(Icon==IconBusca) toast.success("Busca")
             }}
             type={submit? 'submit':'button'}
             {...rest}

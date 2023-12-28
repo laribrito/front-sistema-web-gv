@@ -103,9 +103,9 @@ export default function NovaCamisa() {
           }
         )
          
-        setFilesUpload([])
         setLoading(true)
         router.push(`/camisa/${getIdModel(newModel)}`);
+        setFilesUpload([])
       } catch (error) {
         setLoading(false)
         toast.error("Erro ao enviar os arquivos. Tente novamente")

@@ -18,11 +18,9 @@ export default function InputSelect({options, id, label, name, otherOnChange, de
   const [selectedValue, setSelectedValue] = useState<string>(initialValue);
   
   useEffect(()=>{
-    console.log("troca")
     if(defaultValue) setSelectedValue(defaultValue)
     else if(options && options.length>0){
       const opc = options[0].id.toString()
-      console.log(opc)
       setSelectedValue(options[0].id.toString())
     } 
   }, [options, defaultValue])

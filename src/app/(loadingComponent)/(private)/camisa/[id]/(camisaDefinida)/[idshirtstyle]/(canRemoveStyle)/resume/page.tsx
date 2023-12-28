@@ -108,8 +108,6 @@ async function getFormContent() {
       });
 
       const files = await Promise.all(filePromises);
-      setFilesUpload(files);
-      console.log(files);
     }
   } catch (error) {
     console.error('Erro ao obter o conteúdo do formulário:', error);
@@ -182,8 +180,7 @@ async function getFormContent() {
         }
       )
 
-      setFilesUpload([])
-
+      
       currentModels[params.id].shirtStyles[params.idshirtstyle].attachments = listaAnexos
       currentModels[params.id].shirtStyles[params.idshirtstyle].comments = form.obs.value
       
@@ -196,10 +193,11 @@ async function getFormContent() {
       })
       
       currentModels[params.id].number_units = numberShirt
-
+      
       setShirtModels(currentModels)
-       
+      
       router.push(`/camisa/${params.id}/`);
+      setFilesUpload([])
     } catch (error) {
       setLoading(false)
       toast.error("Erro ao enviar os arquivos. Tente novamente")

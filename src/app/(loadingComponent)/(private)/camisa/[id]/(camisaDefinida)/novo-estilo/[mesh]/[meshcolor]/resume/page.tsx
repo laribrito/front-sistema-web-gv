@@ -123,8 +123,7 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
         }
       )
 
-      setFilesUpload([])
-
+      
       currentModels[params.id].shirtStyles[stylePos].attachments = listaAnexos
       currentModels[params.id].shirtStyles[stylePos].comments = form.obs.value
       currentModels[params.id].shirtStyles[stylePos].toSave = true
@@ -138,10 +137,11 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
       })
       
       currentModels[params.id].number_units = numberShirt
-
+      
       setShirtModels(currentModels)
-       
+      
       router.push(`/camisa/${params.id}/`);
+      setFilesUpload([])
     } catch (error) {
       setLoading(false)
       toast.error("Erro ao enviar os arquivos. Tente novamente")
