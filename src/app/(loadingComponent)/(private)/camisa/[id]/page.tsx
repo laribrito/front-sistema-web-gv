@@ -104,6 +104,7 @@ export default function DashboardModel({ params }: { params: { id: number } }) {
           <Header.Title>{dadosHeader?.printName}</Header.Title>
           <Header.Subtitle>{dadosHeader?.shirtModeling}</Header.Subtitle>
           <Header.BtnExtra icon={BtnEdicaoHeader} onClick={()=>{
+            setLoading(true)
             router.push(`/camisa/${params.id}/edit`)
           }}/>
       </Header.Root>

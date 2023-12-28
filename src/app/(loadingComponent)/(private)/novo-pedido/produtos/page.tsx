@@ -1,7 +1,7 @@
 'use client'
 import Header from '@/components/Header'
 import styles from './page.module.css'
-import { BtnEdicaoHeader,IconCancel,IconNovaCamisa } from "@/utils/elements"
+import { BtnEdicaoHeader,IconCancel,IconMoney,IconNovaCamisa } from "@/utils/elements"
 import { useEffect, useState } from 'react'
 import { OrderInfos, ShirtModel, useOrderContext } from '@/context/orderContext'
 import { useServerDataContext } from '@/context/serverDataContext'
@@ -11,6 +11,8 @@ import ItemModelo from '@/components/ItemModelo'
 import { useComponentsContext } from '@/context/componentsContext'
 import { useRouter } from 'next/navigation'
 import ModalYesOrNo from '@/components/ModalYesOrNo/indext'
+import BotaoLateral from '@/components/BotaoLateral'
+import toast from 'react-hot-toast'
 
 export default function DashboardProdutos() {
   type DataHeader={
@@ -116,9 +118,22 @@ export default function DashboardProdutos() {
           <Header.Title>{dadosHeader?.nomePedido}</Header.Title>
           <Header.Subtitle>{dadosHeader?.nomeCliente}</Header.Subtitle>
           <Header.BtnExtra icon={BtnEdicaoHeader} onClick={()=>{
+            setLoading(true)
             router.push('/novo-pedido/edit')
           }}/>
       </Header.Root>
+
+      <ModalYesOrNo 
+            open={cancelModalOpen}
+            question={`Tem certeza que deseja excluir esse pedido?`}
+            onConfirm={()=>{
+              setLoading(true)
+              router.push('/home')
+            }}
+            onClose={()=>{setCancelModalOpen(false)}}
+      />
+
+      <BotaoLateral tipo='EXCLUIR' onClick={()=>{setCancelModalOpen(true)}}></BotaoLateral>
 
       <div className={styles.grid}>
         <h1>{dadosHeader?.empresa}</h1>
@@ -148,15 +163,12 @@ export default function DashboardProdutos() {
             </div>
       }
 
-      <ModalYesOrNo 
-            open={cancelModalOpen}
-            question={`Tem certeza que deseja cancelar o cadastro desse pedido?`}
-            onConfirm={()=>{router.push('/home')}}
-            onClose={()=>{setCancelModalOpen(false)}}
-      />
-
       <Navbar.Root>
-      <Navbar.Item icon={IconCancel} goto={()=>{setCancelModalOpen(true)}}>Cancelar<br/>Cadastro</Navbar.Item>
+        {(products && products.haveProducts) &&
+          <Navbar.Item icon={IconMoney} onClick={()=>{
+            toast.success('financeiro')
+          }}>Seguir para<br/> o financeiro</Navbar.Item>
+        }
         <Navbar.Item icon={IconNovaCamisa}>Nova Camisa</Navbar.Item>
       </Navbar.Root>
     </>

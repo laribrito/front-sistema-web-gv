@@ -104,6 +104,7 @@ export default function NovaCamisa() {
         )
          
         setFilesUpload([])
+        setLoading(true)
         router.push(`/camisa/${getIdModel(newModel)}`);
       } catch (error) {
         setLoading(false)
