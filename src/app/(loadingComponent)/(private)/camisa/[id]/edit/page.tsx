@@ -18,7 +18,7 @@ import { useAuth } from '@/context/authContext'
 import { useRouter } from 'next/navigation'
 import { useComponentsContext } from '@/context/componentsContext'
 
-export default function EditCamisaInfo({params}:{params: {id: number}}) {
+export default function EditarCamisaInfo({params}:{params: {id: number}}) {
   type FormContent = {
     printName: string
     shirtModeling: string
@@ -143,9 +143,10 @@ export default function EditCamisaInfo({params}:{params: {id: number}}) {
             }
           )
 
-          setFilesUpload([])
-         
+          
         router.push(`/camisa/${getIdModel(newModel)}`);
+        setFilesUpload([])
+
       } catch (error) {
         setLoading(false)
         toast.error("Erro ao enviar os arquivos. Tente novamente")
@@ -185,7 +186,7 @@ export default function EditCamisaInfo({params}:{params: {id: number}}) {
 
         <InputFile label='Layout do Modelo' id='arquivo'></InputFile>
 
-        <Button type='submit'>Próximo</Button>
+        <Button type='submit'>Salvar</Button>
       </form>
     </>
   )
