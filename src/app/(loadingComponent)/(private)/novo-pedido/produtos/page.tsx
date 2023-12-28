@@ -1,7 +1,7 @@
 'use client'
 import Header from '@/components/Header'
 import styles from './page.module.css'
-import { BtnEdicaoHeader,IconCancel,IconMoney,IconNovaCamisa } from "@/utils/elements"
+import { BtnEdicaoHeader,IconCancel,IconItem,IconMoney,IconNovaCamisa } from "@/utils/elements"
 import { useEffect, useState } from 'react'
 import { OrderInfos, ShirtModel, useOrderContext } from '@/context/orderContext'
 import { useServerDataContext } from '@/context/serverDataContext'
@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation'
 import ModalYesOrNo from '@/components/ModalYesOrNo/indext'
 import BotaoLateral from '@/components/BotaoLateral'
 import toast from 'react-hot-toast'
+import { QtdUnidadesPorExtenso } from '@/utils/functions'
 
 export default function DashboardProdutos() {
   type DataHeader={
@@ -31,7 +32,10 @@ export default function DashboardProdutos() {
   }
 
   type Products={
-    shirts: Shirt[]
+    shirts: {
+      prods: Shirt[]
+      numberUnits: number
+    }
     haveProducts: boolean
   }
 
@@ -79,6 +83,7 @@ export default function DashboardProdutos() {
     const approvedShirts = [] as ShirtModel[]
     const shirts = [] as Shirt[]
     const allModeling = await getShirtTypes()
+    var unitsShirts = 0
 
     var id = 0
     allShirts.forEach((shirt, index) => {
@@ -95,13 +100,18 @@ export default function DashboardProdutos() {
           numberUnits: shirt.number_units,
           index: id++
         })
+
+        unitsShirts += shirt.number_units
       }
     });
 
     setShirtModels(approvedShirts)
 
     setProducts({
-      shirts: shirts,
+      shirts: {
+        prods: shirts,
+        numberUnits: unitsShirts
+      },
       haveProducts: haveProducts
     })
     setLoading(false)
@@ -142,7 +152,13 @@ export default function DashboardProdutos() {
 
       {(products && products.haveProducts)? 
         <div style={{marginTop: '20px'}}>
-          {products.shirts.map((shirt, index) => (
+          {products.shirts.numberUnits!=0 &&
+          <div className={styles.grid} style={{margin: '0'}}>
+            <h2><IconItem /> Camisas</h2>
+            <h3 style={{fontWeight: 'normal'}}>{QtdUnidadesPorExtenso(products.shirts.numberUnits)}</h3>
+          </div>
+          }
+          {products.shirts.prods.map((shirt, index) => (
             <ItemModelo 
               key={index} 
               nomeModelo={shirt.printName} 

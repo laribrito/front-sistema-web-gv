@@ -6,7 +6,7 @@ import { LuFilePlus2 } from "react-icons/lu";
 import { IoIosLogOut } from "react-icons/io";
 import { PiCirclesThreePlusFill } from "react-icons/pi";
 import { SlDocs } from "react-icons/sl";
-import { CgStyle } from "react-icons/cg";
+import { CgStyle, CgPathUnite } from "react-icons/cg";
 import { MdNextPlan, MdAttachMoney } from "react-icons/md";
 import { FaSave } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
@@ -41,3 +41,5 @@ export const IconSave = FaSave
 export const IconCancel = MdCancel
 
 export const IconMoney = MdAttachMoney
+
+export const IconItem = CgPathUnite
