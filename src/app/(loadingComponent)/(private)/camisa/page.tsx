@@ -23,7 +23,7 @@ export default function NovaCamisa() {
   const { getToken } = useAuth()
   const { setLoading } = useComponentsContext()
   const { getShirtTypes } = useServerDataContext()
-  const { setShirtModels, getShirtModels, getIdModel, filesUpload } = useOrderContext()
+  const { setShirtModels, getShirtModels, getIdModel, filesUpload, setFilesUpload } = useOrderContext()
   const [dataPage, setDataPage] = useState<Option[]>([])
   const [formErrors, setFormErrors] = useState<ZodIssue[]>({} as ZodIssue[]);
 
@@ -103,6 +103,7 @@ export default function NovaCamisa() {
           }
         )
          
+        setFilesUpload([])
         router.push(`/camisa/${getIdModel(newModel)}`);
       } catch (error) {
         setLoading(false)

@@ -40,7 +40,7 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
   const { getToken } = useAuth()
   const { setLoading } = useComponentsContext()
   const { parseOptionName, getMeshColors, getMeshs } = useServerDataContext()
-  const { setShirtModels, getShirtModels, filesUpload } = useOrderContext()
+  const { setShirtModels, getShirtModels, filesUpload, setFilesUpload } = useOrderContext()
   const [dataPage, setDataPage] = useState<DataPage>({meshName: '---', meshColorName: '---'})
   const [alturaElemento, setAlturaElemento] = useState(0);
   const elementoRef = useRef<HTMLDivElement>(null);
@@ -123,6 +123,8 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
           },
         }
       )
+
+      setFilesUpload([])
 
       currentModels[params.id].shirtStyles[stylePos].attachments = listaAnexos
       currentModels[params.id].shirtStyles[stylePos].comments = form.obs.value
