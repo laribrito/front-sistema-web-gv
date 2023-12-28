@@ -56,7 +56,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({ file, index, onDelete }) => {
           onClick={click}
         />
       );
-    } else if (file.type === 'application/pdf') {
+    } else if (file.type.includes('pdf')) {
       // Se for um PDF, retorna o componente de ícone específico para PDF
       return <IconPDF 
         key={`pdf-thumbnail-${index}`} 
