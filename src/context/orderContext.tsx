@@ -209,7 +209,7 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
   }
 
   const setFileDownload = (file: File | undefined) =>{
-    setFileDownload(file)
+    setFilesDownload(file)
   }
 
   const getFileDownload = () : File | undefined =>{
