@@ -8,8 +8,10 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>{
 
 export default function Button({children, width, type, ...rest}:ButtonProps){
     return (
-        <button className={`${styles.botao} ${type == 'submit'? styles.submit : ''}`} style={{width: width}} {...rest}>
-            {children}
-        </button>
+        <>
+            <button className={`${styles.botao} ${type == 'submit'? styles.submit : ''}`} style={{width: width}} {...rest}>
+                {children}
+            </button>
+        </>
     )
 }

@@ -30,6 +30,7 @@ export default function HeaderItem({icon: Icon, goto, fontSize, active, children
                 else if(Icon==IconNovaCamisa) router.push("/camisa")
                 else if(Icon==IconNovoEstilo) router.push(`/camisa/${rest['idcamisa']}/novo-estilo`)
                 else if(Icon==IconBusca) toast.success("Busca")
+                else setLoading(false)
             }}
             type={submit? 'submit':'button'}
             {...rest}

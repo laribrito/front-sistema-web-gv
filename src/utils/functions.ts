@@ -12,3 +12,34 @@ export function toUpperCase(text: string): string {
         .map((word) => capitalize(word))
         .join(" ");
 }
+
+export function setMonetaryNumber(x: string) : number {
+    //trata a virgula
+    var value = x.replace(',', '.')
+
+    //testa quantidade de números depois do ponto
+    const split = value.split('.')[1]
+
+    //ERRO - mais de 2 casas decimais
+    if(split && split.length > 2){
+        throw Error('No máximo duas casas decimais depois da vírgula')
+    } 
+
+    //tratando a string
+    if(!split) {
+        value += '00'
+    } else if(split.length==1){
+        value +='0'
+    }
+
+    return parseInt(value.replace('.', ''))
+}
+
+export function getMonetaryNumber(x: number) : number {
+    return (x / 100)
+}
+
+export function getMonetaryString(x: number) : string {
+    const value = getMonetaryNumber(x)
+    return 'R$' + value
+}

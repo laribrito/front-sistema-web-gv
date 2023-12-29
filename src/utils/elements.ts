@@ -1,4 +1,4 @@
-import { FaRegPenToSquare, FaFilePdf } from "react-icons/fa6";
+import { FaRegPenToSquare, FaFilePdf, FaCheck } from "react-icons/fa6";
 import { BsGraphUp } from "react-icons/bs";
 import { HiOutlineHome } from "react-icons/hi";
 import { HiMiniMagnifyingGlass, HiHome } from "react-icons/hi2";
@@ -43,3 +43,5 @@ export const IconCancel = MdCancel
 export const IconMoney = MdAttachMoney
 
 export const IconItem = CgPathUnite
+
+export const IconSucess = FaCheck

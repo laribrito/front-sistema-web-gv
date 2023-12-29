@@ -182,7 +182,8 @@ export default function DashboardProdutos() {
       <Navbar.Root>
         {(products && products.haveProducts) &&
           <Navbar.Item icon={IconMoney} onClick={()=>{
-            toast.success('financeiro')
+            setLoading(true)
+            router.push('/novo-pedido/financeiro')
           }}>Seguir para<br/> o financeiro</Navbar.Item>
         }
         <Navbar.Item icon={IconNovaCamisa}>Nova Camisa</Navbar.Item>

@@ -2,7 +2,7 @@ import { createTheme } from "@mui/material";
 import { ZodIssue } from "zod";
 
 export interface InputGeneric{
-    label: string
+    label?: string
     errors?: ZodIssue[]
 }
 
