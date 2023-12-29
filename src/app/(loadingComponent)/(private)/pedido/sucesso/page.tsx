@@ -5,11 +5,16 @@ import { useRouter } from 'next/navigation'
 import styles from './page.module.css'
 import Button from '@/components/Button'
 import { useComponentsContext } from '@/context/componentsContext'
+import { useEffect } from 'react'
 
 export default function FinanceiroPedido() {
   const router = useRouter()
   const { setLoading } = useComponentsContext()
   const { fileDownload } = useOrderContext()
+
+  useEffect(()=>{
+    setLoading(false)
+  })
 
   return (
     <>

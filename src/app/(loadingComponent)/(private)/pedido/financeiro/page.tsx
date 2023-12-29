@@ -260,7 +260,7 @@ export default function FinanceiroPedido() {
         console.log(data.errors)
         toast.error('Ocorreu algum erro. Tente novamente')
       } else {
-        
+        router.push('/pedido/sucesso')
       }
     } catch (error) {
       setLoading(false)
