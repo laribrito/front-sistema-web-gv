@@ -109,7 +109,7 @@ export default function NovoPedido() {
         status: data.status
       })
 
-      router.push("/novo-pedido/produtos")
+      router.push("/pedido/produtos")
     }
   }
 
@@ -117,7 +117,7 @@ export default function NovoPedido() {
     <>
       <Header.Root>
           <Header.BtnReturn/>
-          <Header.Title>Nova Negociação</Header.Title>  
+          <Header.Title>Informações Gerais</Header.Title>  
       </Header.Root>
       <form method='post' onSubmit={handleSubmit}>
           <InputText 

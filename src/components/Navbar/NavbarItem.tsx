@@ -25,7 +25,7 @@ export default function HeaderItem({icon: Icon, goto, fontSize, active, children
                 setLoading(true)
                 if(goto && typeof goto == 'string') router.push(goto)
                 else if(goto && typeof goto == 'function') goto()
-                else if(Icon==IconNovoPedido) router.push("/novo-pedido/")
+                else if(Icon==IconNovoPedido) router.push("/pedido/")
                 else if(Icon==IconHome) router.push("/home")
                 else if(Icon==IconNovaCamisa) router.push("/camisa")
                 else if(Icon==IconNovoEstilo) router.push(`/camisa/${rest['idcamisa']}/novo-estilo`)

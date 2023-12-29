@@ -129,7 +129,7 @@ export default function DashboardProdutos() {
           <Header.Subtitle>{dadosHeader?.nomeCliente}</Header.Subtitle>
           <Header.BtnExtra icon={BtnEdicaoHeader} onClick={()=>{
             setLoading(true)
-            router.push('/novo-pedido/edit')
+            router.push('/pedido/edit')
           }}/>
       </Header.Root>
 
@@ -183,7 +183,7 @@ export default function DashboardProdutos() {
         {(products && products.haveProducts) &&
           <Navbar.Item icon={IconMoney} onClick={()=>{
             setLoading(true)
-            router.push('/novo-pedido/financeiro')
+            router.push('/pedido/financeiro')
           }}>Seguir para<br/> o financeiro</Navbar.Item>
         }
         <Navbar.Item icon={IconNovaCamisa}>Nova Camisa</Navbar.Item>

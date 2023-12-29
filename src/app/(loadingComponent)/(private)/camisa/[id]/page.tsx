@@ -100,7 +100,7 @@ export default function DashboardModel({ params }: { params: { id: number } }) {
   return (
     <>
       <Header.Root>
-          <Header.BtnReturn goto={'/novo-pedido/produtos'} />
+          <Header.BtnReturn goto={'/pedido/produtos'} />
           <Header.Title>{dadosHeader?.printName}</Header.Title>
           <Header.Subtitle>{dadosHeader?.shirtModeling}</Header.Subtitle>
           <Header.BtnExtra icon={BtnEdicaoHeader} onClick={()=>{
@@ -124,7 +124,7 @@ export default function DashboardModel({ params }: { params: { id: number } }) {
               setShirtModels(newModels)
 
               setLoading(true)
-              router.push('/novo-pedido/produtos')
+              router.push('/pedido/produtos')
             }}
             onClose={()=>{
               setCancelModalOpen(false)

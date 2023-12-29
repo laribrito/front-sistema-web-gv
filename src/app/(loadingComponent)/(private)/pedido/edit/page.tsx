@@ -132,7 +132,7 @@ export default function EditarInfoPedido() {
         status: data.status
       })
 
-      router.push("/novo-pedido/produtos")
+      router.push("/pedido/produtos")
     }
   }
 
