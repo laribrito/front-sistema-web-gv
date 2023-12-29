@@ -109,6 +109,10 @@ export default function Home() {
     }
   }
 
+  function importOrder(id: number){
+
+  }
+
   return (
     <>
       <Header.Root>
@@ -121,16 +125,24 @@ export default function Home() {
 
         { dataPage === null ? (
           <>
-            <Box width={config.WIDTH_WIDGETS} />
-            <Box width={config.WIDTH_WIDGETS} />
-            <Box width={config.WIDTH_WIDGETS} />
+            <Box fixWidth={config.WIDTH_WIDGETS} />
+            <Box fixWidth={config.WIDTH_WIDGETS} />
+            <Box fixWidth={config.WIDTH_WIDGETS} />
           </>
           ) : dataPage.length === 0 ? (
           <span className='discreto'>Não há negociações ainda...</span>
           ) : (
           /* Render your data here, assuming dataNegotiations is an array */
           dataPage.map((negotiation, index) => (
-            <ItemNegociacao key={index} customer_name={negotiation.customer_name} name={negotiation.name} total_number_units={negotiation.total_number_units}>
+            <ItemNegociacao 
+              key={index} 
+              customer_name={negotiation.customer_name} 
+              name={negotiation.name} 
+              total_number_units={negotiation.total_number_units}
+              onClick={()=>{
+                toast.success('id: ' + negotiation.negotiation_id)
+              }}
+            >
               <ItemNegociacaoStatus value={negotiation.status}/>
             </ItemNegociacao>
           ))

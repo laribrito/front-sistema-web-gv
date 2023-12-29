@@ -1,14 +1,14 @@
 import React from "react"
 import styles from "./box.module.css"
 
-interface BoxProps {
+interface BoxProps extends React.HTMLProps<HTMLDivElement> {
     children?: React.ReactNode
-    width?: string
+    fixWidth?: string
 }
 
-export default function Box({children, width}: BoxProps){
+export default function Box({children, fixWidth, ...rest}: BoxProps){
     return (
-        <div className={styles.boxPadrao} style={{width: width}}>
+        <div className={styles.boxPadrao} style={{width: fixWidth}} {...rest}>
             {children}
         </div>
     )

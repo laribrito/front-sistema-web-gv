@@ -19,7 +19,7 @@ export default function ItemCombinacao({cor, malha, qtdCamisas, url, children}: 
     const router = useRouter()
     const { setLoading } = useComponentsContext()
     return (
-        <Box width={config.WIDTH_WIDGETS}>
+        <Box fixWidth={config.WIDTH_WIDGETS}>
             <div className={styles.itemCombinacao}  onClick={()=>{
                 setLoading(true)
                 router.push(url)

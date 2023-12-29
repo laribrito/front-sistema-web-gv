@@ -208,7 +208,7 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
     return filesUpload
   }
 
-  const setFileDownload = (file: File) =>{
+  const setFileDownload = (file: File | undefined) =>{
     setFileDownload(file)
   }
 
@@ -220,6 +220,8 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
     setOrderInfos(null)
     setShirtModels([])
     setFilesUpload([])
+    setShirtPrices([])
+    setFileDownload(undefined)
   }
 
   const setShirtPrices = (prices: ShirtPrice[]) =>{

@@ -19,7 +19,7 @@ export default function ItemModelo({nomeModelo, tipoCamisa, url, qtdCamisas, ver
     const router = useRouter()
     const { setLoading } = useComponentsContext()
     return (
-        <Box width={vertical ? config.WIDTH_HALF_WIDGETS : config.WIDTH_WIDGETS}>
+        <Box fixWidth={vertical ? config.WIDTH_HALF_WIDGETS : config.WIDTH_WIDGETS}>
             <div className={styles.itemModelo} onClick={()=>{
                 setLoading(true)
                 router.push(url)
