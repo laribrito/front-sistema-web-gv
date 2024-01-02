@@ -78,14 +78,14 @@ export default function Sizes({params}: { params:{id: number, mesh: number, mesh
         m:  form.babyM.value?   parseInt(form.babyM.value):  0,
         g:  form.babyG.value?   parseInt(form.babyG.value):  0,
         gg: form.babyGG.value?  parseInt(form.babyGG.value): 0,
-        xg: form.babyXG.value?  parseInt(form.babyGG.value): 0
+        xg: form.babyXG.value?  parseInt(form.babyXG.value): 0
       },
       male: {
         p:  form.mascP.value?   parseInt(form.mascP.value):  0,
         m:  form.mascM.value?   parseInt(form.mascM.value):  0,
         g:  form.mascG.value?   parseInt(form.mascG.value):  0,
         gg: form.mascGG.value?  parseInt(form.mascGG.value): 0,
-        xg: form.mascXG.value?  parseInt(form.mascGG.value): 0
+        xg: form.mascXG.value?  parseInt(form.mascXG.value): 0
       },
       infant:{
         1:  form.ano1.value?  parseInt(form.ano1.value):  0,
