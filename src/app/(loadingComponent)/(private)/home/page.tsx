@@ -12,8 +12,9 @@ import ItemNegociacao, {DataItemNegotiation} from '@/components/ItemNegociacao'
 import ItemNegociacaoStatus from '@/components/ItemNegociacao/itemNegociacaoStatus'
 import Box from '@/components/Box'
 import config from '@/utils/config'
-import { useOrderContext } from '@/context/orderContext'
+import { DataOrderResponse, DataOrderResponseWithTexts, ShirtDetails, ShirtModel, ShirtPrice, ShirtStyle, useOrderContext } from '@/context/orderContext'
 import { useComponentsContext } from '@/context/componentsContext'
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
   type DataStatus = {
@@ -21,25 +22,27 @@ export default function Home() {
     name: string
   }
 
-  const processNegotiationsWithStatus = (statusData: DataStatus[], negotiationsData: DataItemNegotiation[]): DataItemNegotiation[] => {
-    const processedNegotiations = negotiationsData.map(negotiation => {
+  const processNegotiationsWithStatus = (statusData: DataStatus[], negotiationsData: DataOrderResponse[]): DataOrderResponseWithTexts[] => {
+    const newNegs = [] as DataOrderResponseWithTexts[]
+
+    negotiationsData.map(negotiation => {
       const matchingStatus = statusData.find(status => status.status_id === negotiation.status);
       if (matchingStatus) {
-        return {
+        newNegs.push({
           ...negotiation,
-          status: matchingStatus.name,
-        };
+          statusName: matchingStatus.name as string,
+        })
       }
-      return negotiation;
     });
-    return processedNegotiations;
+    return newNegs;
   };
 
+  const router = useRouter()
   const { username, logout, getToken } = useAuth();
-  const { cleanOrdenContext } = useOrderContext()
+  const { setOrderInfos, setShirtModels, setPrices, setCurrentOrderId } = useOrderContext()
   const { setLoading } = useComponentsContext()
   const [usernameLabel, setUsernameLabel] = useState<string | null>(null);
-  const [dataPage, setDataPage] = useState<DataItemNegotiation[] | null>(null)
+  const [dataPage, setDataPage] = useState<DataOrderResponseWithTexts[] | null>(null)
 
   // pega os status e as negociações
   async function getStatusAndNegotiations() {
@@ -83,8 +86,64 @@ export default function Home() {
   useEffect(() => {
     if(!dataPage) getStatusAndNegotiations();
     if(username) setUsernameLabel(username)
-    cleanOrdenContext()
   }, [username])
+
+  function handleNeg(data: DataOrderResponseWithTexts){
+    setCurrentOrderId(data.negotiation_id)
+    setOrderInfos({
+      classificacao: data.classification,
+      empresa: data.company,
+      nomeCliente: data.customer_name,
+      nomePedido: data.name,
+      status: data.status,
+      telefoneCliente: data.customer_phone
+    })
+
+    const details = JSON.parse(data.details)
+
+    const allShirts = details.shirts as ShirtDetails[]
+    const shirtPrices = [] as ShirtPrice[]
+    const shirtModels = [] as ShirtModel[]
+    if(allShirts){
+      allShirts.forEach((shirt)=>{
+        shirtPrices.push({
+          descUnit: shirt.unitDiscount,
+          precoUnit: shirt.unitPrice
+        })
+
+        const shirtStyles = shirt.shirtStyles as ShirtStyle[]
+        const newShirtStyles = [] as ShirtStyle[]
+
+        shirtStyles.forEach((style)=>{
+          newShirtStyles.push({
+            ...style,
+            toSave: true
+          })
+        })
+
+        shirtModels.push({
+          number_units: shirt.numberUnits,
+          printName: shirt.printName,
+          shirtModeling: shirt.shirtType,
+          shirtStyles: newShirtStyles as ShirtStyle[],
+          namePhotoModel: (shirt.imageUrl && shirt.imageUrl.length)? shirt.imageUrl: undefined
+        })
+      })
+    }
+
+    setPrices({
+      order:{
+        discount: data.discount_value,
+        shipping: (data.shipping_cost)? data.shipping_cost : 0,
+        subtotal: data.subtotal_value
+      },
+      shirts: shirtPrices
+    })
+    setShirtModels(shirtModels)
+
+    setLoading(true)
+    router.push('/pedido/produtos')
+  }
 
   //processa logout
   async function handleLogout(){
@@ -107,10 +166,6 @@ export default function Home() {
     } catch (error) {
       toast.error('Ocorreu algum erro. Tente novamente')
     }
-  }
-
-  function importOrder(id: number){
-
   }
 
   return (
@@ -141,10 +196,10 @@ export default function Home() {
                     name={negotiation.name} 
                     total_number_units={negotiation.total_number_units}
                     onClick={()=>{
-                      toast.success('id: ' + negotiation.negotiation_id)
+                      handleNeg(negotiation)
                     }}
                   >
-                    <ItemNegociacaoStatus value={negotiation.status}/>
+                    <ItemNegociacaoStatus value={negotiation.statusName}/>
                   </ItemNegociacao>
                 ))
               }

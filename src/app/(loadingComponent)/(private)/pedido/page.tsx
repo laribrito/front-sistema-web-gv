@@ -34,7 +34,7 @@ export default function NovoPedido() {
   }
 
   const router = useRouter()
-  const { setOrderInfos } = useOrderContext()
+  const { setOrderInfos, cleanOrdenContext } = useOrderContext()
   const { setLoading } = useComponentsContext()
   const { getClassifications, getCompanies, getStatus } = useServerDataContext()
   const [dataPage, setDataPage] = useState<DataPage | null>(null);
@@ -61,6 +61,7 @@ export default function NovoPedido() {
  
   useEffect(() => {
     if(!dataPage) getData();
+    cleanOrdenContext()
   }, [])
 
   // form submit

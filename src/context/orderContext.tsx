@@ -118,7 +118,7 @@ export type ShirtStyleDetails = {
   shirtCollar: string
   printingTechnique: string
   printingColors: string
-  printPositions: string
+  printingPositions: string
   sleeveColors: string
   cuffStyle: string
   specialElement: string
@@ -135,6 +135,51 @@ export type ShirtDetails = {
   unitDiscount: number
   imageUrl: string
   shirtStyles: ShirtStyleDetails[]
+}
+
+export type DataOrderToSend = {
+  name: string
+  customer_name: string
+  customer_phone: string
+  shipping_cost: number
+  subtotal_value: number
+  discount_value: number
+  total_number_units: number
+  details: string
+  status: number
+  company: number
+  classification: number
+}
+
+export type DataOrderResponseWithTexts = {
+  negotiation_id: number
+  name: string
+  customer_name: string
+  customer_phone: string
+  shipping_cost: number
+  subtotal_value: number
+  discount_value: number
+  total_number_units: number
+  details: string
+  status: number
+  statusName: string
+  company: number
+  classification: number
+}
+
+export type DataOrderResponse = {
+  negotiation_id: number
+  name: string
+  customer_name: string
+  customer_phone: string
+  shipping_cost: number
+  subtotal_value: number
+  discount_value: number
+  total_number_units: number
+  details: string
+  status: number
+  company: number
+  classification: number
 }
 
 type OrderContextType = {

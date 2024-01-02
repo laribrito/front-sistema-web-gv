@@ -3,7 +3,7 @@ import Header from '@/components/Header'
 import styles from './page.module.css'
 import { IconItem, IconSave } from "@/utils/elements"
 import { useEffect, useRef, useState } from 'react'
-import { OrderInfos, Prices, ShirtDetails, ShirtModel, ShirtPrice, ShirtStyleDetails, SizeGrid, useOrderContext } from '@/context/orderContext'
+import { DataOrderToSend, OrderInfos, Prices, ShirtDetails, ShirtModel, ShirtPrice, ShirtStyleDetails, SizeGrid, useOrderContext } from '@/context/orderContext'
 import { useServerDataContext } from '@/context/serverDataContext'
 import Navbar from '@/components/Navbar'
 import mainStyles from '@/app/(loadingComponent)/(private)/main.module.css'
@@ -244,7 +244,7 @@ export default function FinanceiroPedido() {
                 shirtCollar: shirtStyle.shirtCollar as string,
                 printingTechnique: shirtStyle.printingTechnique as string,
                 printingColors: shirtStyle.printingColors as string,
-                printPositions: shirtStyle.printingPositions as string,
+                printingPositions: shirtStyle.printingPositions as string,
                 sleeveColors: shirtStyle.sleeveColor as string,
                 cuffStyle: shirtStyle.cuffStyle as string,
                 specialElement: shirtStyle.specialElement as string,
@@ -272,15 +272,15 @@ export default function FinanceiroPedido() {
         name: infos.nomePedido,
         customer_name: infos.nomeCliente,
         customer_phone: infos.telefoneCliente,
-        shipping_cost: getMonetaryNumber(pricesOrder?.order?.shipping as number),
-        subtotal_value: getMonetaryNumber(pricesOrder?.order?.subtotal as number),
-        discount_value: getMonetaryNumber(pricesOrder?.order?.discount as number),
+        shipping_cost: pricesOrder?.order.shipping as number,
+        subtotal_value: pricesOrder?.order.subtotal as number,
+        discount_value: pricesOrder?.order.discount as number,
         total_number_units: products?.numberItens,
         details: JSON.stringify(details),
         status: infos.status,
         company: infos.empresa,
         classification: infos.classificacao
-      }
+      } as DataOrderToSend
 
       if(!currentId)
         axios.post(apiRouter.negotiations, dataToRequest,
@@ -406,7 +406,7 @@ export default function FinanceiroPedido() {
           <InputText 
             type='text'
             name={`frete`}
-            defaultValue={(products && products.prices.order)? getMonetaryString(products.prices.order.shipping, false):'0'}
+            defaultValue={products? getMonetaryString(products.prices.order.shipping, false):'0'}
             id={`frete`}
             toMoney
             onChange={handleChangeValues}
