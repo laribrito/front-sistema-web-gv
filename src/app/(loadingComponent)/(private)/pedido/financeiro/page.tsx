@@ -227,87 +227,106 @@ export default function FinanceiroPedido() {
     //envio dos dados pra api com axios
     try {
       const currentId = getCurrentOrderId()
-      if(currentId)
-        toast.success(currentId?.toString())
-      else 
-        toast.error('tem nada n')
+      const infos = getOrderInfos()
 
-      if(!currentId){
-        const infos = getOrderInfos()
-  
-        const allShirts = getShirtModels()
-        const details = {shirts:[] as ShirtDetails[]}
-        
-        if(products?.shirts.numberUnits){
-          const costsShirt = products?.prices.shirts
-          if(costsShirt){
-            allShirts.forEach((shirtModel, index)=>{
-              const allShirtStyles = [] as ShirtStyleDetails[]
-              shirtModel.shirtStyles.forEach((shirtStyle)=>{
-                allShirtStyles.push({
-                  mesh: shirtStyle.mesh,
-                  meshColor: shirtStyle.meshColor,
-                  shirtCollar: shirtStyle.shirtCollar as string,
-                  printingTechnique: shirtStyle.printingTechnique as string,
-                  printingColors: shirtStyle.printingColors as string,
-                  printPositions: shirtStyle.printingPositions as string,
-                  sleeveColors: shirtStyle.sleeveColor as string,
-                  cuffStyle: shirtStyle.cuffStyle as string,
-                  specialElement: shirtStyle.specialElement as string,
-                  comments: shirtStyle.comments as string,
-                  attachments: shirtStyle.attachments as string[],
-                  sizes: shirtStyle.sizes as SizeGrid
-                })
-              })
-    
-              details.shirts.push({
-                printName: shirtModel.printName,
-                shirtType: shirtModel.shirtModeling,
-                numberUnits: shirtModel.number_units,
-                unitPrice: costsShirt[index].precoUnit,
-                unitDiscount: costsShirt[index].descUnit,
-                imageUrl: shirtModel.namePhotoModel as string,
-                shirtStyles: allShirtStyles
+      const allShirts = getShirtModels()
+      const details = {shirts:[] as ShirtDetails[]}
+      
+      if(products?.shirts.numberUnits){
+        const costsShirt = products?.prices.shirts
+        if(costsShirt){
+          allShirts.forEach((shirtModel, index)=>{
+            const allShirtStyles = [] as ShirtStyleDetails[]
+            shirtModel.shirtStyles.forEach((shirtStyle)=>{
+              allShirtStyles.push({
+                mesh: shirtStyle.mesh,
+                meshColor: shirtStyle.meshColor,
+                shirtCollar: shirtStyle.shirtCollar as string,
+                printingTechnique: shirtStyle.printingTechnique as string,
+                printingColors: shirtStyle.printingColors as string,
+                printPositions: shirtStyle.printingPositions as string,
+                sleeveColors: shirtStyle.sleeveColor as string,
+                cuffStyle: shirtStyle.cuffStyle as string,
+                specialElement: shirtStyle.specialElement as string,
+                comments: shirtStyle.comments as string,
+                attachments: shirtStyle.attachments as string[],
+                sizes: shirtStyle.sizes as SizeGrid
               })
             })
-          }
+  
+            details.shirts.push({
+              printName: shirtModel.printName,
+              shirtType: shirtModel.shirtModeling,
+              numberUnits: shirtModel.number_units,
+              unitPrice: costsShirt[index].precoUnit,
+              unitDiscount: costsShirt[index].descUnit,
+              imageUrl: shirtModel.namePhotoModel as string,
+              shirtStyles: allShirtStyles
+            })
+          })
         }
+      }
 
-        const pricesOrder = products?.prices
-        const response = await axios.post(
-          apiRouter.negotiations,
-          {
-            name: infos.nomePedido,
-            customer_name: infos.nomeCliente,
-            customer_phone: infos.telefoneCliente,
-            shipping_cost: getMonetaryNumber(pricesOrder?.order?.shipping as number),
-            subtotal_value: getMonetaryNumber(pricesOrder?.order?.subtotal as number),
-            discount_value: getMonetaryNumber(pricesOrder?.order?.discount as number),
-            total_number_units: products?.numberItens,
-            details: JSON.stringify(details),
-            status: infos.status,
-            company: infos.empresa,
-            classification: infos.classificacao
-          },
+      const pricesOrder = products?.prices
+      const dataToRequest = {
+        name: infos.nomePedido,
+        customer_name: infos.nomeCliente,
+        customer_phone: infos.telefoneCliente,
+        shipping_cost: getMonetaryNumber(pricesOrder?.order?.shipping as number),
+        subtotal_value: getMonetaryNumber(pricesOrder?.order?.subtotal as number),
+        discount_value: getMonetaryNumber(pricesOrder?.order?.discount as number),
+        total_number_units: products?.numberItens,
+        details: JSON.stringify(details),
+        status: infos.status,
+        company: infos.empresa,
+        classification: infos.classificacao
+      }
+
+      if(!currentId)
+        axios.post(apiRouter.negotiations, dataToRequest,
           {
             headers: {
               'Authorization': getToken(),
               'Content-Type': 'application/json',
             }
           }
-        )
-        
-        // Processar a resposta do servidor, se necessário
-        const data = response.data;
-        if(data.errors){
-          setLoading(false)
-          console.log(data.errors)
-          toast.error('Ocorreu algum erro. Tente novamente')
-        } else {
-          setCurrentOrderId(data.data.negotiation_id)
-          router.push('/pedido/sucesso')
-        }
-      }
+        ).then((response) => {
+          const data = response.data;
+          if (data.errors) {
+            setLoading(false);
+            toast.error('Ocorreu algum erro. Tente novamente');
+          } else {
+            setCurrentOrderId(data.dados.negotiation_id);
+            router.push('/pedido/sucesso');
+          }
+        })
+        .catch((error) => {
+          setLoading(false);
+          toast.error('Ocorreu um erro na requisição. Tente novamente mais tarde.');
+        });
+
+      else
+        axios.put(apiRouter.negotiations + currentId + '/', dataToRequest,
+          {
+            headers: {
+              'Authorization': getToken(),
+              'Content-Type': 'application/json',
+            }
+          }
+        ).then((response) => {
+          const data = response.data;
+          if (data.errors) {
+            setLoading(false);
+            toast.error('Ocorreu algum erro. Tente novamente');
+          } else {
+            router.push('/pedido/sucesso');
+          }
+        })
+        .catch((error) => {
+          setLoading(false);
+          toast.error('Ocorreu um erro na requisição. Tente novamente mais tarde.');
+        });
+
     } catch (error) {
       setLoading(false)
       toast.error('Ocorreu algum erro. Tente novamente')
@@ -352,7 +371,7 @@ export default function FinanceiroPedido() {
                     type='text'
                     label='Preço Unit.'
                     name={`precoUnitCam${index}`}
-                    defaultValue={products.prices.shirts.length? getMonetaryString(products.prices.shirts[index].precoUnit, false) : ''}
+                    defaultValue={products.prices.shirts.length? getMonetaryString(products.prices.shirts[index].precoUnit, false) : '0'}
                     id={`precoUnitCam${index}`}
                     toMoney
                     onChange={handleChangeValues}
@@ -364,7 +383,7 @@ export default function FinanceiroPedido() {
                     label='Desc Unit.'
                     name={`descUnitCam${index}`}
                     id={`descUnitCam${index}`}
-                    defaultValue={products.prices.shirts.length? getMonetaryString(products.prices.shirts[index].descUnit, false) : ''}
+                    defaultValue={products.prices.shirts.length? getMonetaryString(products.prices.shirts[index].descUnit, false) : '0'}
                     toMoney
                     onChange={handleChangeValues}
                   />
@@ -387,7 +406,7 @@ export default function FinanceiroPedido() {
           <InputText 
             type='text'
             name={`frete`}
-            defaultValue={(products && products.prices.order)? getMonetaryString(products.prices.order.shipping, false):''}
+            defaultValue={(products && products.prices.order)? getMonetaryString(products.prices.order.shipping, false):'0'}
             id={`frete`}
             toMoney
             onChange={handleChangeValues}

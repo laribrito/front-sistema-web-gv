@@ -179,6 +179,7 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
   const orderInfoLabelStorage = 'currentOrder'
   const shirtModelsLabelStorage = 'shirtModels'
   const pricesLabelStorage = 'prices'
+  const currentIdLabelStorage = 'currentId'
 
   const setOrderInfos = (order: OrderInfos | null) => {
     setCurrentOrder(order);
@@ -222,11 +223,12 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
   }
 
   const setCurrentOrderId = (id: number | null) =>{
-    setCurrentOrderIdAux(id)
+    localStorage.setItem(currentIdLabelStorage, id? id.toString(): '');
   }
 
   const getCurrentOrderId = () : number | null =>{
-    return currentOrderId
+    const strNum = localStorage.getItem(currentIdLabelStorage)
+    return parseInt(strNum ? strNum: '0')
   }
 
   const setFileDownload = (file: File | undefined) =>{
@@ -243,6 +245,7 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
     setFilesUpload([])
     setPrices(null)
     setFileDownload(undefined)
+    setCurrentOrderId(null)
   }
 
   const setPrices = (prices: Prices | null) =>{
