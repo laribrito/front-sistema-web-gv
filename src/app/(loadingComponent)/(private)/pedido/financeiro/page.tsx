@@ -348,50 +348,84 @@ export default function FinanceiroPedido() {
 
       <form ref={formRef} onSubmit={handleSubmit} method='post' style={{marginBottom: '80px'}}>
         {(products && products.numberItens>0)? 
-          <div className={styles.divProds}>
-            {products.shirts.numberUnits!=0 &&
-              <div className={styles.grid} style={{margin: '0'}}>
-                <h2><IconItem /> Camisas</h2>
-                <h3 style={{fontWeight: 'normal'}}>{QtdUnidadesPorExtenso(products.shirts.numberUnits)}</h3>
-              </div>
-              }
-            {products.shirts.prods.map((shirt, index) => (
-              <div className={styles.lineProd}>
-                <ItemModelo 
-                  key={index} 
-                  nomeModelo={shirt.printName} 
-                  tipoCamisa={shirt.shirtModeling} 
-                  qtdCamisas={shirt.numberUnits} 
-                  url={`/camisa/${shirt.index}/`}
-                  vertical
-                />
-                
-                <div>
-                  <InputText 
-                    type='text'
-                    label='Preço Unit.'
-                    name={`precoUnitCam${index}`}
-                    defaultValue={products.prices.shirts.length? getMonetaryString(products.prices.shirts[index].precoUnit, false) : '0'}
-                    id={`precoUnitCam${index}`}
-                    toMoney
-                    onChange={handleChangeValues}
-                    required
-                  /> 
-
-                  <InputText 
-                    type='text'
-                    label='Desc Unit.'
-                    name={`descUnitCam${index}`}
-                    id={`descUnitCam${index}`}
-                    defaultValue={products.prices.shirts.length? getMonetaryString(products.prices.shirts[index].descUnit, false) : '0'}
-                    toMoney
-                    onChange={handleChangeValues}
-                  />
+          <>
+            <div className={styles.divProds}>
+              {products.shirts.numberUnits!=0 &&
+                <div className={styles.grid} style={{margin: '0'}}>
+                  <h2><IconItem /> Camisas</h2>
+                  <h3 style={{fontWeight: 'normal'}}>{QtdUnidadesPorExtenso(products.shirts.numberUnits)}</h3>
                 </div>
-              </div>
-            ))}
-          </div>
-          : (!products)?
+                }
+              {products.shirts.prods.map((shirt, index) => (
+                <div className={styles.lineProd}>
+                  <ItemModelo 
+                    key={index} 
+                    nomeModelo={shirt.printName} 
+                    tipoCamisa={shirt.shirtModeling} 
+                    qtdCamisas={shirt.numberUnits} 
+                    url={`/camisa/${shirt.index}/`}
+                    vertical
+                  />
+                  
+                  <div>
+                    <InputText 
+                      type='text'
+                      label='Preço Unit.'
+                      name={`precoUnitCam${index}`}
+                      defaultValue={products.prices.shirts.length? getMonetaryString(products.prices.shirts[index].precoUnit, false) : '0'}
+                      id={`precoUnitCam${index}`}
+                      toMoney
+                      onChange={handleChangeValues}
+                      required
+                    /> 
+
+                    <InputText 
+                      type='text'
+                      label='Desc Unit.'
+                      name={`descUnitCam${index}`}
+                      id={`descUnitCam${index}`}
+                      defaultValue={products.prices.shirts.length? getMonetaryString(products.prices.shirts[index].descUnit, false) : '0'}
+                      toMoney
+                      onChange={handleChangeValues}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className={styles.divFrete}>
+              <h2>Frete:</h2>
+              <InputText 
+                type='text'
+                name={`frete`}
+                defaultValue={products? getMonetaryString(products.prices.order.shipping, false):'0'}
+                id={`frete`}
+                toMoney
+                onChange={handleChangeValues}
+              />
+            </div>
+
+            <div className={`${styles.lineProd} ${styles.rodapeRecibo}`}>
+              <h2>Total de Itens:</h2>
+              <h2>{products && products.numberItens}</h2>
+            </div>
+
+            <div className={`${styles.lineProd} ${styles.rodapeRecibo}`}>
+              <h2>Subtotal:</h2>
+              <h2>{products && getMonetaryString(products.prices.order.subtotal as number)}</h2>
+            </div>
+
+            <div className={`${styles.lineProd} ${styles.rodapeRecibo}`}>
+              <h2>Total Descontos:</h2>
+              <h2>{products && getMonetaryString(products.prices.order.discount as number)}</h2>
+            </div>
+
+            <div className={`${styles.lineProd} ${styles.rodapeRecibo}`}>
+              <h2>Total:</h2>
+              <h2>{products && getMonetaryString(products.prices.order.subtotal as number -( products?.prices.order.discount as number))}</h2>
+            </div>
+          </>
+          : (products && products.numberItens==0)?
               <div className={styles.spanBox}>
                 <span className={mainStyles.labelDiscreto}>Cadastre produtos no pedido</span>
               </div>
@@ -401,37 +435,6 @@ export default function FinanceiroPedido() {
                 -------
               </div>
         }
-        <div className={styles.divFrete}>
-          <h2>Frete:</h2>
-          <InputText 
-            type='text'
-            name={`frete`}
-            defaultValue={products? getMonetaryString(products.prices.order.shipping, false):'0'}
-            id={`frete`}
-            toMoney
-            onChange={handleChangeValues}
-          />
-        </div>
-
-        <div className={`${styles.lineProd} ${styles.rodapeRecibo}`}>
-          <h2>Total de Itens:</h2>
-          <h2>{products && products.numberItens}</h2>
-        </div>
-
-        <div className={`${styles.lineProd} ${styles.rodapeRecibo}`}>
-          <h2>Subtotal:</h2>
-          <h2>{products && getMonetaryString(products.prices.order.subtotal as number)}</h2>
-        </div>
-
-        <div className={`${styles.lineProd} ${styles.rodapeRecibo}`}>
-          <h2>Total Descontos:</h2>
-          <h2>{products && getMonetaryString(products.prices.order.discount as number)}</h2>
-        </div>
-
-        <div className={`${styles.lineProd} ${styles.rodapeRecibo}`}>
-          <h2>Total:</h2>
-          <h2>{products && getMonetaryString(products.prices.order.subtotal as number -( products?.prices.order.discount as number))}</h2>
-        </div>
 
         <Navbar.Root>
           <Navbar.Item icon={IconSave} submit>Finalizar</Navbar.Item>
