@@ -3,7 +3,7 @@ import Header from '@/components/Header'
 import styles from './page.module.css'
 import { IconItem, IconSave } from "@/utils/elements"
 import { useEffect, useRef, useState } from 'react'
-import { OrderInfos, ShirtDetails, ShirtModel, ShirtPrice, ShirtStyleDetails, SizeGrid, useOrderContext } from '@/context/orderContext'
+import { OrderInfos, Prices, ShirtDetails, ShirtModel, ShirtPrice, ShirtStyleDetails, SizeGrid, useOrderContext } from '@/context/orderContext'
 import { useServerDataContext } from '@/context/serverDataContext'
 import Navbar from '@/components/Navbar'
 import mainStyles from '@/app/(loadingComponent)/(private)/main.module.css'
@@ -38,7 +38,8 @@ export default function FinanceiroPedido() {
       prods: Shirt[]
       numberUnits: number
     }
-    haveProducts: boolean
+    prices: Prices
+    numberItens: number
   }
 
   type DataRecibo = {
@@ -50,13 +51,12 @@ export default function FinanceiroPedido() {
 
   const router = useRouter()
   const { getToken } = useAuth()
-  const { getOrderInfos, getShirtModels, setShirtModels, setShirtPrices, getShirtPrices } = useOrderContext()
+  const { getOrderInfos, getShirtModels, setShirtModels, setPrices, getPrices, setCurrentOrderId, getCurrentOrderId } = useOrderContext()
   const { setLoading } = useComponentsContext()
   const { getCompanies, getClassifications, getShirtTypes, parseOptionName } = useServerDataContext()
   const [dadosHeader, setDadosHeader] = useState<DataHeader>({classificacao: '--', nomeCliente: '--', nomePedido: '--', empresa: '---'})
   const [products, setProducts] = useState<Products|null>(null)
   const formRef = useRef<HTMLFormElement | null>(null);
-  const [dataRecibo, setDataRecibo] = useState<DataRecibo>({discount: 0, numberUnits: 0, subtotal: 0, shippingCost: 0})
 
   async function getDataInfo() {
     setLoading(true)
@@ -84,17 +84,20 @@ export default function FinanceiroPedido() {
 
   async function getProducts() {
     setLoading(true)
-    var haveProducts = false
 
     const allShirts = getShirtModels()
     const approvedShirts = [] as ShirtModel[]
     const shirts = [] as Shirt[]
     const allModeling = await getShirtTypes()
+    const allPrices = getPrices()
+    const allShirtPrices = allPrices?.shirts
     var unitsShirts = 0
+    var totalPrice = 0
+    var totalDiscount = 0
+    var totalItens = 0
 
     var id = 0
     allShirts.forEach((shirt, index) => {
-      haveProducts = true
       if(shirt.number_units!=0 && allModeling) {
         approvedShirts.push(shirt)
 
@@ -109,17 +112,32 @@ export default function FinanceiroPedido() {
         })
 
         unitsShirts += shirt.number_units
+
+        
+        totalPrice+= (allShirtPrices)? shirt.number_units * allShirtPrices[index].precoUnit : 0
+        totalDiscount+= (allShirtPrices)? shirt.number_units * allShirtPrices[index].descUnit : 0
+        totalItens+=shirt.number_units
       }
     });
 
     setShirtModels(approvedShirts)
+
+    const thePrices = {
+      order:{
+        discount: totalDiscount,
+        shipping: (allPrices)? allPrices.order.shipping : 0,
+        subtotal: (allPrices)? totalPrice + allPrices.order.shipping : 0
+      },
+      shirts: (allShirtPrices)? allShirtPrices : []
+    } as Prices
 
     setProducts({
       shirts: {
         prods: shirts,
         numberUnits: unitsShirts
       },
-      haveProducts: haveProducts
+      prices: thePrices,
+      numberItens: totalItens
     })
     setLoading(false)
   }
@@ -167,21 +185,37 @@ export default function FinanceiroPedido() {
       
         // frete
         const getFrete = form.elements[indCampo] as HTMLFormElement
-        setMonetaryNumber(getFrete.value)
+        frete = setMonetaryNumber(getFrete.value)
         totalPrice+= frete
       } catch (e : any) {
         toast.error(e.message)
       } finally {
         //atualiza preços dos produtos
-        setShirtPrices(pricesShirt)
+        setPrices({
+          order:{
+            discount: totalDiscount,
+            shipping: frete,
+            subtotal: totalPrice
+          },
+          shirts: pricesShirt
+        })
       }
     }
 
-    setDataRecibo({
-      discount: totalDiscount,
-      numberUnits: totalItens,
-      subtotal: totalPrice,
-      shippingCost: frete
+    setProducts({
+      shirts: {
+        prods: products?.shirts.prods as Shirt[],
+        numberUnits: products?.shirts.numberUnits as number
+      },
+      prices: {
+        order: {
+          discount: totalDiscount,
+          shipping: frete,
+          subtotal: totalPrice
+        },
+        shirts: pricesShirt
+      },
+      numberItens: totalItens
     })
     setLoading(false)
   }
@@ -192,75 +226,87 @@ export default function FinanceiroPedido() {
 
     //envio dos dados pra api com axios
     try {
-      const infos = getOrderInfos()
+      const currentId = getCurrentOrderId()
+      if(currentId)
+        toast.success(currentId?.toString())
+      else 
+        toast.error('tem nada n')
 
-      const allShirts = getShirtModels()
-      const details = {shirts:[] as ShirtDetails[]}
-      
-      if(products?.shirts.numberUnits){
-        const costsShirt = getShirtPrices()
-        allShirts.forEach((shirtModel, index)=>{
-          const allShirtStyles = [] as ShirtStyleDetails[]
-          shirtModel.shirtStyles.forEach((shirtStyle)=>{
-            allShirtStyles.push({
-              mesh: shirtStyle.mesh,
-              meshColor: shirtStyle.meshColor,
-              shirtCollar: shirtStyle.shirtCollar as string,
-              printingTechnique: shirtStyle.printingTechnique as string,
-              printingColors: shirtStyle.printingColors as string,
-              printPositions: shirtStyle.printingPositions as string,
-              sleeveColors: shirtStyle.sleeveColor as string,
-              cuffStyle: shirtStyle.cuffStyle as string,
-              specialElement: shirtStyle.specialElement as string,
-              comments: shirtStyle.comments as string,
-              attachments: shirtStyle.attachments as string[],
-              sizes: shirtStyle.sizes as SizeGrid
+      if(!currentId){
+        const infos = getOrderInfos()
+  
+        const allShirts = getShirtModels()
+        const details = {shirts:[] as ShirtDetails[]}
+        
+        if(products?.shirts.numberUnits){
+          const costsShirt = products?.prices.shirts
+          if(costsShirt){
+            allShirts.forEach((shirtModel, index)=>{
+              const allShirtStyles = [] as ShirtStyleDetails[]
+              shirtModel.shirtStyles.forEach((shirtStyle)=>{
+                allShirtStyles.push({
+                  mesh: shirtStyle.mesh,
+                  meshColor: shirtStyle.meshColor,
+                  shirtCollar: shirtStyle.shirtCollar as string,
+                  printingTechnique: shirtStyle.printingTechnique as string,
+                  printingColors: shirtStyle.printingColors as string,
+                  printPositions: shirtStyle.printingPositions as string,
+                  sleeveColors: shirtStyle.sleeveColor as string,
+                  cuffStyle: shirtStyle.cuffStyle as string,
+                  specialElement: shirtStyle.specialElement as string,
+                  comments: shirtStyle.comments as string,
+                  attachments: shirtStyle.attachments as string[],
+                  sizes: shirtStyle.sizes as SizeGrid
+                })
+              })
+    
+              details.shirts.push({
+                printName: shirtModel.printName,
+                shirtType: shirtModel.shirtModeling,
+                numberUnits: shirtModel.number_units,
+                unitPrice: costsShirt[index].precoUnit,
+                unitDiscount: costsShirt[index].descUnit,
+                imageUrl: shirtModel.namePhotoModel as string,
+                shirtStyles: allShirtStyles
+              })
             })
-          })
-
-          details.shirts.push({
-            printName: shirtModel.printName,
-            shirtType: shirtModel.shirtModeling,
-            numberUnits: shirtModel.number_units,
-            unitPrice: costsShirt[index].precoUnit,
-            unitDiscount: costsShirt[index].descUnit,
-            imageUrl: shirtModel.namePhotoModel as string,
-            shirtStyles: allShirtStyles
-          })
-        })
-      }
-
-      const response = await axios.post(
-        apiRouter.negotiations,
-        {
-          name: infos.nomePedido,
-          customer_name: infos.nomeCliente,
-          customer_phone: infos.telefoneCliente,
-          shipping_cost: getMonetaryNumber(dataRecibo.shippingCost),
-          subtotal_value: getMonetaryNumber(dataRecibo.subtotal),
-          discount_value: getMonetaryNumber(dataRecibo.discount),
-          total_number_units: dataRecibo.numberUnits,
-          details: JSON.stringify(details),
-          status: infos.status,
-          company: infos.empresa,
-          classification: infos.classificacao
-        },
-        {
-          headers: {
-            'Authorization': getToken(),
-            'Content-Type': 'application/json',
           }
         }
-      )
-      
-      // Processar a resposta do servidor, se necessário
-      const data = response.data;
-      if(data.errors){
-        setLoading(false)
-        console.log(data.errors)
-        toast.error('Ocorreu algum erro. Tente novamente')
-      } else {
-        router.push('/pedido/sucesso')
+
+        const pricesOrder = products?.prices
+        const response = await axios.post(
+          apiRouter.negotiations,
+          {
+            name: infos.nomePedido,
+            customer_name: infos.nomeCliente,
+            customer_phone: infos.telefoneCliente,
+            shipping_cost: getMonetaryNumber(pricesOrder?.order?.shipping as number),
+            subtotal_value: getMonetaryNumber(pricesOrder?.order?.subtotal as number),
+            discount_value: getMonetaryNumber(pricesOrder?.order?.discount as number),
+            total_number_units: products?.numberItens,
+            details: JSON.stringify(details),
+            status: infos.status,
+            company: infos.empresa,
+            classification: infos.classificacao
+          },
+          {
+            headers: {
+              'Authorization': getToken(),
+              'Content-Type': 'application/json',
+            }
+          }
+        )
+        
+        // Processar a resposta do servidor, se necessário
+        const data = response.data;
+        if(data.errors){
+          setLoading(false)
+          console.log(data.errors)
+          toast.error('Ocorreu algum erro. Tente novamente')
+        } else {
+          setCurrentOrderId(data.data.negotiation_id)
+          router.push('/pedido/sucesso')
+        }
       }
     } catch (error) {
       setLoading(false)
@@ -282,7 +328,7 @@ export default function FinanceiroPedido() {
       </div>
 
       <form ref={formRef} onSubmit={handleSubmit} method='post' style={{marginBottom: '80px'}}>
-        {(products && products.haveProducts)? 
+        {(products && products.numberItens>0)? 
           <div className={styles.divProds}>
             {products.shirts.numberUnits!=0 &&
               <div className={styles.grid} style={{margin: '0'}}>
@@ -306,17 +352,19 @@ export default function FinanceiroPedido() {
                     type='text'
                     label='Preço Unit.'
                     name={`precoUnitCam${index}`}
+                    defaultValue={products.prices.shirts.length? getMonetaryString(products.prices.shirts[index].precoUnit, false) : ''}
                     id={`precoUnitCam${index}`}
                     toMoney
                     onChange={handleChangeValues}
                     required
-                  />
+                  /> 
 
                   <InputText 
                     type='text'
                     label='Desc Unit.'
                     name={`descUnitCam${index}`}
                     id={`descUnitCam${index}`}
+                    defaultValue={products.prices.shirts.length? getMonetaryString(products.prices.shirts[index].descUnit, false) : ''}
                     toMoney
                     onChange={handleChangeValues}
                   />
@@ -324,7 +372,7 @@ export default function FinanceiroPedido() {
               </div>
             ))}
           </div>
-          : (products && !products.haveProducts)?
+          : (!products)?
               <div className={styles.spanBox}>
                 <span className={mainStyles.labelDiscreto}>Cadastre produtos no pedido</span>
               </div>
@@ -339,6 +387,7 @@ export default function FinanceiroPedido() {
           <InputText 
             type='text'
             name={`frete`}
+            defaultValue={(products && products.prices.order)? getMonetaryString(products.prices.order.shipping, false):''}
             id={`frete`}
             toMoney
             onChange={handleChangeValues}
@@ -347,22 +396,22 @@ export default function FinanceiroPedido() {
 
         <div className={`${styles.lineProd} ${styles.rodapeRecibo}`}>
           <h2>Total de Itens:</h2>
-          <h2>{dataRecibo.numberUnits}</h2>
+          <h2>{products && products.numberItens}</h2>
         </div>
 
         <div className={`${styles.lineProd} ${styles.rodapeRecibo}`}>
           <h2>Subtotal:</h2>
-          <h2>{getMonetaryString(dataRecibo.subtotal)}</h2>
+          <h2>{products && getMonetaryString(products.prices.order.subtotal as number)}</h2>
         </div>
 
         <div className={`${styles.lineProd} ${styles.rodapeRecibo}`}>
           <h2>Total Descontos:</h2>
-          <h2>{getMonetaryString(dataRecibo.discount)}</h2>
+          <h2>{products && getMonetaryString(products.prices.order.discount as number)}</h2>
         </div>
 
         <div className={`${styles.lineProd} ${styles.rodapeRecibo}`}>
           <h2>Total:</h2>
-          <h2>{getMonetaryString(dataRecibo.subtotal - dataRecibo.discount)}</h2>
+          <h2>{products && getMonetaryString(products.prices.order.subtotal as number -( products?.prices.order.discount as number))}</h2>
         </div>
 
         <Navbar.Root>

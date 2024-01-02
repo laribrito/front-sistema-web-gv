@@ -103,6 +103,15 @@ export type ShirtPrice = {
   descUnit: number
 }
 
+export type Prices = {
+  order: {
+    shipping: number
+    subtotal: number
+    discount: number
+  },
+  shirts: ShirtPrice[]
+}
+
 export type ShirtStyleDetails = {
   mesh: number
   meshColor: number
@@ -138,8 +147,8 @@ type OrderContextType = {
   getShirtModel: (id: number) => ShirtModel
   getIdModel: (model: ShirtModel) => number
 
-  setShirtPrices: (prices: ShirtPrice[]) => void
-  getShirtPrices: () => ShirtPrice[]
+  setPrices: (prices: Prices | null) => void
+  getPrices: () => Prices | null
 
   filesUpload: File[]
   setFilesUpload: (files: File[]) => void;
@@ -148,6 +157,9 @@ type OrderContextType = {
   fileDownload: File | undefined
   setFileDownload: (file: File) => void;
   getFileDownload: () => File | undefined
+
+  setCurrentOrderId: (id: number) => void;
+  getCurrentOrderId: () => number | null
 
   cleanOrdenContext: ()=>void
 };
@@ -160,12 +172,13 @@ type OrderProviderProps = {
 
 export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
   const [currentOrder, setCurrentOrder] = useState<OrderInfos | null>(null);
+  const [currentOrderId, setCurrentOrderIdAux] = useState<number | null>(null);
   const [shirtModels, setCurrentShirtModels] = useState<ShirtModel[]>([]);
   const [filesUpload, setFilesAux] = useState<File[]>([]);
-  const [fileDownload, setFilesDownload] = useState<File>();
+  const [fileDownload, setFileDownloadAux] = useState<File>();
   const orderInfoLabelStorage = 'currentOrder'
   const shirtModelsLabelStorage = 'shirtModels'
-  const shirtPricesLabelStorage = 'shirtPrices'
+  const pricesLabelStorage = 'prices'
 
   const setOrderInfos = (order: OrderInfos | null) => {
     setCurrentOrder(order);
@@ -208,8 +221,16 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
     return filesUpload
   }
 
+  const setCurrentOrderId = (id: number | null) =>{
+    setCurrentOrderIdAux(id)
+  }
+
+  const getCurrentOrderId = () : number | null =>{
+    return currentOrderId
+  }
+
   const setFileDownload = (file: File | undefined) =>{
-    setFilesDownload(file)
+    setFileDownloadAux(file)
   }
 
   const getFileDownload = () : File | undefined =>{
@@ -220,17 +241,17 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
     setOrderInfos(null)
     setShirtModels([])
     setFilesUpload([])
-    setShirtPrices([])
+    setPrices(null)
     setFileDownload(undefined)
   }
 
-  const setShirtPrices = (prices: ShirtPrice[]) =>{
-    localStorage.setItem(shirtPricesLabelStorage, JSON.stringify(prices))
+  const setPrices = (prices: Prices | null) =>{
+    localStorage.setItem(pricesLabelStorage, JSON.stringify(prices))
   }
 
-  const getShirtPrices = () : ShirtPrice[] =>{
-    const savedData = localStorage.getItem(shirtPricesLabelStorage);
-    return savedData ? JSON.parse(savedData) : [];
+  const getPrices = () : Prices | null =>{
+    const savedData = localStorage.getItem(pricesLabelStorage);
+    return savedData ? JSON.parse(savedData) : null;
   }
 
   const contextValue: OrderContextType = {
@@ -246,10 +267,12 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
     setFilesUpload,
     getFilesUpload,
     cleanOrdenContext,
-    setShirtPrices,
-    getShirtPrices,
+    setPrices,
+    getPrices,
     setFileDownload,
-    getFileDownload
+    getFileDownload,
+    setCurrentOrderId,
+    getCurrentOrderId
   };
 
   return (

@@ -39,7 +39,9 @@ export function getMonetaryNumber(x: number) : number {
     return (x / 100)
 }
 
-export function getMonetaryString(x: number) : string {
+export function getMonetaryString(x: number, withCifrao: boolean = true) : string {
     const value = getMonetaryNumber(x)
-    return 'R$' + value
+    if(withCifrao)
+        return 'R$ ' + value
+    return value.toString()
 }
