@@ -1,15 +1,17 @@
 // components/ShirtStyleDisplay.tsx
 
-import { ShirtStyle } from '@/context/orderContext';
+import { SecondShirtStyle, ShirtStyle } from '@/context/orderContext';
 import styles from './shirtDisplay.module.css';
-import { RefObject } from 'react';
+import { HTMLProps, RefObject, useState } from 'react';
+import { useServerDataContext } from '@/context/serverDataContext';
+import { Option } from '../Input/interfaceInput';
 
-interface ShirtStyleDisplayProps {
-  shirtStyle: ShirtStyle | null | undefined;
+interface ShirtStyleDisplayProps extends HTMLProps<HTMLDivElement> {
+  shirtStyle: SecondShirtStyle | null | undefined;
   refer?: RefObject<HTMLDivElement>;
 }
 
-export default function ShirtStyleDisplay({ shirtStyle, refer }: ShirtStyleDisplayProps) {
+export default function ShirtStyleDisplay({ shirtStyle, refer, ...rest }: ShirtStyleDisplayProps) {
   const camposSelecionados = [
     'shirtCollar', 
     'printingTechnique',
@@ -18,6 +20,7 @@ export default function ShirtStyleDisplay({ shirtStyle, refer }: ShirtStyleDispl
     'sleeveColor',
     'cuffStyle',
     'specialElement',
+    'sizeAdjustment'
   ] as string[];
 
   const camposPortugues = [
@@ -28,10 +31,21 @@ export default function ShirtStyleDisplay({ shirtStyle, refer }: ShirtStyleDispl
     'Cores Manga',
     'Punho',
     'Elemento Especial',
+    'Ajuste de tamanho'
   ];
 
+  const {getCollars, parseOptionName} = useServerDataContext()
+  const [collarName, setCollarName] = useState('')
+  const golasPromise = getCollars();
+
+  golasPromise.then((golas) => {
+    if(golas && shirtStyle){
+      setCollarName(parseOptionName(golas, shirtStyle.shirtCollar) as string)
+    }
+  })
+
   return (
-    <div className={styles.display} ref={refer}>
+    <div className={styles.display} ref={refer} {...rest}>
       {Object.entries(shirtStyle ?? {}).map(([key, value]) => {
         const index = camposSelecionados.indexOf(key);
 
@@ -40,7 +54,7 @@ export default function ShirtStyleDisplay({ shirtStyle, refer }: ShirtStyleDispl
           return (
             <div key={key} className={styles.campos}>
               <p className={styles.titulo}>{camposPortugues[index]}:</p>
-              <p>{value}</p>
+              <p>{camposPortugues[index] == 'Gola'? collarName : value}</p>
             </div>
           );
         }

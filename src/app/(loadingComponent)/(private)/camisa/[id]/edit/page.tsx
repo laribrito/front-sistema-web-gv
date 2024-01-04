@@ -15,8 +15,10 @@ import { ShirtModel, useOrderContext } from '@/context/orderContext'
 import axios from 'axios'
 import apiRouter from '@/api/rotas'
 import { useAuth } from '@/context/authContext'
+import styles from './page.module.css'
 import { useRouter } from 'next/navigation'
 import { useComponentsContext } from '@/context/componentsContext'
+import Divider from '@/components/Divider'
 
 export default function EditarCamisaInfo({params}:{params: {id: number}}) {
   type FormContent = {
@@ -24,12 +26,17 @@ export default function EditarCamisaInfo({params}:{params: {id: number}}) {
     shirtModeling: string
   }
 
+  type DataPage = {
+    shirtTypes: Option[]
+    collars: Option[]
+  }
+
   const router = useRouter()
   const { getToken } = useAuth()
   const { setLoading } = useComponentsContext()
-  const { getShirtTypes } = useServerDataContext()
+  const { getShirtTypes, getCollars } = useServerDataContext()
   const { setShirtModels, getShirtModel, getShirtModels, getIdModel, filesUpload, setFilesUpload } = useOrderContext()
-  const [dataPage, setDataPage] = useState<Option[]>([])
+  const [dataPage, setDataPage] = useState<DataPage>()
   const [formErrors, setFormErrors] = useState<ZodIssue[]>({} as ZodIssue[]);
   const [formContext, setFormContent] = useState<FormContent | null>(null);
 
@@ -37,8 +44,12 @@ export default function EditarCamisaInfo({params}:{params: {id: number}}) {
     setLoading(true)
     try {
       const dados = await getShirtTypes() as Option []
+      const dados2 = await getCollars() as Option []
       if(dados){
-        setDataPage(dados)
+        setDataPage({
+          collars: dados2,
+          shirtTypes: dados
+        })
       }
     } catch (error) {
       toast.error('Ocorreu algum erro. Atualize a página');
@@ -82,7 +93,7 @@ export default function EditarCamisaInfo({params}:{params: {id: number}}) {
   }
  
   useEffect(() => {
-    if(!dataPage.length) getData();
+    if(!dataPage) getData();
     if(!formContext) getFormContent()
   }, [dataPage, formContext])
 
@@ -92,10 +103,17 @@ export default function EditarCamisaInfo({params}:{params: {id: number}}) {
 
     const form = e.currentTarget as HTMLFormElement;
 
-    //validação com zode
-    const dados = validarDados(novaCamisaValidator, {
+     //validação com zode
+     const dados = validarDados(novaCamisaValidator, {
       printName:      form.printName.value, 
-      shirtModeling:     form.shirtModeling.value
+      shirtModeling:     form.shirtModeling.value,
+      cuffStyle: form.cuffStyle.value,
+      printingColors: form.printingColors.value,
+      printingPositions: form.printingPositions.value,
+      printingTechnique: form.printingTechnique.value,
+      sleeveColor: form.sleeveColor.value,
+      specialElement: form.specialElement.value,
+      sizeAdjustment: form.sizeAdjustment.value
     }) as ReturnValidator;
     
     if(!dados.success){
@@ -105,7 +123,7 @@ export default function EditarCamisaInfo({params}:{params: {id: number}}) {
         setFormErrors({} as ZodIssue[]);
       }, 4000);
     } else {
-      const data = dados.data as ShirtModel
+      const data = dados.data as any
       setFormErrors({} as ZodIssue[])
       // próxima página
       const current = getShirtModel(params.id)
@@ -115,6 +133,16 @@ export default function EditarCamisaInfo({params}:{params: {id: number}}) {
         shirtModeling: form.shirtModeling.value,
         namePhotoModel: '',
         shirtStyles: current.shirtStyles,
+        defaultStyle: {
+          shirtCollar: form.shirtCollar.value,
+          printingTechnique: data.printingTechnique,
+          printingColors: data.printingColors,
+          printingPositions: data.printingPositions,
+          sleeveColor: data.sleeveColor,
+          cuffStyle: data.cuffStyle,
+          specialElement: data.specialElement,
+          sizeAdjustment: data.sizeAdjustment
+        },
         number_units: current.number_units
       } as ShirtModel
 
@@ -159,14 +187,13 @@ export default function EditarCamisaInfo({params}:{params: {id: number}}) {
           <Header.Title>Editar Camisa</Header.Title>
       </Header.Root>
 
-      <form method='post' onSubmit={handleSubmit}>
-      
+      <form method='post' onSubmit={handleSubmit} style={{marginBottom: '40px'}}>
+        <h2 className={styles.title}>Informações do produto</h2>
         <InputText 
           type='text' 
           label='Nome da Estampa' 
           name='printName'
           id='printName'
-          defaultValue={formContext?.printName}
           required 
           autoFocus
           errors={formErrors}
@@ -176,15 +203,36 @@ export default function EditarCamisaInfo({params}:{params: {id: number}}) {
           label='Modelo' 
           name='shirtModeling' 
           id='shirtModeling'
-          defaultValue={formContext?.shirtModeling}
           required 
-          options={dataPage}
+          options={dataPage? dataPage.shirtTypes : []}
           errors={formErrors} 
         />
 
         <InputFile label='Layout do Modelo' id='arquivo'></InputFile>
+        
+        <Divider></Divider>
+        <h2 className={styles.title}>Detalhamento Padrão</h2>
 
-        <Button type='submit'>Salvar</Button>
+        <InputSelect 
+          label='Gola' 
+          name='shirtCollar' 
+          id='shirtCollar'
+          required 
+          options={dataPage? dataPage.collars : []}
+          errors={formErrors} 
+        />
+        <InputText type='text' label='Técnica de impressão' defaultValue='Silk Screen' required id='printingTechnique' name='printingTechnique' errors={formErrors}/>
+        <InputText type='text' label='Cores Estampa' placeholder='Azul / Vermelho / Diversos' required id='printingColors' name='printingColors' errors={formErrors}/>
+        <InputText type='text' label='Posições da Estampa' placeholder='Nuca / Peito Esq' required id='printingPositions' name='printingPositions' errors={formErrors}/>
+
+        <Divider></Divider>
+        
+        <InputText type='text' label='Cor das Mangas' id='sleeveColor' name='sleeveColor' errors={formErrors}/>
+        <InputText type='text' label='Punho' id='cuffStyle' name='cuffStyle' errors={formErrors}/>
+        <InputText type='text' label='Elemento Especial' id='specialElement' name='specialElement' errors={formErrors}/>
+        <InputText type='text' label='Ajuste de tamanho' id='sizeAdjustment' name='sizeAdjustment' errors={formErrors}/>
+
+        <Button type='submit'>Próximo</Button>
       </form>
     </>
   )

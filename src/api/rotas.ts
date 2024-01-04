@@ -14,6 +14,7 @@ const apiRouter = {
     fileManager: API_ROOT + '/file/',
     meshs: API_ROOT + '/meshs/',
     meshColors: API_ROOT + '/mesh-colors/',
+    collars: API_ROOT + '/collars/',
 }
 
 export default apiRouter

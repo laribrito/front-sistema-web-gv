@@ -31,6 +31,11 @@ type MeshData = {
   name: string
 }
 
+type CollarData = {
+  collar_id: number
+  name: string
+}
+
 type MeshColorData = {
   mesh_color_id: number
   name: string
@@ -73,6 +78,7 @@ type ServerDataContextType = {
   getMeshs: () => Promise<Option[] | null>;
   getMeshColors: () => Promise<Option[] | null>;
   getShirtTypes: () => Promise<Option[] | null>;
+  getCollars: () => Promise<Option[] | null>;
   getShirtType: (id:number) => Promise<string | undefined>;
   parseOptionName: (options: Option[], targetId: number) => string | null;
 };
@@ -282,6 +288,37 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
     return null;
   }
 
+  async function getCollars(): Promise<Option[] | null> {
+    const labelStorage = 'collars'
+    const dataList = sessionStorage.getItem(labelStorage);
+  
+    if (dataList) {
+      const datas: Option[] = JSON.parse(dataList);
+      return datas;
+    } else {
+      // requisição
+      try{
+        const response = await axios.get(apiRouter.collars, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': getToken(),
+          },
+        })
+
+        if (response.data.errors) {
+          toast.error(response.data.errors);
+        } else {
+          const newData = processData(response.data.data, (item : CollarData) => item.collar_id, (item) => item.name);
+          sessionStorage.setItem(labelStorage, JSON.stringify(newData))
+          return newData;
+        }
+      } catch (error) {
+        toast.error('Ocorreu algum erro. Atualize a página');
+      }
+    }
+    return null;
+  }
+
   async function getShirtType(id:number): Promise<string|undefined> {
     const allShirtModels = await getShirtTypes()
     if(allShirtModels){
@@ -305,6 +342,7 @@ export const ServerDataProvider: React.FC<ServerDataProviderProps> = ({ children
     getMeshs,
     getMeshColors,
     getShirtTypes,
+    getCollars,
     getShirtType,
     parseOptionName
   };

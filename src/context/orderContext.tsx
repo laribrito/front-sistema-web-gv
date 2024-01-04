@@ -89,11 +89,27 @@ export type ShirtStyle = {
   toSave?: boolean
 }
 
+export type SecondShirtStyle = {
+  shirtCollar: number
+  printingTechnique: string
+  printingColors: string
+  printingPositions: string
+
+  sleeveColor: string
+  cuffStyle: string
+  specialElement: string
+  sizeAdjustment: string
+
+  comments?: string
+  attachments?: string[]
+}
+
 export type ShirtModel = {
   printName: string
   shirtModeling: number
   shirtStyles: ShirtStyle[]
   number_units: number
+  defaultStyle: SecondShirtStyle
   
   namePhotoModel?: string
 };
