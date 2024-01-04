@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useServerDataContext } from '@/context/serverDataContext'
 import Button from '@/components/Button'
 import toast from 'react-hot-toast'
-import { InfosSizeGrid, SecondShirtStyle, ShirtModel, ShirtStyle, SizeGrid, calcularInfosGrade, useOrderContext } from '@/context/orderContext'
+import { InfosSizeGrid, DefaultShirtStyle, ShirtModel, ShirtStyle, SizeGrid, calcularInfosGrade, useOrderContext } from '@/context/orderContext'
 import { useRouter } from 'next/navigation'
 import styles from './page.module.css'
 import InputText from '@/components/Input/InputText'
@@ -167,7 +167,7 @@ export default function Camisa02({params}:{params: {id: number}}) {
     <>
       <Header.Root>
           <Header.BtnReturn/>
-          <Header.Title>Nova Camisa</Header.Title>
+          <Header.Title>Editar Camisa</Header.Title>
       </Header.Root>
 
       <div className={styles.malhaDiv}>
