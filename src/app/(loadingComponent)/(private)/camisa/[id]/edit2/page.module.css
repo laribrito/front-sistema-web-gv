@@ -1,0 +1,30 @@
+.malhaDiv{
+    position: fixed;
+    top: 60px;
+    padding: 10px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background-color: #f3f3f3;
+    z-index: 3;
+}
+
+.contentBox > h3{
+    margin-top: var(--gap-itens-box);
+}
+
+.gridSizes{
+    display: flex;
+    justify-content: space-between;
+}
+
+.label{
+    font-size: medium;
+}
+
+.LabelAndContent{
+    padding: 2px;
+    text-align: center;
+
+}

@@ -24,6 +24,15 @@ export default function EditarCamisaInfo({params}:{params: {id: number}}) {
   type FormContent = {
     printName: string
     shirtModeling: string
+    shirtCollar: number
+    printingTechnique: string
+    printingColors: string
+    printingPositions: string
+
+    sleeveColor: string
+    cuffStyle: string
+    specialElement: string
+    sizeAdjustment: string
   }
 
   type DataPage = {
@@ -61,7 +70,15 @@ export default function EditarCamisaInfo({params}:{params: {id: number}}) {
     const current = getShirtModel(params.id)
     setFormContent({
       printName: current.printName,
-      shirtModeling: current.shirtModeling.toString()
+      shirtModeling: current.shirtModeling.toString(),
+      cuffStyle: current.defaultStyle.cuffStyle,
+      printingColors: current.defaultStyle.printingColors,
+      printingPositions: current.defaultStyle.printingPositions,
+      printingTechnique: current.defaultStyle.printingTechnique,
+      shirtCollar: current.defaultStyle.shirtCollar,
+      sizeAdjustment: current.defaultStyle.sizeAdjustment,
+      sleeveColor: current.defaultStyle.sleeveColor,
+      specialElement: current.defaultStyle.specialElement,
     })
 
     //pega imagem do modelo
@@ -141,7 +158,9 @@ export default function EditarCamisaInfo({params}:{params: {id: number}}) {
           sleeveColor: data.sleeveColor,
           cuffStyle: data.cuffStyle,
           specialElement: data.specialElement,
-          sizeAdjustment: data.sizeAdjustment
+          sizeAdjustment: data.sizeAdjustment,
+          comments: current.defaultStyle.comments,
+          attachments: current.defaultStyle.attachments
         },
         number_units: current.number_units
       } as ShirtModel
@@ -170,7 +189,7 @@ export default function EditarCamisaInfo({params}:{params: {id: number}}) {
           )
 
           
-        router.push(`/camisa/${getIdModel(newModel)}`);
+        router.push(`/camisa/${getIdModel(newModel)}/edit2`);
         setFilesUpload([])
 
       } catch (error) {
@@ -194,6 +213,7 @@ export default function EditarCamisaInfo({params}:{params: {id: number}}) {
           label='Nome da Estampa' 
           name='printName'
           id='printName'
+          defaultValue={formContext?.printName}
           required 
           autoFocus
           errors={formErrors}
@@ -203,6 +223,7 @@ export default function EditarCamisaInfo({params}:{params: {id: number}}) {
           label='Modelo' 
           name='shirtModeling' 
           id='shirtModeling'
+          defaultValue={formContext?.shirtModeling}
           required 
           options={dataPage? dataPage.shirtTypes : []}
           errors={formErrors} 
@@ -217,20 +238,79 @@ export default function EditarCamisaInfo({params}:{params: {id: number}}) {
           label='Gola' 
           name='shirtCollar' 
           id='shirtCollar'
+          defaultValue={formContext?.shirtCollar.toString()}
           required 
           options={dataPage? dataPage.collars : []}
           errors={formErrors} 
         />
-        <InputText type='text' label='Técnica de impressão' defaultValue='Silk Screen' required id='printingTechnique' name='printingTechnique' errors={formErrors}/>
-        <InputText type='text' label='Cores Estampa' placeholder='Azul / Vermelho / Diversos' required id='printingColors' name='printingColors' errors={formErrors}/>
-        <InputText type='text' label='Posições da Estampa' placeholder='Nuca / Peito Esq' required id='printingPositions' name='printingPositions' errors={formErrors}/>
+        <InputText 
+          type='text' 
+          label='Técnica de impressão'
+          required 
+          id='printingTechnique'
+          defaultValue={formContext?.printingTechnique}
+          name='printingTechnique' 
+          errors={formErrors}
+        />
+
+        <InputText 
+          type='text' 
+          label='Cores Estampa'
+          defaultValue={formContext?.printingColors}
+          placeholder='Azul / Vermelho / Diversos' 
+          required id='printingColors' 
+          name='printingColors' 
+          errors={formErrors}
+        />
+
+        <InputText 
+          type='text' 
+          label='Posições da Estampa' 
+          placeholder='Nuca / Peito Esq' 
+          defaultValue={formContext?.printingPositions}
+          required 
+          id='printingPositions' 
+          name='printingPositions' 
+          errors={formErrors}
+        />
 
         <Divider></Divider>
         
-        <InputText type='text' label='Cor das Mangas' id='sleeveColor' name='sleeveColor' errors={formErrors}/>
-        <InputText type='text' label='Punho' id='cuffStyle' name='cuffStyle' errors={formErrors}/>
-        <InputText type='text' label='Elemento Especial' id='specialElement' name='specialElement' errors={formErrors}/>
-        <InputText type='text' label='Ajuste de tamanho' id='sizeAdjustment' name='sizeAdjustment' errors={formErrors}/>
+        <InputText 
+          type='text' 
+          label='Cor das Mangas' 
+          id='sleeveColor' 
+          defaultValue={formContext?.sleeveColor}
+          name='sleeveColor' 
+          errors={formErrors}
+        />
+
+        <InputText 
+          type='text' 
+          label='Punho' 
+          defaultValue={formContext?.cuffStyle}
+          id='cuffStyle' 
+          name='cuffStyle' 
+          errors={formErrors}
+        />
+
+        <InputText 
+          type='text' 
+          label='Elemento Especial' 
+          defaultValue={formContext?.specialElement}
+          id='specialElement' 
+          name='specialElement' 
+          errors={formErrors}
+        />
+
+        <InputText 
+          type='text' 
+          label='Ajuste de tamanho' 
+          defaultValue={formContext?.sizeAdjustment}
+          id='sizeAdjustment' 
+          name='sizeAdjustment' 
+          errors={formErrors}
+        />
 
         <Button type='submit'>Próximo</Button>
       </form>
