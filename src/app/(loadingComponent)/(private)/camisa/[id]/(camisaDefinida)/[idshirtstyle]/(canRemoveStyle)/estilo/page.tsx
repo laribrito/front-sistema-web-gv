@@ -122,7 +122,7 @@ export default function EditarCamisa({params}: { params:{id: number, idshirtstyl
 
     setShirtModels(currentModels)
 
-    if(isNext) router.push(`/camisa/${params.id}/${params.idshirtstyle}/detailing`)
+    if(isNext) router.push(`/camisa/${params.id}/${params.idshirtstyle}/sizes`)
     else router.push(`/camisa/${params.id}/`)
   }
 

@@ -107,7 +107,7 @@ export default function NovaCamisa({params}: { params:{id: number}}) {
 
     setShirtModels(currentModels)
 
-    router.push(`/camisa/${params.id}/novo-estilo/${form.mesh.value}/${form.meshColor.value}/detailing`)
+    router.push(`/camisa/${params.id}/novo-estilo/${form.mesh.value}/${form.meshColor.value}/sizes`)
   }
 
   return (

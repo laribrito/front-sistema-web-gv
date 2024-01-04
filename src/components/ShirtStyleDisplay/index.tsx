@@ -1,13 +1,13 @@
 // components/ShirtStyleDisplay.tsx
 
-import { SecondShirtStyle, ShirtStyle } from '@/context/orderContext';
+import { DefaultShirtStyle, ShirtStyle } from '@/context/orderContext';
 import styles from './shirtDisplay.module.css';
 import { HTMLProps, RefObject, useState } from 'react';
 import { useServerDataContext } from '@/context/serverDataContext';
 import { Option } from '../Input/interfaceInput';
 
 interface ShirtStyleDisplayProps extends HTMLProps<HTMLDivElement> {
-  shirtStyle: SecondShirtStyle | null | undefined;
+  shirtStyle: DefaultShirtStyle | null | undefined;
   refer?: RefObject<HTMLDivElement>;
 }
 

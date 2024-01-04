@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useServerDataContext } from '@/context/serverDataContext'
 import Button from '@/components/Button'
 import toast from 'react-hot-toast'
-import { ShirtStyle, SizeGrid, calcularInfosGrade, useOrderContext } from '@/context/orderContext'
+import { DefaultShirtStyle, ShirtStyle, SizeGrid, calcularInfosGrade, useOrderContext } from '@/context/orderContext'
 import { useRouter } from 'next/navigation'
 import styles from './page.module.css'
 import InputText from '@/components/Input/InputText'
@@ -11,12 +11,13 @@ import ShirtStyleDisplay from '@/components/ShirtStyleDisplay'
 import { useComponentsContext } from '@/context/componentsContext'
 import Navbar from '@/components/Navbar'
 import { IconNext, IconSave } from '@/utils/elements'
+import Divider from '@/components/Divider'
 
 export default function Sizes({params}: { params:{id: number, idshirtstyle: number}}) {
   type DataPage = {
       meshName: string
       meshColorName: string
-      currentStyle?: ShirtStyle
+      currentStyle?: DefaultShirtStyle
   }
 
   type FormContent = SizeGrid
@@ -54,7 +55,7 @@ export default function Sizes({params}: { params:{id: number, idshirtstyle: numb
             setDataPage({
                 meshName: parseOptionName(meshs, style.mesh) as string,
                 meshColorName: parseOptionName(colorsMeshs, style.meshColor) as string,
-                currentStyle: style
+                currentStyle: current.defaultStyle
             })
 
             setFormContent(style.sizes as FormContent)
@@ -123,12 +124,12 @@ export default function Sizes({params}: { params:{id: number, idshirtstyle: numb
         <div className={styles.malhaDiv}>
             <h1>{dataPage?.meshName}</h1>
             <h2>{dataPage?.meshColorName}</h2>
-            <hr className={styles.divisor} />
-            
+            <Divider />
+            <h2>Estilo Padrão</h2>
             <ShirtStyleDisplay shirtStyle={dataPage?.currentStyle} refer={elementoRef}/>
         </div>
 
-      <form method='post' onSubmit={handleSubmit} style={{margin: `${alturaElemento+100}px 0 40px 0`}}>
+      <form method='post' onSubmit={handleSubmit} style={{margin: `${alturaElemento+100}px 0 80px 0`}}>
         <h3>Babylooks:</h3>
         <div className={styles.gridSizes}>
           <InputText type='text' defaultValue={formContent?.female.p } label='P' id='babyP' name='babyP' tosize/>

@@ -69,27 +69,30 @@ export function calcularInfosGrade(grid: SizeGrid): InfosSizeGrid {
   };
 }
 
+export type SpecialShirtStyle={
+  shirtCollar: number
+  cuffStyle: string
+  sleeveColor: string
+  sizeAdjustment: string
+  specialElement: string
+
+  comments?: string
+  attachments?: string[]
+}
+
 export type ShirtStyle = {
   mesh: number
   meshColor: number
-
-  shirtCollar?: string
-  printingTechnique?: string
-  printingColors?: string
-  printingPositions?: string
-
-  sleeveColor?: string
-  cuffStyle?: string
-  specialElement?: string
   
   sizes?: SizeGrid
 
   comments?: string
   attachments?: string[]
+  specials?: SpecialShirtStyle[]
   toSave?: boolean
 }
 
-export type SecondShirtStyle = {
+export type DefaultShirtStyle = {
   shirtCollar: number
   printingTechnique: string
   printingColors: string
@@ -109,7 +112,7 @@ export type ShirtModel = {
   shirtModeling: number
   shirtStyles: ShirtStyle[]
   number_units: number
-  defaultStyle: SecondShirtStyle
+  defaultStyle: DefaultShirtStyle
   
   namePhotoModel?: string
 };

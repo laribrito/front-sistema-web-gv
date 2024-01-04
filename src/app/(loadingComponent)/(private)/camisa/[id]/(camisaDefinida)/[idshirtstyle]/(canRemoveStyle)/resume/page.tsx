@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useServerDataContext } from '@/context/serverDataContext'
 import Button from '@/components/Button'
 import toast from 'react-hot-toast'
-import { InfosSizeGrid, ShirtStyle, SizeGrid, calcularInfosGrade, useOrderContext } from '@/context/orderContext'
+import { DefaultShirtStyle, InfosSizeGrid, ShirtStyle, SizeGrid, calcularInfosGrade, useOrderContext } from '@/context/orderContext'
 import { useRouter } from 'next/navigation'
 import styles from './page.module.css'
 import InputText from '@/components/Input/InputText'
@@ -16,6 +16,7 @@ import Navbar from '@/components/Navbar'
 import { IconBusca, IconCancel, IconHome, IconHomeActive, IconNext, IconNovoPedido, IconRelatorios, IconSave } from '@/utils/elements'
 import ModalYesOrNo from '@/components/ModalYesOrNo/indext'
 import { useComponentsContext } from '@/context/componentsContext'
+import Divider from '@/components/Divider'
 
 function LabelAndContent({label, content}: {label: string, content: number}){
   content = content? content : 0
@@ -31,7 +32,7 @@ export default function Resume({params}: { params:{id: number, idshirtstyle: num
   type DataPage = {
       meshName: string
       meshColorName: string
-      currentStyle?: ShirtStyle
+      currentStyle?: DefaultShirtStyle
       currentGrid?: SizeGrid
       gridInfo?: InfosSizeGrid
   }
@@ -108,6 +109,7 @@ async function getFormContent() {
       });
 
       const files = await Promise.all(filePromises);
+      setFilesUpload(files)
     }
   } catch (error) {
     console.error('Erro ao obter o conteúdo do formulário:', error);
@@ -131,7 +133,7 @@ async function getFormContent() {
           setDataPage({
               meshName: parseOptionName(meshs, currentStyle.mesh) as string,
               meshColorName: parseOptionName(colorsMeshs, currentStyle.meshColor) as string,
-              currentStyle: currentStyle,
+              currentStyle: currentModels[params.id].defaultStyle,
               currentGrid: currentGrid,
               gridInfo: calcularInfosGrade(currentGrid),
           })
@@ -209,9 +211,10 @@ async function getFormContent() {
         <div className={styles.malhaDiv}>
             <h1>{dataPage?.meshName}</h1>
             <h2>{dataPage?.meshColorName}</h2>
-            <hr className={styles.divisor} />
+            <Divider />
+            <h2>Estilo Padrão</h2>
             <ShirtStyleDisplay shirtStyle={dataPage?.currentStyle} refer={elementoRef}/>
-            <hr className={styles.divisor} />
+            <Divider />
         </div>
 
         <div className={styles.contentBox} style={{padding: `${alturaElemento+100}px 0px 40px 0px`, width: '100%'}}>

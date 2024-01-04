@@ -3,18 +3,19 @@ import { useEffect, useRef, useState } from 'react'
 import { useServerDataContext } from '@/context/serverDataContext'
 import Button from '@/components/Button'
 import toast from 'react-hot-toast'
-import { ShirtStyle, SizeGrid, calcularInfosGrade, useOrderContext } from '@/context/orderContext'
+import { DefaultShirtStyle, ShirtStyle, SizeGrid, calcularInfosGrade, useOrderContext } from '@/context/orderContext'
 import { useRouter } from 'next/navigation'
 import styles from './page.module.css'
 import InputText from '@/components/Input/InputText'
 import ShirtStyleDisplay from '@/components/ShirtStyleDisplay'
 import { useComponentsContext } from '@/context/componentsContext'
+import Divider from '@/components/Divider'
 
 export default function Sizes({params}: { params:{id: number, mesh: number, meshcolor: number}}) {
   type DataPage = {
       meshName: string
       meshColorName: string
-      currentStyle?: ShirtStyle
+      currentStyle?: DefaultShirtStyle
   }
 
   const router = useRouter()
@@ -42,16 +43,12 @@ export default function Sizes({params}: { params:{id: number, mesh: number, mesh
         const colorsMeshs = await getMeshColors()
 
         const currentModels = getShirtModels()
-        const currentModel = currentModels[params.id]
-        const stylePos = currentModel.shirtStyles.findIndex(
-          (style:ShirtStyle) => style.mesh == params.mesh &&
-          style.meshColor == params.meshcolor);
 
         if(meshs && colorsMeshs){
             setDataPage({
                 meshName: parseOptionName(meshs, params.mesh) as string,
                 meshColorName: parseOptionName(colorsMeshs, params.meshcolor) as string,
-                currentStyle: currentModels[params.id].shirtStyles[stylePos]
+                currentStyle: currentModels[params.id].defaultStyle
             })
         }
     } catch (error) {
@@ -121,12 +118,12 @@ export default function Sizes({params}: { params:{id: number, mesh: number, mesh
         <div className={styles.malhaDiv}>
             <h1>{dataPage?.meshName}</h1>
             <h2>{dataPage?.meshColorName}</h2>
-            <hr className={styles.divisor} />
-            
+            <Divider />
+            <h2>Estilo Padrão</h2>
             <ShirtStyleDisplay shirtStyle={dataPage?.currentStyle} refer={elementoRef}/>
         </div>
 
-      <form method='post' onSubmit={handleSubmit} style={{margin: `${alturaElemento+100}px 0 40px 0`}}>
+      <form method='post' onSubmit={handleSubmit} style={{margin: `${alturaElemento+120}px 0 40px 0`}}>
         <h3>Babylooks:</h3>
         <div className={styles.gridSizes}>
           <InputText type='text' label='P' id='babyP' name='babyP' tosize/>
