@@ -15,27 +15,7 @@
     margin: 10px 0;
 }
 
-.contentBox > h3{
-    margin-top: var(--gap-itens-box);
-}
-
 .gridSizes{
     display: flex;
     justify-content: space-between;
-}
-
-.label{
-    font-size: medium;
-}
-
-.LabelAndContent{
-    padding: 2px;
-    text-align: center;
-
-}
-
-.divTotalCamisas{
-    display: flex;
-    justify-content: space-between;
-    margin: 20px 0 40px 0;
 }

@@ -17,6 +17,7 @@ import { IconBusca, IconCancel, IconHome, IconHomeActive, IconNext, IconNovoPedi
 import ModalYesOrNo from '@/components/ModalYesOrNo/indext'
 import { useComponentsContext } from '@/context/componentsContext'
 import Divider from '@/components/Divider'
+import SpecialCaseShirtDisplay from '@/components/SpecialCaseShirtDisplay'
 
 function LabelAndContent({label, content}: {label: string, content: number}){
   content = content? content : 0
@@ -223,6 +224,10 @@ export default function Resume({params}: { params:{id: number, mesh: number, mes
                     setCancelModalOpen(false)
                   }}
             />
+
+            {/* <SpecialCaseShirtDisplay>
+
+            </SpecialCaseShirtDisplay> */}
 
             <Navbar.Root>
               <Navbar.Item icon={IconCancel} goto={()=>{setCancelModalOpen(true)}}>Cancelar<br/>Estilo</Navbar.Item>

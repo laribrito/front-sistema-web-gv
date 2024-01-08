@@ -129,7 +129,7 @@ export default function Sizes({params}: { params:{id: number, idshirtstyle: numb
             <ShirtStyleDisplay shirtStyle={dataPage?.currentStyle} refer={elementoRef}/>
         </div>
 
-      <form method='post' onSubmit={handleSubmit} style={{margin: `${alturaElemento+100}px 0 80px 0`}}>
+      <form method='post' onSubmit={handleSubmit} style={{margin: `${alturaElemento+120}px 0 80px 0`}}>
         <h3>Babylooks:</h3>
         <div className={styles.gridSizes}>
           <InputText type='text' defaultValue={formContent?.female.p } label='P' id='babyP' name='babyP' tosize/>

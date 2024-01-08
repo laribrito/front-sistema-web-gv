@@ -70,14 +70,17 @@ export function calcularInfosGrade(grid: SizeGrid): InfosSizeGrid {
 }
 
 export type SpecialShirtStyle={
-  shirtCollar: number
-  cuffStyle: string
-  sleeveColor: string
-  sizeAdjustment: string
-  specialElement: string
+  shirtCollar?: number
+  cuffStyle?: string
+  sleeveColor?: string
+  sizeAdjustment?: string
+  specialElement?: string
+
+  sizes?: SizeGrid
 
   comments?: string
   attachments?: string[]
+  toSave?: boolean
 }
 
 export type ShirtStyle = {

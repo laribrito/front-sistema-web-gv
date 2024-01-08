@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useServerDataContext } from '@/context/serverDataContext'
 import Button from '@/components/Button'
 import toast from 'react-hot-toast'
-import { DefaultShirtStyle, InfosSizeGrid, ShirtStyle, SizeGrid, calcularInfosGrade, useOrderContext } from '@/context/orderContext'
+import { DefaultShirtStyle, InfosSizeGrid, ShirtStyle, SizeGrid, SpecialShirtStyle, calcularInfosGrade, useOrderContext } from '@/context/orderContext'
 import { useRouter } from 'next/navigation'
 import styles from './page.module.css'
 import InputText from '@/components/Input/InputText'
@@ -17,6 +17,8 @@ import { IconBusca, IconCancel, IconHome, IconHomeActive, IconNext, IconNovoPedi
 import ModalYesOrNo from '@/components/ModalYesOrNo/indext'
 import { useComponentsContext } from '@/context/componentsContext'
 import Divider from '@/components/Divider'
+import SpecialCaseShirtDisplay from '@/components/SpecialCaseShirtDisplay'
+import { countAllUnitsShirtsToString } from '@/utils/functions'
 
 function LabelAndContent({label, content}: {label: string, content: number}){
   content = content? content : 0
@@ -34,7 +36,9 @@ export default function Resume({params}: { params:{id: number, idshirtstyle: num
       meshColorName: string
       currentStyle?: DefaultShirtStyle
       currentGrid?: SizeGrid
+      specialCases?: SpecialShirtStyle[]
       gridInfo?: InfosSizeGrid
+      currentShirtStyle?: ShirtStyle
   }
 
   type FormContent = {
@@ -135,7 +139,9 @@ async function getFormContent() {
               meshColorName: parseOptionName(colorsMeshs, currentStyle.meshColor) as string,
               currentStyle: currentModels[params.id].defaultStyle,
               currentGrid: currentGrid,
+              specialCases: currentStyle.specials? currentStyle.specials : [],
               gridInfo: calcularInfosGrade(currentGrid),
+              currentShirtStyle: currentModels[params.id].shirtStyles[params.idshirtstyle]
           })
       }
     } catch (error) {
@@ -217,7 +223,7 @@ async function getFormContent() {
             <Divider />
         </div>
 
-        <div className={styles.contentBox} style={{padding: `${alturaElemento+100}px 0px 40px 0px`, width: '100%'}}>
+        <div className={styles.contentBox} style={{padding: `${alturaElemento+120}px 0px 40px 0px`, width: '100%'}}>
             { dataPage.currentGrid &&
             <>
               {dataPage.gridInfo?.totalFemale!=0 && 
@@ -263,15 +269,23 @@ async function getFormContent() {
             </>
             }
 
-          <form method='post' onSubmit={handleSubmit} style={{marginTop: '20px', marginBottom: '80px'}}>
+          <form method='post' onSubmit={handleSubmit} style={{marginTop: '20px'}}>
             <InputText type='text' defaultValue={formContent?.obs} label='Observações' id='obs' name='obs' multiline />
 
             <InputFile label='Anexos' id='anexos' multiple/>
+
 
             <Navbar.Root>
               <Navbar.Item icon={IconSave} submit>Salvar</Navbar.Item>
             </Navbar.Root>
           </form>
+
+          <SpecialCaseShirtDisplay cases={dataPage.specialCases} idCamisa={params.id} idShirtStyle={params.idshirtstyle} />
+            
+          <div className={styles.divTotalCamisas}>
+            <h3>Total de camisas</h3>
+            <h3>{dataPage.currentShirtStyle && countAllUnitsShirtsToString(dataPage.currentShirtStyle)}</h3>
+          </div>
         </div>
     </>
   )

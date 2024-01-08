@@ -1,3 +1,5 @@
+import { ShirtStyle, calcularInfosGrade } from "@/context/orderContext";
+
 export function QtdUnidadesPorExtenso(qtd: number){
     return `${qtd} ${qtd === 1 ? "Unidade" : "Unidades"}`;
 }
@@ -44,4 +46,24 @@ export function getMonetaryString(x: number, withCifrao: boolean = true) : strin
     if(withCifrao)
         return 'R$ ' + value
     return value.toString()
+}
+
+function countAllUnitsShirts(style: ShirtStyle) : number{
+    var units = 0
+    if(style.sizes){
+        units += calcularInfosGrade(style.sizes).grandTotal
+        
+        if(style.specials){
+            style.specials.forEach((caso)=>{
+                if(caso.sizes) units += calcularInfosGrade(caso.sizes).grandTotal
+            })
+        }
+    } 
+
+    return units
+}
+
+export function countAllUnitsShirtsToString(style: ShirtStyle) : string{
+    const units = countAllUnitsShirts(style)
+    return QtdUnidadesPorExtenso(units)
 }
